@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == "kateemsamy51@gmail.com"
+        && request.auth.token.email_verified == true;
+    }
+
+    // بيانات التمرين الخاصة بكل مستخدم: صاحبها بس
+    match /users/{uid}/{document=**} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // ملف تعريف بسيط لكل مستخدم: صاحبه يكتب، وصاحبه والمدرب يقرأوا
+    match /profiles/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name','email','sid','phone','plan','workouts','lastTrain','lastSeen','createdAt','src'])
+        && (!('name' in request.resource.data) || (request.resource.data.name is string && request.resource.data.name.size() <= 60))
+        && (!('phone' in request.resource.data) || (request.resource.data.phone is string && request.resource.data.phone.size() <= 16))
+        && (!('src' in request.resource.data) || (request.resource.data.src is string && request.resource.data.src.size() <= 30));
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+
+    // عدّادات الزيارات: أي حد يزوّد بواحد، والمدرب بس يقرأ
+    match /stats/{id} {
+      allow read: if isAdmin();
+      allow create: if id.matches('^[vc]_[a-z0-9_-]{1,30}$')
+        && request.resource.data.keys().hasOnly(['n']) && request.resource.data.n == 1;
+      allow update: if id.matches('^[vc]_[a-z0-9_-]{1,30}$')
+        && request.resource.data.keys().hasOnly(['n']) && request.resource.data.n == resource.data.n + 1;
+    }
+  }
+}

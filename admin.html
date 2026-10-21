@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>لوحة المدرب | Kareem Samy</title><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#08202F">
+<style>
+:root{--bg:#08202F;--sf:#10324A;--ink:#F2F7FA;--mu:#9FB6C3;--ac:#FF5A36;--tq:#2CC1B8;--ln:#2A5878;--ok:#3DDC97}
+*{box-sizing:border-box}html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,Tahoma,sans-serif;line-height:1.6;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:1.4rem}h2{margin:0 0 8px;font-size:1.05rem}.mu{color:var(--mu);font-size:.9rem;margin:0}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:14px;min-width:0}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.k{background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:10px;text-align:center}.k b{display:block;font-size:1.6rem;font-variant-numeric:tabular-nums}.k span{color:var(--mu);font-size:.8rem}
+button,.btn{font:inherit;cursor:pointer;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;text-decoration:none;display:inline-block}
+button.g{background:transparent;color:var(--ink);border:1px solid var(--ln)}
+input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--ln);border-radius:8px;padding:9px;width:100%;min-width:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>input{flex:1 1 200px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:720px;font-size:.88rem}
+th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--ln);white-space:nowrap}th{color:var(--mu);font-weight:600}
+td.n{font-variant-numeric:tabular-nums}.wa{color:var(--ok);text-decoration:none;font-weight:700}
+.bar{height:8px;background:var(--bg);border-radius:5px;overflow:hidden;min-width:80px}.bar i{display:block;height:100%;background:var(--tq)}
+#gate{text-align:center;padding:40px 0;display:flex;flex-direction:column;gap:12px;align-items:center}
+:focus-visible{outline:3px solid var(--tq);outline-offset:2px}
+</style></head>
+<body><main>
+<div class="row" style="justify-content:space-between"><h1>لوحة المدرب</h1><div class="row"><button class="g" id="rf" hidden>تحديث</button><button class="g" id="lo" hidden>خروج</button></div></div>
+<div id="gate"><p class="mu" id="gm">سجّل دخول بحساب الإدارة.</p><button id="gb">دخول بجوجل</button></div>
+<div id="dash" hidden>
+<div class="kp card" id="kp"></div>
+<div class="card"><h2>الفيديوهات والروابط</h2><p class="mu">الزيارات والضغط على "ابدأ" والتسجيلات لكل مصدر (?src=اسم).</p><div class="tw"><table id="st"></table></div></div>
+<div class="card"><h2>المسجلين</h2>
+<div class="row"><input id="q" placeholder="ابحث بالاسم أو الإيميل أو رقم التعريف"><button id="ex">تصدير CSV</button></div>
+<p class="mu" id="cnt"></p><div class="tw"><table id="ut"></table></div></div>
+</div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="fb.js"></script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)}, users=[], stats={};
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+function ts(v){ return v&&v.toDate?v.toDate():null; }
+function day(d){ return d?d.toLocaleDateString("ar-EG",{day:"numeric",month:"short"}):"-"; }
+$("gb").onclick=function(){ KS.signIn().catch(function(e){ $("gm").textContent=KS.signInMsg(e)||"اتلغى الدخول."; }); };
+$("lo").onclick=function(){ KS.auth.signOut(); };
+$("rf").onclick=load;
+KS.auth.onAuthStateChanged(function(u){
+  if(!u){ $("gate").hidden=false; $("dash").hidden=true; $("lo").hidden=true; $("rf").hidden=true; return; }
+  if(u.email!==KS.ADMIN || !u.emailVerified){ $("gate").hidden=false; $("dash").hidden=true; $("lo").hidden=false; $("gm").textContent="الحساب ده ("+u.email+") مش مصرح له. سجّل خروج وادخل بحساب الإدارة."; $("gb").hidden=true; return; }
+  $("gate").hidden=true; $("dash").hidden=false; $("lo").hidden=false; $("rf").hidden=false; load();
+});
+function load(){
+  Promise.all([KS.fs.collection("profiles").orderBy("createdAt","desc").limit(3000).get(), KS.fs.collection("stats").get()]).then(function(r){
+    users=r[0].docs.map(function(d){ var x=d.data(); x._id=d.id; return x; });
+    stats={}; r[1].docs.forEach(function(d){ stats[d.id]=(d.data()||{}).n||0; });
+    paint();
+  }).catch(function(e){ $("gm").textContent="مقدرتش أحمّل البيانات: "+(e&&e.code||""); $("gate").hidden=false; });
+}
+function paint(){
+  var now=Date.now(), w=7*86400000, nw=0, act=0, trn=0;
+  users.forEach(function(u){ var c=ts(u.createdAt), l=ts(u.lastSeen); if(c&&now-c<w) nw++; if(l&&now-l<w) act++; if((u.workouts||0)>0) trn++; });
+  var V=0,C=0; Object.keys(stats).forEach(function(k){ if(k[0]==="v") V+=stats[k]; if(k[0]==="c") C+=stats[k]; });
+  $("kp").innerHTML=[[users.length,"مسجّل"],[nw,"جداد آخر ٧ أيام"],[act,"نشطين آخر ٧ أيام"],[trn,"سجّلوا تمرين"],[V,"زيارات الصفحة"],[C,"ضغطوا ابدأ"]].map(function(x){ return '<div class="k"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'; }).join("");
+  var by={}; users.forEach(function(u){ var s=u.src||"direct"; by[s]=by[s]||{s:0,t:0}; by[s].s++; if((u.workouts||0)>0) by[s].t++; });
+  var keys={}; Object.keys(stats).forEach(function(k){ keys[k.slice(2)]=1; }); Object.keys(by).forEach(function(k){ keys[k]=1; });
+  var rows=Object.keys(keys).map(function(k){ return {k:k,v:stats["v_"+k]||0,c:stats["c_"+k]||0,s:(by[k]||{}).s||0,t:(by[k]||{}).t||0}; }).sort(function(a,b){ return b.s-a.s||b.v-a.v; });
+  var mx=Math.max(1,Math.max.apply(null,rows.map(function(r){ return r.s; })));
+  $("st").innerHTML='<tr><th>المصدر</th><th>زيارات</th><th>ضغطوا ابدأ</th><th>سجّلوا</th><th>تمرنوا</th><th>تحويل</th><th></th></tr>'+rows.map(function(r){
+    return '<tr><td dir="ltr">'+esc(r.k)+'</td><td class="n">'+r.v+'</td><td class="n">'+r.c+'</td><td class="n">'+r.s+'</td><td class="n">'+r.t+'</td><td class="n">'+(r.v?Math.round(r.s/r.v*100)+"%":"-")+'</td><td><div class="bar"><i style="width:'+Math.round(r.s/mx*100)+'%"></i></div></td></tr>';
+  }).join("");
+  draw();
+}
+function filt(){ var q=($("q").value||"").trim().toLowerCase(); return users.filter(function(u){ return !q||[u.name,u.email,u.sid,u.phone].join(" ").toLowerCase().indexOf(q)>-1; }); }
+function draw(){
+  var l=filt(); $("cnt").textContent=l.length+" من "+users.length;
+  $("ut").innerHTML='<tr><th>الاسم</th><th>الإيميل</th><th>رقم التعريف</th><th>الخطة</th><th>تمارين</th><th>آخر ظهور</th><th>سجّل</th><th>المصدر</th><th>واتساب</th></tr>'+l.slice(0,500).map(function(u){
+    var msg="أهلًا "+(u.name||"يا بطل")+"! أنا كريم سامي. شفتك سجّلت في دفتر التمرين، لو محتاج أي مساعدة في برنامجك قولي.";
+    var wa=u.phone?'<a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+esc(u.phone)+'?text='+encodeURIComponent(msg)+'">رسالة ترحيب</a>':"-";
+    return '<tr><td>'+esc(u.name)+'</td><td dir="ltr">'+esc(u.email)+'</td><td dir="ltr">'+esc(u.sid)+'</td><td class="n">'+esc(u.plan||"-")+'</td><td class="n">'+(u.workouts||0)+'</td><td>'+day(ts(u.lastSeen))+'</td><td>'+day(ts(u.createdAt))+'</td><td dir="ltr">'+esc(u.src||"direct")+'</td><td>'+wa+'</td></tr>';
+  }).join("");
+}
+$("q").oninput=draw;
+$("ex").onclick=function(){
+  var h=["name","email","sid","phone","plan","workouts","lastSeen","createdAt","src"];
+  function c(v){ v=String(v==null?"":v).replace(/"/g,'""'); return '"'+v+'"'; }
+  var rows=[h.join(",")].concat(users.map(function(u){ return h.map(function(k){ var v=u[k]; if(v&&v.toDate) v=v.toDate().toISOString(); return c(v); }).join(","); }));
+  var bl=new Blob(["﻿"+rows.join("\n")],{type:"text/csv;charset=utf-8"}), a=document.createElement("a");
+  a.href=URL.createObjectURL(bl); a.download="kareem-users-"+new Date().toISOString().slice(0,10)+".csv"; document.body.appendChild(a); a.click(); a.remove();
+};
+})();
+</script>
+</body></html>
