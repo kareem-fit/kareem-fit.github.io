@@ -19,12 +19,28 @@ input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--
 th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--ln);white-space:nowrap}th{color:var(--mu);font-weight:600}
 td.n{font-variant-numeric:tabular-nums}.wa{color:var(--ok);text-decoration:none;font-weight:700}
 .bar{height:8px;background:var(--bg);border-radius:5px;overflow:hidden;min-width:80px}.bar i{display:block;height:100%;background:var(--tq)}
+.pc{border:1px solid var(--ln);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.pc+.pc{margin-top:10px}.pc .ph{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pc .pt{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.pim{display:block;max-width:100%;max-height:360px;object-fit:contain;border-radius:8px;background:var(--sf)}
+.tg{font-size:.72rem;background:var(--ac);color:#fff;border-radius:4px;padding:0 6px;font-weight:700}
+textarea{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--ln);border-radius:8px;padding:9px;width:100%;min-width:0;resize:vertical}
+.chk{display:flex;align-items:center;gap:6px}.chk input{width:auto}
 #gate{text-align:center;padding:40px 0;display:flex;flex-direction:column;gap:12px;align-items:center}
 :focus-visible{outline:3px solid var(--tq);outline-offset:2px}
 </style></head>
 <body><main>
 <div class="row" style="justify-content:space-between"><h1>لوحة المدرب</h1><div class="row"><button class="g" id="rf" hidden>تحديث</button><button class="g" id="lo" hidden>خروج</button></div></div>
 <div id="gate"><p class="mu" id="gm">سجّل دخول بحساب الإدارة.</p><button id="gb">دخول بجوجل</button></div>
+<div id="modsec" hidden>
+<div class="card ao"><h2>نشر مباشر بشارة المدرب</h2>
+<textarea id="ap-t" rows="3" maxlength="500" placeholder="اكتب المنشور"></textarea>
+<div id="ap-prev"></div>
+<div class="row"><label class="btn g" for="ap-f">أضف صورة</label><input type="file" id="ap-f" accept="image/*" hidden><label class="chk"><input type="checkbox" id="ap-pin"> تثبيت</label><button id="ap-go">انشر</button></div></div>
+<div class="card"><h2>بانتظار المراجعة (<span id="pc">0</span>)</h2><div id="pend"><p class="mu">مفيش حاجة.</p></div></div>
+<div class="card"><h2>المنشورات الظاهرة</h2><div id="pubd"><p class="mu">مفيش حاجة.</p></div></div>
+<div class="card ao"><h2>المشرفون (Moderators)</h2><p class="mu">المشرف يقدر يوافق ويرفض ويحذف المنشورات، لكن مايقدرش ينشر مباشر ولا يثبّت. ابحث عن المسجّل برقم التعريف أو الإيميل (حدّث الأول لو لسه ظاهر مسجّل جديد).</p>
+<div class="row"><input id="md-q" placeholder="KS-XXXXXXX أو الإيميل" dir="ltr"><button id="md-add">إضافة مشرف</button></div><div id="mdl"></div></div>
+</div>
 <div id="dash" hidden>
 <div class="kp card" id="kp"></div>
 <div class="card"><h2>الفيديوهات والروابط</h2><p class="mu">الزيارات والضغط على "ابدأ" والتسجيلات لكل مصدر (?src=اسم).</p><div class="tw"><table id="st"></table></div></div>
@@ -39,18 +55,111 @@ td.n{font-variant-numeric:tabular-nums}.wa{color:var(--ok);text-decoration:none;
 <script src="fb.js"></script>
 <script>
 (function(){
+if(typeof KS==="undefined" || !KS.auth){
+  document.getElementById("gm").textContent="تعذّر تحميل ملف fb.js. اتأكد إنه مرفوع جنب admin.html وافتح الصفحة من رابط الموقع.";
+  document.getElementById("gb").disabled=true;
+  return;
+}
 var $=function(i){return document.getElementById(i)}, users=[], stats={};
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 function ts(v){ return v&&v.toDate?v.toDate():null; }
 function day(d){ return d?d.toLocaleDateString("ar-EG",{day:"numeric",month:"short"}):"-"; }
 $("gb").onclick=function(){ KS.signIn().catch(function(e){ $("gm").textContent=KS.signInMsg(e)||"اتلغى الدخول."; }); };
 $("lo").onclick=function(){ KS.auth.signOut(); };
-$("rf").onclick=load;
+$("rf").onclick=function(){ if(role==="admin") load(); loadMod(); };
+var role="", pend=[], pubd=[], mods=[], apImg=null;
+function okImg(v){ return typeof v==="string" && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(v); }
+function showApp(admin){
+  $("gate").hidden=true; $("lo").hidden=false; $("rf").hidden=false; $("modsec").hidden=false; $("dash").hidden=!admin;
+  Array.prototype.forEach.call(document.querySelectorAll(".ao"),function(e){ e.hidden=!admin; });
+}
+function denied(u){
+  $("gate").hidden=false; $("dash").hidden=true; $("modsec").hidden=true; $("lo").hidden=false; $("rf").hidden=true; $("gb").hidden=true;
+  $("gm").textContent="الحساب ده ("+u.email+") مش مصرح له. سجّل خروج وادخل بحساب الإدارة.";
+}
 KS.auth.onAuthStateChanged(function(u){
-  if(!u){ $("gate").hidden=false; $("dash").hidden=true; $("lo").hidden=true; $("rf").hidden=true; return; }
-  if(u.email!==KS.ADMIN || !u.emailVerified){ $("gate").hidden=false; $("dash").hidden=true; $("lo").hidden=false; $("gm").textContent="الحساب ده ("+u.email+") مش مصرح له. سجّل خروج وادخل بحساب الإدارة."; $("gb").hidden=true; return; }
-  $("gate").hidden=true; $("dash").hidden=false; $("lo").hidden=false; $("rf").hidden=false; load();
+  if(!u){ role=""; $("gate").hidden=false; $("gb").hidden=false; $("dash").hidden=true; $("modsec").hidden=true; $("lo").hidden=true; $("rf").hidden=true; return; }
+  if(u.email===KS.ADMIN && u.emailVerified){ role="admin"; showApp(true); load(); loadMod(); return; }
+  KS.fs.doc("mods/"+u.uid).get().then(function(sn){
+    if(sn.exists){ role="mod"; showApp(false); loadMod(); } else denied(u);
+  }).catch(function(){ denied(u); });
 });
+/* ---- المراجعة والمنشورات ---- */
+function loadMod(){
+  var P=KS.fs.collection("posts");
+  Promise.all([P.where("status","==","pending").limit(100).get(), P.where("pubAt",">",0).orderBy("pubAt","desc").limit(60).get(), P.where("pinAt",">",0).get()]).then(function(r){
+    function rows(q){ return q.docs.map(function(d){ var x=d.data(); x.id=d.id; return x; }); }
+    pend=rows(r[0]).sort(function(a,b){ var x=a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():0, y=b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():0; return x-y; });
+    var seen={}; pubd=[]; rows(r[2]).concat(rows(r[1])).forEach(function(p){ if(!seen[p.id]){ seen[p.id]=1; pubd.push(p); } });
+    paintMod();
+  }).catch(function(e){ $("pend").innerHTML='<p class="mu">مقدرتش أحمّل المنشورات: '+esc(e&&e.code||"")+'. اتأكد إن قواعد Firestore الجديدة اتنشرت.</p>'; });
+  if(role==="admin") loadMods();
+}
+function pcard(p,kind){
+  var h='<div class="pc"><div class="ph"><b>'+esc(p.name||"بطل")+'</b>'+(p.admin?'<span class="tg">المدرب</span>':'')+(p.pinAt>0?'<span class="tg">مثبّت</span>':'')+'<span class="mu" dir="ltr">'+esc(String(p.uid||"").slice(0,8))+'</span></div>';
+  if(p.text) h+='<p class="pt">'+esc(p.text)+'</p>';
+  if(okImg(p.img)) h+='<img class="pim" src="'+p.img+'" alt="">';
+  var i=esc(p.id);
+  h+='<div class="row">';
+  if(kind==="pend"){
+    h+='<button data-a="ok" data-i="'+i+'">قبول</button>'+(role==="admin"?'<button class="g" data-a="okpin" data-i="'+i+'">قبول وتثبيت</button>':'')+'<button class="g" data-a="no" data-i="'+i+'">رفض</button>';
+  } else {
+    if(role==="admin") h+=p.pinAt>0?'<button class="g" data-a="unpin" data-i="'+i+'">إلغاء التثبيت</button>':'<button class="g" data-a="pin" data-i="'+i+'">تثبيت</button>';
+    h+='<button class="g" data-a="hide" data-i="'+i+'">إخفاء</button>';
+  }
+  return h+'<button class="g" data-a="del" data-i="'+i+'">حذف</button></div></div>';
+}
+function paintMod(){
+  $("pc").textContent=pend.length;
+  $("pend").innerHTML=pend.length?pend.map(function(p){ return pcard(p,"pend"); }).join(""):'<p class="mu">مفيش منشورات بانتظار المراجعة.</p>';
+  $("pubd").innerHTML=pubd.length?pubd.map(function(p){ return pcard(p,"pub"); }).join(""):'<p class="mu">لسه مفيش منشورات ظاهرة.</p>';
+}
+function pact(a,id){
+  var p=pend.concat(pubd).filter(function(x){ return x.id===id; })[0]; if(!p) return;
+  var ref=KS.fs.doc("posts/"+id), now=Date.now(), P;
+  if(a==="ok") P=ref.update({status:"approved",pubAt:now});
+  else if(a==="okpin") P=ref.update({status:"approved",pubAt:now,pinAt:now});
+  else if(a==="no"||a==="hide"){ var u={status:"rejected",pubAt:0}; if(role==="admin" && p.pinAt>0) u.pinAt=0; P=ref.update(u); }
+  else if(a==="pin") P=ref.update({pinAt:now});
+  else if(a==="unpin") P=ref.update({pinAt:0});
+  else if(a==="del"){ if(!confirm("تحذف المنشور نهائيًا؟")) return; P=ref.delete(); }
+  else return;
+  P.then(loadMod).catch(function(){ alert("العملية ماتمّتش. المشرف مايقدرش يعدّل منشور مثبّت، وتأكد من قواعد Firestore."); });
+}
+$("pend").onclick=$("pubd").onclick=function(ev){ var b=ev.target.closest("button[data-a]"); if(b) pact(b.getAttribute("data-a"),b.getAttribute("data-i")); };
+/* ---- نشر المدرب ---- */
+function compress(file,cb){
+  var rd=new FileReader();
+  rd.onload=function(){ var im=new Image(); im.onload=function(){
+    var sc=Math.min(1,720/Math.max(im.width,im.height)), w=Math.max(1,Math.round(im.width*sc)), h=Math.max(1,Math.round(im.height*sc));
+    var c=document.createElement("canvas"); c.width=w; c.height=h; var x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,w,h); x.drawImage(im,0,0,w,h);
+    var q=0.78, out=c.toDataURL("image/jpeg",q); while(out.length>330000 && q>0.4){ q-=0.1; out=c.toDataURL("image/jpeg",q); }
+    cb(out.length<=380000?out:null); }; im.onerror=function(){ cb(null); }; im.src=String(rd.result); };
+  rd.onerror=function(){ cb(null); }; rd.readAsDataURL(file);
+}
+$("ap-f").onchange=function(){ var f=this.files&&this.files[0]; this.value=""; if(!f||!/^image\//.test(f.type)) return;
+  compress(f,function(o){ apImg=o; $("ap-prev").innerHTML=o?'<img class="pim" src="'+o+'" alt="">':'<p class="mu">الصورة ماتحمّلتش.</p>'; }); };
+$("ap-go").onclick=function(){
+  var t=($("ap-t").value||"").trim().slice(0,500), u=KS.auth.currentUser; if(role!=="admin"||!u||(!t&&!apImg)) return;
+  var now=Date.now(), d={uid:u.uid,name:"كريم سامي",text:t,status:"approved",pubAt:now,pinAt:$("ap-pin").checked?now:0,admin:true,likes:[],createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(apImg) d.img=apImg;
+  KS.fs.collection("posts").add(d).then(function(){ $("ap-t").value=""; $("ap-prev").innerHTML=""; $("ap-pin").checked=false; apImg=null; loadMod(); }).catch(function(){ alert("ماقدرتش أنشر. اتأكد من قواعد Firestore."); });
+};
+/* ---- المشرفون ---- */
+function loadMods(){
+  KS.fs.collection("mods").get().then(function(q){ mods=q.docs.map(function(d){ var x=d.data(); x.id=d.id; return x; }); paintMods(); }).catch(function(){ $("mdl").innerHTML='<p class="mu">مقدرتش أحمّل المشرفين.</p>'; });
+}
+function paintMods(){
+  $("mdl").innerHTML=mods.length?'<div class="tw"><table style="min-width:0"><tr><th>الاسم</th><th>الإيميل</th><th>رقم التعريف</th><th></th></tr>'+mods.map(function(m){
+    return '<tr><td>'+esc(m.name)+'</td><td dir="ltr">'+esc(m.email)+'</td><td dir="ltr">'+esc(m.sid)+'</td><td><button class="g" data-m="'+esc(m.id)+'">إزالة</button></td></tr>'; }).join("")+'</table></div>':'<p class="mu">مفيش مشرفين لسه.</p>';
+}
+$("mdl").onclick=function(ev){ var b=ev.target.closest("button[data-m]"); if(!b||!confirm("تشيل المشرف ده؟")) return; KS.fs.doc("mods/"+b.getAttribute("data-m")).delete().then(loadMods).catch(function(){ alert("ماتمّتش."); }); };
+$("md-add").onclick=function(){
+  var q=($("md-q").value||"").trim().toLowerCase(); if(!q) return;
+  var u=users.filter(function(x){ return String(x.email||"").toLowerCase()===q || String(x.sid||"").toLowerCase()===q; })[0];
+  if(!u){ alert("مش لاقي مسجّل بالبيانات دي. اضغط تحديث وجرّب تاني."); return; }
+  KS.fs.doc("mods/"+u._id).set({email:u.email||"",sid:u.sid||"",name:u.name||"",at:Date.now()}).then(function(){ $("md-q").value=""; loadMods(); }).catch(function(){ alert("ماقدرتش أضيف المشرف."); });
+};
 function load(){
   Promise.all([KS.fs.collection("profiles").orderBy("createdAt","desc").limit(3000).get(), KS.fs.collection("stats").get()]).then(function(r){
     users=r[0].docs.map(function(d){ var x=d.data(); x._id=d.id; return x; });

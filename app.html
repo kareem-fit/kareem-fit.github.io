@@ -368,10 +368,57 @@ body.v-welcome .foot{display:none}
 #gate .warn{background:#3a2a12;border:1px solid #E0A82E;color:#FFE3A8;border-radius:10px;padding:10px 12px;font-size:.92rem;text-align:start}
 #gate .err{color:#FFB4A3;min-height:1.4em}
 </style>
+<style>
+/* v4: تغذية + مجتمع */
+.brand h1{white-space:nowrap;font-size:1.15rem}
+.brand .soc{gap:4px}
+@media (max-width:430px){.brand .date{display:none}}
+.chip.yt{background:#E62117;border-color:#E62117;color:#fff}
+.ytbtn{display:flex;align-items:center;justify-content:center;gap:10px;background:#E62117;color:#fff;font-weight:800;font-size:1.1rem;padding:14px;border-radius:10px;text-decoration:none;box-shadow:0 6px 18px rgba(230,33,23,.35)}
+.ytbtn svg{width:24px;height:24px;flex:none}
+.seg2.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gbtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.gbtns a,.gbtns button{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:800;font-size:.9rem;line-height:1.3;text-decoration:none}
+.gbtns a.go{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.gbtns button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.acc{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.acc summary{cursor:pointer;list-style:none;padding:12px 14px;display:flex;align-items:center;gap:10px;font-weight:800;min-height:48px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary>span:first-child{flex:1;min-width:0}
+.acc summary::after{content:"+";font-family:var(--f-mono);color:var(--accent);font-size:1.4rem;line-height:1}
+.acc[open] summary::after{content:"−"}
+.acc .ab{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+.acc .sb{display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px solid var(--line)}
+.ing{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ing li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid var(--line);font-size:.92rem}
+.ing li:first-child{border-top:0}
+.ing li b{font-weight:500;color:var(--muted);text-align:end}
+.mac{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);direction:ltr;text-align:start;unicode-bidi:isolate}
+.cmfeed{display:flex;flex-direction:column;gap:14px}
+.post{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.post.pin{border-color:var(--accent)}
+.post p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.post .ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.post .ph small{color:var(--muted);font-size:.75rem;margin-inline-start:auto}
+.post .pi,.card .pi{display:block;width:100%;max-height:440px;object-fit:contain;background:var(--bg);border-radius:8px}
+.post .pa{display:flex;gap:6px;flex-wrap:wrap}
+.post .pa .btn.ghost{min-height:36px}
+.post .lk[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.tg2{font-size:.7rem;border-radius:4px;padding:0 6px;line-height:1.6;font-weight:800;white-space:nowrap}
+.tg2.adm{background:var(--accent);color:var(--on-accent)}
+.tg2.pn{border:1px solid var(--accent);color:var(--accent)}
+.tg2.st{border:1px solid var(--muted);color:var(--muted)}
+.cm{border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.cm .cmt{display:flex;gap:8px;justify-content:space-between;align-items:flex-start}
+.cm .cmt>span{min-width:0;overflow-wrap:anywhere}
+input.cmi,textarea.cmx{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;font-family:var(--f-body);font-size:1rem;padding:8px;direction:rtl;text-align:start}
+input.cmi{flex:1 1 160px;min-width:0;height:42px}
+textarea.cmx{resize:vertical;min-height:84px}
+</style>
 </head>
 <body>
 <div id="gate"><div class="gb">
-<img src="avatar.jpg" alt="Kareem Samy">
+<img src="data:image/jpeg;base64,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" alt="Kareem Samy" width="112" height="112">
 <h1>Kareem Samy</h1>
 <p>دفتر التمرين المجاني</p>
 <div class="warn" id="gwarn" hidden><b>افتح الرابط في المتصفح.</b> الدخول بجوجل مش بيشتغل من داخل إنستجرام أو التطبيقات. اضغط النقط الثلاثة واختار "فتح في المتصفح"، أو انسخ الرابط وافتحه في كروم أو سفاري.<br><button type="button" class="g2" id="gcp" style="margin-top:8px">انسخ الرابط</button></div>
@@ -397,6 +444,7 @@ body.v-welcome .foot{display:none}
       <button type="button" data-act="view" data-v="body" id="vb">الجسم</button>
       <button type="button" data-act="view" data-v="food" id="vf">الأكل</button>
       <button type="button" data-act="view" data-v="share" id="vs">الملخص</button>
+      <button type="button" data-act="view" data-v="comm" id="vc">المجتمع</button>
     </nav>
   </header>
   <main id="app"></main>
@@ -855,11 +903,11 @@ function renderAll(){
   document.body.classList.remove("v-welcome");
   if(view!=="train") justSaved=null;
   renderTabs();
-  ["home","today","train","log","body","food","share"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs"};
+  ["home","today","train","log","body","food","share","comm"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view); });
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else renderShare();
   updateProgress();
 }
 
@@ -1190,9 +1238,12 @@ function proteinMet(k){ var f=calcFood(), p=mealTot(k).p; return !!(f && p>0 && 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 var ICON_IG='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>';
 var ICON_WA='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.5 3.9 1.7.7 2.3.7 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
+var YT_URL='https://www.youtube.com/channel/UCNZUq1DOiiZ7o5WQNW84Syw', ICON_YT='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.4-1.6.5-3.2.5-4.8s-.1-3.2-.5-4.8zM9.7 15V9l5.8 3-5.8 3z"/></svg>';
+function ytLink(big){ return '<a class="'+(big?'chip big yt':'chip yt')+'" href="'+YT_URL+'" target="_blank" rel="noopener noreferrer" aria-label="YouTube">'+ICON_YT+(big?'<span>YouTube</span>':'')+'</a>'; }
 function waLink(msg){ if(window.__SID) msg+="\n(رقم التعريف: "+window.__SID+")"; return "https://wa.me/"+CONTACT.wa+"?text="+encodeURIComponent(msg); }
 function socialLinks(big){
   var c = big ? "chip big ig" : "chip ig", h = '<a class="'+c+'" href="https://instagram.com/'+CONTACT.ig+'" target="_blank" rel="noopener noreferrer" aria-label="Instagram">'+ICON_IG+(big?"<span>Instagram</span>":"")+'</a>';
+  h += ytLink(big);
   if(CONTACT.wa){
     var w = '<a class="'+(big?"chip big wa":"chip wa")+'" href="https://wa.me/'+CONTACT.wa+'" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">'+ICON_WA+(big?"<span>WhatsApp</span>":"")+'</a>';
     h += big ? '<div class="wacol">'+w+'<small>محتاج توضيح؟ كلّمني</small></div>' : w;
@@ -1371,6 +1422,7 @@ function renderHome(){
     '<p class="tag1">'+TAG+'</p><p class="sub">مش لازم تبدأ بأقوى خطوة؛ المهم تبدأ وتكمل.</p>'+
     '<p class="sub">النهارده: <b>'+DAYS[pi].name+'</b></p>'+
     '<div class="rowbtns"><button type="button" class="btn" data-act="gotrain" data-i="'+pi+'">'+(planDoneOn(tk)?"افتح تمرين النهارده":"ابدأ تمرين النهارده")+'</button></div></section>');
+  h.push('<a class="ytbtn" href="'+YT_URL+'" target="_blank" rel="noopener noreferrer">'+ICON_YT+'اشترك في قناتي على يوتيوب</a>');
   h.push(homeExtras(tk));
   var tasks=info.tasks.map(function(t){
     if(t.id==="weigh"){
@@ -1472,7 +1524,8 @@ function foodResult(){
 var foodDate=null, editMeal=null;
 function renderFood(){
   var ft=S.prefs.ft||"log", p=S.profile, la=latestAvg(), h=[];
-  h.push('<div class="seg2"><button type="button" data-act="ft" data-v="log" aria-pressed="'+(ft==="log")+'">سجل أكلي</button><button type="button" data-act="ft" data-v="calc" aria-pressed="'+(ft==="calc")+'">حاسبة احتياجي</button></div>');
+  h.push('<div class="seg2 three"><button type="button" data-act="ft" data-v="log" aria-pressed="'+(ft==="log")+'">سجل أكلي</button><button type="button" data-act="ft" data-v="calc" aria-pressed="'+(ft==="calc")+'">حاسبة احتياجي</button><button type="button" data-act="ft" data-v="guide" aria-pressed="'+(ft==="guide")+'">وجبات ونصائح</button></div>');
+  if(ft==="guide"){ h.push(guideHtml()); $("app").innerHTML=h.join(""); return; }
   if(ft==="calc"){
     var goals=[["gain","تضخيم نضيف (+250)"],["maintain","تثبيت"],["cut","تنشيف (−400)"]];
     var acts=[[1.4,"نشاط خفيف (حركة قليلة)"],[1.55,"تمرين 3–5 أيام وحركة عادية"],[1.7,"نشاط عالي أو شغل بدني"]];
@@ -1620,10 +1673,11 @@ function renderShare(){
     '<img class="shareimg" id="shareimg" alt="معاينة ملخص الأسبوع" width="300" height="533">'+
     '<label class="chk2"><input type="checkbox" id="s-n"'+(S.share.showName!==false?' checked':'')+'> أظهر اسمي في الصورة</label>'+
     '<label class="chk2"><input type="checkbox" id="s-w"'+(S.share.weight?' checked':'')+'> أظهر وزني في الصورة</label>'+
-    '<div class="rowbtns"><button type="button" class="btn" data-act="dlimg">نزّل الصورة</button><button type="button" class="btn ghost" data-act="shareimg">مشاركة</button></div>'+
+    '<div class="rowbtns"><button type="button" class="btn" data-act="dlimg">نزّل الصورة</button><button type="button" class="btn ghost" data-act="shareimg">مشاركة</button><button type="button" class="btn ghost" data-act="cmshare" data-k="week">شارك في مجتمع الأبطال</button></div>'+
     '<p class="sub">لو التنزيل مش متاح في المتصفح بتاعك، اضغط على الصورة مطوّلًا واحفظها.</p></section>');
   h.push('<section class="card"><h2>نسخة احتياطية</h2><p class="sub">ملف فيه كل تمارينك وأوزانك وقياساتك ووجباتك. بياناتك أصلًا محفوظة على حسابك، والملف للاحتياط بس.</p>'+
     '<div class="rowbtns"><button type="button" class="btn ghost" data-act="dljson">نزّل ملف البيانات</button></div></section>');
+  h.push(monthReport());
   h.push(monthCard());
   h.push(boardCard());
   h.push(restoreCard());
@@ -1913,7 +1967,7 @@ function paintMonth(){
 function monthCard(){
   return '<section class="card"><h2>ملخص الشهر كصورة</h2><p class="sub">أرقام الشهر لحد النهارده بمقاس ستوري.</p>'+
     '<img class="shareimg" id="monthimg" alt="معاينة ملخص الشهر" width="300" height="533">'+
-    '<div class="rowbtns"><button type="button" class="btn" data-act="dlmonth">نزّل الصورة</button><button type="button" class="btn ghost" data-act="sharemonth">مشاركة</button></div></section>';
+    '<div class="rowbtns"><button type="button" class="btn" data-act="dlmonth">نزّل الصورة</button><button type="button" class="btn ghost" data-act="sharemonth">مشاركة</button><button type="button" class="btn ghost" data-act="cmshare" data-k="month">شارك في مجتمع الأبطال</button></div></section>';
 }
 document.addEventListener("click", function(ev){
   var b=ev.target.closest("[data-act]"); if(!b) return;
@@ -1926,6 +1980,261 @@ document.addEventListener("click", function(ev){
 });
 document.addEventListener("change", function(ev){ var t=ev.target; if(t && t.id==="ph-file" && t.files && t.files[0]) addPhoto(t.files[0]); });
 
+/* ---------- التغذية: وجبات ونصائح ---------- */
+var MEALS=[
+ {t:"شيك القريش",d:"بروتين عالي وخفيف على المعدة. مناسب بعد التمرين أو كسناك.",
+  ing:[["جبنة قريش قليلة الدسم","200 جم"],["موز متوسط","120 جم"],["لبن","200 مل"],["شوفان","30 جم"],["عسل أو تمر مهروس","15 جم"]],
+  mac:[535,36,75,12],how:"حط كل المكونات في الخلاط وشغّله لحد ما تطلع ناعمة. زوّد شوية لبن لو عايزه أخف."},
+ {t:"مشروب الضخامة",d:"سعرات عالية في كوباية واحدة، لو بتعاني تاكل كفاية.",
+  ing:[["لبن كامل الدسم","300 مل"],["موز كبير","120 جم"],["شوفان","50 جم"],["زبدة فول سوداني","30 جم"],["تمر (حبتين)","20 جم"],["اختياري: سكوب بروتين واي","30 جم (+24 جم بروتين)"]],
+  mac:[730,27,95,30],how:"اخلط الكل ناعم. اشربه بين الوجبات مش بدلها."},
+ {t:"مشروب الطاقة",d:"قبل التمرين بـ 30–45 دقيقة. كارب سريع من غير دهون تتقل على المعدة.",
+  ing:[["عصير برتقال طازج","250 مل"],["موز متوسط","120 جم"],["عسل","15 جم"],["ملح","رشة صغيرة"],["اختياري: قهوة اسبريسو","شوت واحد"]],
+  mac:[260,3,65,0.5],how:"اخلط الموز مع العصير والعسل والملح. القهوة اختيارية، وماتزودهاش لو بتسهرك أو بتخلي قلبك يدق."},
+ {t:"بان كيك التضخيم",d:"فطار أو سناك بعد التمرين. بروتين وكارب ودهون معتدلة.",
+  ing:[["شوفان مطحون","60 جم"],["بيضة كاملة","1 (50 جم)"],["بياض بيض","66 جم (بياضين)"],["موز مهروس","100 جم"],["لبن","100 مل"],["بيكنج بودر","3 جم (نص معلقة صغيرة)"],["للتزيين: زبدة فول سوداني","15 جم"],["للتزيين: عسل","10 جم"]],
+  mac:[600,30,80,20],how:"اخلط كل المكونات الأساسية في عجينة، وصبّها على طاسة غير لاصقة على نار هادية. دقيقتين ونص لكل وش وبعدين زيّن."},
+ {t:"رز بلبن صحي مع بيض مسلوق",d:"وجبة مشبعة بدل الرز بلبن التقيل. الحلاوة من التمر مش من السكر.",
+  ing:[["رز مصري (قبل الطبخ)","60 جم"],["لبن قليل الدسم","300 مل"],["تمر مفروم","20 جم"],["قرفة وفانيليا","حسب الرغبة"],["بيض مسلوق","2 بيضة كبيرة (100 جم)"]],
+  mac:[565,27,79,15],how:"سيّح الرز في اللبن على نار هادية مع التقليب لحد ما يستوي ويتكثف، وحلّيه بالتمر والقرفة. كله مع البيضتين المسلوقتين."},
+ {t:"وجبة الأبطال للغداء",d:"الغدا الأساسي: بروتين نضيف + كارب + خضار.",
+  ing:[["صدور فراخ (وزن نيّ)","200 جم"],["رز بسمتي (وزن نيّ)","80 جم"],["خضار سوتيه أو سلطة","200 جم"],["زيت زيتون","10 جم (معلقة كبيرة)"],["توابل وليمون","حسب الرغبة"]],
+  mac:[650,54,74,14],how:"اشوي الصدور أو اسلقها بالتوابل. الرز يتسلق، والخضار تتسوتيه بنص زيت الزيتون والباقي على السلطة."},
+ {t:"وجبات سريعة ومشبعة",d:"3 أفكار تتحضّر في 5 دقايق. اختار واحدة.",
+  sub:[
+   {t:"ساندوتش تونة",ing:[["عيش بلدي","80 جم"],["تونة بالمية (مصفّاة)","120 جم"],["زبادي يوناني بدل المايونيز","30 جم"],["خيار وطماطم","80 جم"]],mac:[380,39,47,5]},
+   {t:"أومليت وقريش",ing:[["بيض","3 بيضات (150 جم)"],["جبنة قريش","60 جم"],["عيش بلدي","40 جم"]],mac:[355,30,22,15]},
+   {t:"بوول زبادي",ing:[["زبادي يوناني","250 جم"],["شوفان","40 جم"],["موز","60 جم"],["عسل","10 جم"]],mac:[380,31,58,5]}
+  ]},
+ {t:"سناك الطوارئ",d:"لما مفيش وقت ولا أكل جاهز. ماتسيبش نفسك جعان لحد الوجبة الجاية.",
+  ing:[["موزة","120 جم"],["لوز أو كاجو","25 جم"],["زبادي","150 جم"]],
+  mac:[345,12,39,18],how:"خلّي كيس لوز وتمر في شنطتك دايمًا، ولو معاك زبادي يبقى أحسن."}
+];
+var TIPS=[
+ {t:"فلسفة الدايت",p:[
+  "الدايت مش عقاب ولا قائمة ممنوعات. هو نظام تقدر تكمل عليه شهور، وأحسن نظام هو اللي بتلتزم بيه.",
+  "الأساس تلات حاجات: سعرات مناسبة لهدفك، وبروتين كفاية (غالبًا بين 1.6 و2.2 جم لكل كيلو من وزنك)، وأكل حقيقي أغلبه. شوف أرقامك في حاسبة احتياجي.",
+  "غيّر عادة واحدة كل أسبوع أو اتنين بدل ما تقلب حياتك مرة واحدة. وقيّس تقدمك بمتوسط الوزن على أسابيع، مش بميزان يوم واحد.",
+  "لو عندك مرض مزمن أو بتاخد دوا، استشر دكتور قبل ما تغيّر أكلك."]},
+ {t:"الاستثمار في الطبخ",p:[
+  "خصّص ساعتين في يوم ثابت (الجمعة مثلًا) وجهّز أساسيات الأسبوع: رز أو بطاطس، فراخ مشوية أو مسلوقة، بيض مسلوق، وخضار.",
+  "قسّمها في علب مقفولة. الأكل المطبوخ يتحفظ في التلاجة 3–4 أيام، والباقي حطه في الفريزر. برّد الرز بسرعة وماتسيبوش برا التلاجة ساعات، وسخّنه كويس قبل الأكل.",
+  "وجبة جاهزة في التلاجة معناها قرار أقل وتأخير أقل وإغراء أقل تطلب أكل. وكمان أرخص بكتير."]},
+ {t:"قاعدة 80/20",p:[
+  "80% من أكلك أكل حقيقي بسيط: بروتين وكارب وخضار وفاكهة ودهون صحية. و20% للحاجات اللي بتحبها من غير إحساس بالذنب.",
+  "لو أكلت حاجة بره الخطة ماتعوّضش بتجويع نفسك. كمّل الوجبة الجاية عادي.",
+  "وجبة واحدة مش هتبوّظ أسبوعك، المهم المتوسط على المدى الطويل."]},
+ {t:"تكتيكات شرب الماء",p:[
+  "كوباية كبيرة أول ما تصحى، وكوباية قبل كل وجبة.",
+  "خلّي قزازة لتر قدامك واعتبر إن لازم تخلّصها مرتين: مرة قبل الضهر ومرة بعده.",
+  "رقم تقريبي: 30–40 مل لكل كيلو من وزنك في اليوم، وزوّد في الحر وأيام التمرين. لون البول أصفر فاتح علامة كويسة.",
+  "في التمرين اشرب كام رشفة بين المجموعات، مش كمية كبيرة مرة واحدة.",
+  "لو عندك مشكلة في الكلى أو القلب، اتبع كمية المياه اللي الدكتور حددها."]}
+];
+function mealMac(m){ return '<div class="mac">≈ '+m[0]+' kcal · P '+m[1]+' · C '+m[2]+' · F '+m[3]+'</div>'; }
+function ingList(a){ return '<ul class="ing">'+a.map(function(x){ return '<li><span>'+x[0]+'</span><b>'+x[1]+'</b></li>'; }).join("")+'</ul>'; }
+function guideHtml(){
+  var g=S.prefs.gd||"meals", h=[];
+  h.push('<div class="gbtns"><a class="go" href="https://www.fatsecret.com/" target="_blank" rel="noopener noreferrer">بحث السعرات</a>'+
+    '<button type="button" data-act="gd" data-v="meals" aria-pressed="'+(g==="meals")+'">وجبات صحية</button>'+
+    '<button type="button" data-act="gd" data-v="tips" aria-pressed="'+(g==="tips")+'">نصائح</button></div>');
+  h.push('<p class="sub">بحث السعرات بيفتح FatSecret في تبويب جديد: ابحث عن أي أكلة وشوف سعراتها وماكروزها وسجّلها في سجل أكلي.</p>');
+  if(g==="tips"){
+    h.push(TIPS.map(function(t){ return '<details class="acc"><summary><span>'+t.t+'</span></summary><div class="ab">'+t.p.map(function(x){ return '<p class="cue">'+x+'</p>'; }).join("")+'</div></details>'; }).join(""));
+  } else {
+    h.push('<p class="sub">الأرقام تقريبية وبتختلف حسب الماركة والحجم. عدّل الكميات على احتياجك، وتجنّب أي مكوّن عندك حساسية منه.</p>');
+    h.push(MEALS.map(function(m){
+      var body='<p class="sub">'+m.d+'</p>';
+      if(m.sub){ body+=m.sub.map(function(s){ return '<div class="sb"><b>'+s.t+'</b>'+ingList(s.ing)+mealMac(s.mac)+'</div>'; }).join(""); }
+      else { body+=ingList(m.ing)+mealMac(m.mac)+'<p class="cue">'+m.how+'</p>'; }
+      return '<details class="acc"><summary><span>'+m.t+'</span>'+(m.mac?'<span class="mac">≈ '+m.mac[0]+' kcal</span>':'')+'</summary><div class="ab">'+body+'</div></details>';
+    }).join(""));
+  }
+  return h.join("");
+}
+
+/* ---------- تقرير الشهر ---------- */
+function monthReport(){
+  var tk=todayKey(), m=monthStats(tk.slice(0,7));
+  function c(l,v){ return '<div class="kpi"><b>'+v+'</b><span>'+l+'</span></div>'; }
+  return '<section class="card"><h2>تقرير الشهر</h2><p class="sub">'+pk(tk).toLocaleDateString("ar-EG",{month:"long",year:"numeric"})+'</p>'+
+    '<div class="kpis four">'+c("تمارين",m.sessions)+c("التزام",m.pct+"%")+c("حجم (طن)",r1(m.vol/1000))+c("أرقام قياسية",m.prs)+'</div></section>';
+}
+
+/* ---------- مجتمع الأبطال ---------- */
+var CM={pub:[],mine:[],loaded:false,loading:false,err:"",img:null,draft:"",open:{},cm:{},busy:false};
+var IMG_OK=/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/;
+function cmUser(){ return (typeof KS!=="undefined" && KS.auth) ? KS.auth.currentUser : null; }
+function cmAdmin(){ var u=cmUser(); return !!(u && u.email===KS.ADMIN && u.emailVerified); }
+function cmName(){ var n=String((S.profile && S.profile.name) || window.__GNAME || "").trim(); return (n||"بطل").slice(0,40); }
+function cmAgo(ms){
+  if(!(ms>0)) return "";
+  var m=Math.floor((Date.now()-ms)/60000); if(m<1) return "دلوقتي"; if(m<60) return "من "+m+" د";
+  var h=Math.floor(m/60); if(h<24) return "من "+h+" س"; var d=Math.floor(h/24); if(d<30) return "من "+d+" يوم";
+  return new Date(ms).toLocaleDateString("ar-EG",{day:"numeric",month:"short"});
+}
+function cmFind(id){ var all=CM.pub.concat(CM.mine); for(var i=0;i<all.length;i++){ if(all[i].id===id) return all[i]; } return null; }
+function cmCompress(file,cb){
+  var rd=new FileReader();
+  rd.onload=function(){
+    var im=new Image();
+    im.onload=function(){
+      var sc=Math.min(1,720/Math.max(im.width,im.height)), w=Math.max(1,Math.round(im.width*sc)), h=Math.max(1,Math.round(im.height*sc));
+      var c=document.createElement("canvas"); c.width=w; c.height=h; var x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,w,h); x.drawImage(im,0,0,w,h);
+      var q=0.78, out=c.toDataURL("image/jpeg",q);
+      while(out.length>330000 && q>0.4){ q-=0.1; out=c.toDataURL("image/jpeg",q); }
+      cb(out.length<=380000 ? out : null);
+    };
+    im.onerror=function(){ cb(null); }; im.src=String(rd.result);
+  };
+  rd.onerror=function(){ cb(null); }; rd.readAsDataURL(file);
+}
+function cmLoad(){
+  var u=cmUser(); if(!u || CM.loading) return;
+  CM.loading=true; CM.err=""; if(view==="comm") cmPaint();
+  var P=KS.fs.collection("posts");
+  Promise.all([
+    P.where("pubAt",">",0).orderBy("pubAt","desc").limit(40).get(),
+    P.where("pinAt",">",0).orderBy("pinAt","desc").limit(5).get(),
+    P.where("uid","==",u.uid).limit(40).get()
+  ]).then(function(r){
+    function rows(q){ return q.docs.map(function(d){ var x=d.data()||{}; x.id=d.id; return x; }); }
+    var seen={}, list=[];
+    rows(r[1]).concat(rows(r[0])).forEach(function(p){ if(!seen[p.id]){ seen[p.id]=1; list.push(p); } });
+    CM.pub=list;
+    CM.mine=rows(r[2]).filter(function(p){ return !(p.pubAt>0); }).sort(function(a,b){
+      var x=a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():Date.now(), y=b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():Date.now(); return y-x; });
+    CM.loaded=true; CM.loading=false; if(view==="comm") cmPaint();
+  }).catch(function(){
+    CM.loading=false; CM.err="المجتمع مش متاح دلوقتي. جرّب بعد شوية."; if(view==="comm") cmPaint();
+  });
+}
+function cmPost(p,mine){
+  var u=cmUser(), uid=u?u.uid:"", lk=p.likes||[], me=lk.indexOf(uid)>-1, id=esc(p.id);
+  var h='<article class="post'+(p.pinAt>0?' pin':'')+'"><div class="ph"><b>'+esc(p.name||"بطل")+'</b>'+
+    (p.admin?'<span class="tg2 adm">المدرب ✓</span>':'')+(p.pinAt>0?'<span class="tg2 pn">مثبّت</span>':'')+
+    (mine?'<span class="tg2 st">'+(p.status==="rejected"?"مرفوض":"بانتظار المراجعة")+'</span>':'<small>'+cmAgo(p.pubAt)+'</small>')+'</div>';
+  if(p.text) h+='<p>'+esc(p.text)+'</p>';
+  if(p.img && IMG_OK.test(p.img)) h+='<img class="pi" src="'+p.img+'" alt="صورة المنشور" loading="lazy">';
+  if(mine){
+    h+='<div class="pa"><button type="button" class="btn ghost" data-act="cmdel" data-id="'+id+'">حذف</button></div>';
+  } else {
+    h+='<div class="pa"><button type="button" class="btn ghost lk" data-act="cmlike" data-id="'+id+'" aria-pressed="'+me+'">'+(me?"معجب بيه":"إعجاب")+' · '+lk.length+'</button>'+
+      '<button type="button" class="btn ghost" data-act="cmcm" data-id="'+id+'">تعليقات</button>'+
+      ((p.uid===uid||cmAdmin())?'<button type="button" class="btn ghost" data-act="cmdel" data-id="'+id+'">حذف</button>':'')+'</div>';
+    if(CM.open[p.id]) h+=cmCmts(p.id);
+  }
+  return h+'</article>';
+}
+function cmCmts(id){
+  var l=CM.cm[id], u=cmUser(), eid=esc(id);
+  if(!l) return '<div class="cm"><p class="sub">بيحمّل…</p></div>';
+  return '<div class="cm">'+(l.length?l.map(function(c){
+    return '<div class="cmt"><span><b>'+esc(c.name||"بطل")+'</b>'+(c.admin?' <span class="tg2 adm">المدرب ✓</span>':'')+' '+esc(c.text)+'</span>'+
+      ((u&&(c.uid===u.uid||cmAdmin()))?'<button type="button" class="btn ghost" data-act="cmdelc" data-id="'+eid+'" data-c="'+esc(c.id)+'">حذف</button>':'')+'</div>';
+  }).join(""):'<p class="sub">لسه مفيش تعليقات.</p>')+
+    '<div class="rowbtns"><input type="text" class="cmi" id="cmi-'+eid+'" maxlength="200" placeholder="اكتب تعليق"><button type="button" class="btn ghost" data-act="cmsend" data-id="'+eid+'">أرسل</button></div></div>';
+}
+function cmPaint(){
+  var el=$("cmfeed"); if(!el) return; var h=[];
+  if(CM.err){ el.innerHTML='<div class="empty">'+CM.err+'</div><div class="rowbtns" style="justify-content:center"><button type="button" class="btn ghost" data-act="cmrefresh">جرّب تاني</button></div>'; return; }
+  if(!CM.loaded){ el.innerHTML='<div class="empty">بيحمّل…</div>'; return; }
+  if(CM.mine.length) h.push('<section class="card"><h2>منشوراتك</h2><p class="sub">دي ظاهرة لك إنت بس لحد ما المدرب يوافق عليها.</p>'+CM.mine.map(function(p){ return cmPost(p,true); }).join("")+'</section>');
+  h.push(CM.pub.length ? CM.pub.map(function(p){ return cmPost(p,false); }).join("") : '<div class="empty">لسه مفيش منشورات. كن أول واحد يشارك.</div>');
+  h.push('<div class="rowbtns" style="justify-content:center"><button type="button" class="btn ghost" data-act="cmrefresh">تحديث</button></div>');
+  el.innerHTML=h.join("");
+}
+function cmPrev(){
+  return CM.img && IMG_OK.test(CM.img) ? '<img class="pi" src="'+CM.img+'" alt="معاينة الصورة"><div class="rowbtns"><button type="button" class="btn ghost" data-act="cmimgx">شيل الصورة</button></div>' : '';
+}
+function renderComm(){
+  var adm=cmAdmin();
+  $("app").innerHTML='<section class="card"><h2>مجتمع الأبطال</h2>'+
+    '<p class="sub">شارك إنجازك وشجّع غيرك. '+(adm?'منشوراتك بتنزل على طول وعليها شارة المدرب.':'كل منشور وصورة بيتراجع من المدرب قبل ما يظهر للناس.')+' خليك محترم وماتنشرش بيانات شخصية.</p>'+
+    '<label class="fld">منشور جديد<textarea id="cm-t" class="cmx" rows="3" maxlength="500" placeholder="اكتب إنجازك أو سؤالك">'+esc(CM.draft||"")+'</textarea></label>'+
+    '<div id="cmprev">'+cmPrev()+'</div>'+
+    '<div class="rowbtns"><label class="btn ghost" for="cm-file" style="cursor:pointer">أضف صورة</label><input type="file" id="cm-file" accept="image/*" hidden>'+
+    '<button type="button" class="btn" data-act="cmpub">'+(adm?"انشر":"ابعت للمراجعة")+'</button></div></section>'+
+    '<div id="cmfeed" class="cmfeed"></div>';
+  cmPaint(); if(!CM.loaded && !CM.loading) cmLoad();
+}
+function cmPublish(){
+  var u=cmUser(); if(!u || CM.busy) return;
+  var t=String(($("cm-t")&&$("cm-t").value)||"").trim().slice(0,500);
+  if(!t && !CM.img){ toast("اكتب حاجة أو أضف صورة"); return; }
+  var adm=cmAdmin();
+  var d={uid:u.uid,name:cmName(),text:t,status:adm?"approved":"pending",pubAt:adm?Date.now():0,pinAt:0,admin:adm,likes:[],createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(CM.img) d.img=CM.img;
+  CM.busy=true; var rel=setTimeout(function(){ CM.busy=false; },15000);
+  KS.fs.collection("posts").add(d).then(function(){
+    clearTimeout(rel); CM.busy=false; CM.draft=""; CM.img=null;
+    toast(adm?"اتنشر المنشور":"اتبعت للمراجعة. هيظهر بعد موافقة المدرب");
+    CM.loaded=false; CM.loading=false; if(view==="comm") renderComm();
+  }).catch(function(){ clearTimeout(rel); CM.busy=false; toast("ماقدرتش أنشر دلوقتي"); });
+}
+function cmLike(id){
+  var u=cmUser(), p=cmFind(id); if(!u || !p) return;
+  p.likes=p.likes||[]; var i=p.likes.indexOf(u.uid), on=i<0;
+  if(on) p.likes.push(u.uid); else p.likes.splice(i,1); cmPaint();
+  KS.fs.doc("posts/"+id).update({likes:on?firebase.firestore.FieldValue.arrayUnion(u.uid):firebase.firestore.FieldValue.arrayRemove(u.uid)}).catch(function(){
+    var j=p.likes.indexOf(u.uid); if(on && j>-1) p.likes.splice(j,1); else if(!on && j<0) p.likes.push(u.uid); cmPaint(); toast("ماقدرتش أسجّل الإعجاب");
+  });
+}
+function cmToggle(id){
+  if(CM.open[id]){ delete CM.open[id]; cmPaint(); return; }
+  CM.open[id]=1; cmPaint(); if(CM.cm[id]) return;
+  KS.fs.collection("posts/"+id+"/comments").orderBy("createdAt","asc").limit(50).get().then(function(q){
+    CM.cm[id]=q.docs.map(function(d){ var x=d.data()||{}; x.id=d.id; return x; }); cmPaint();
+  }).catch(function(){ CM.cm[id]=[]; cmPaint(); toast("ماقدرتش أحمّل التعليقات"); });
+}
+function cmSend(id){
+  var inp=$("cmi-"+id), u=cmUser(); if(!inp || !u) return;
+  var t=inp.value.trim().slice(0,200); if(!t) return;
+  var adm=cmAdmin(), nm=cmName(); inp.disabled=true;
+  KS.fs.collection("posts/"+id+"/comments").add({uid:u.uid,name:nm,text:t,admin:adm,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(ref){
+    CM.cm[id]=(CM.cm[id]||[]).concat([{id:ref.id,uid:u.uid,name:nm,text:t,admin:adm}]); cmPaint();
+  }).catch(function(){ inp.disabled=false; toast("ماقدرتش أضيف التعليق"); });
+}
+function cmShareCard(kind){
+  withFonts(function(){
+    try{
+      var c=kind==="month" ? drawMonth() : drawShare();
+      var o=document.createElement("canvas"); o.width=540; o.height=960; o.getContext("2d").drawImage(c,0,0,540,960);
+      var q=0.85, out=o.toDataURL("image/jpeg",q);
+      while(out.length>330000 && q>0.4){ q-=0.1; out=o.toDataURL("image/jpeg",q); }
+      CM.img=out; CM.draft=kind==="month" ? "ملخص شهري من دفتر التمرين" : "ملخص أسبوعي من دفتر التمرين";
+      view="comm"; renderAll(); window.scrollTo(0,0); toast("الصورة جاهزة. اضغط ابعت للمراجعة");
+    }catch(e){ toast("حصلت مشكلة في الصورة"); }
+  });
+}
+document.addEventListener("click", function(ev){
+  var b=ev.target.closest("[data-act]"); if(!b) return;
+  var a=b.getAttribute("data-act"), id=b.getAttribute("data-id");
+  if(a==="gd"){ S.prefs.gd=b.getAttribute("data-v"); persist(); renderAll(); }
+  else if(a==="cmpub") cmPublish();
+  else if(a==="cmimgx"){ CM.img=null; var pv=$("cmprev"); if(pv) pv.innerHTML=""; }
+  else if(a==="cmrefresh"){ CM.loaded=false; CM.loading=false; cmLoad(); }
+  else if(a==="cmlike") cmLike(id);
+  else if(a==="cmcm") cmToggle(id);
+  else if(a==="cmsend") cmSend(id);
+  else if(a==="cmdel"){
+    if(!window.confirm("تحذف المنشور ده؟")) return;
+    KS.fs.doc("posts/"+id).delete().then(function(){ CM.pub=CM.pub.filter(function(p){ return p.id!==id; }); CM.mine=CM.mine.filter(function(p){ return p.id!==id; }); cmPaint(); toast("اتحذف"); }).catch(function(){ toast("ماقدرتش أحذف"); });
+  }
+  else if(a==="cmdelc"){
+    var cid=b.getAttribute("data-c");
+    KS.fs.doc("posts/"+id+"/comments/"+cid).delete().then(function(){ CM.cm[id]=(CM.cm[id]||[]).filter(function(c){ return c.id!==cid; }); cmPaint(); }).catch(function(){ toast("ماقدرتش أحذف التعليق"); });
+  }
+  else if(a==="cmshare") cmShareCard(b.getAttribute("data-k"));
+});
+document.addEventListener("input", function(ev){ if(ev.target && ev.target.id==="cm-t") CM.draft=ev.target.value; });
+document.addEventListener("change", function(ev){
+  var t=ev.target; if(!t || t.id!=="cm-file" || !t.files || !t.files[0]) return;
+  var f=t.files[0]; t.value="";
+  if(!/^image\//.test(f.type)){ toast("اختار صورة"); return; }
+  cmCompress(f,function(out){ if(!out){ toast("الصورة ماتحمّلتش. جرّب صورة تانية"); return; } CM.img=out; var pv=$("cmprev"); if(pv) pv.innerHTML=cmPrev(); });
+});
+
 $("soc").innerHTML = socialLinks(false);
 $("foot").innerHTML = '<span class="avatar mini" aria-hidden="true"></span><div class="fn"><b>Kareem Samy</b><span>@'+CONTACT.ig+'</span></div><div class="soc">'+socialLinks(false)+'</div>';
 try{ if(CONTACT.photo) document.documentElement.style.setProperty("--photo",'url("'+CONTACT.photo+'")'); document.documentElement.style.setProperty("--avatar",'url("'+AVATAR+'")'); }catch(e){}
@@ -1936,6 +2245,12 @@ initCloud();
 </script>
 <script>
 (function(){
+if(typeof KS==="undefined" || !KS.auth){
+  var ge=document.getElementById("gerr"), gbb=document.getElementById("gbtn");
+  if(ge) ge.textContent="تعذّر تحميل ملف fb.js. اتأكد إنه مرفوع جنب app.html وافتح الصفحة من رابط الموقع.";
+  if(gbb) gbb.disabled=true;
+  return;
+}
 var $=function(i){return document.getElementById(i)}, started=false, fs=KS.fs, auth=KS.auth;
 try{ fs.enablePersistence({synchronizeTabs:true}).catch(function(){}); }catch(e){}
 if(KS.inApp()) $("gwarn").hidden=false;

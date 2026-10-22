@@ -1,4 +1,5 @@
 (function(){
+if(typeof firebase==="undefined"){ console.warn("Firebase SDK لم يُحمَّل"); return; }
 var CFG={apiKey:"AIzaSyAgCmdypGmRBK8L8C9Wt7p4-19N8Pa1JJc",authDomain:"kareem-samy.firebaseapp.com",projectId:"kareem-samy",storageBucket:"kareem-samy.firebasestorage.app",messagingSenderId:"369762299077",appId:"1:369762299077:web:d85dc8f60f0829c940d4ac"};
 firebase.initializeApp(CFG);
 var KS=window.KS={};
