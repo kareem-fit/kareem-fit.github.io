@@ -216,6 +216,11 @@ body:not(.v-train) .tabs, body:not(.v-train) .bar{display:none}
 .chip{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-size:.78rem;font-weight:600;text-decoration:none}
 .chip.big{min-height:42px;padding:0 14px;font-size:.9rem;border-radius:8px;flex:1;justify-content:center;background:var(--bg)}
 body.v-welcome .top{display:none}
+/* صفحة التمرين: المربعات تتحرك مع الصفحة وشريط الأقسام بس هو الثابت */
+body.v-train .top{display:contents}
+body.v-train .brand{padding-top:14px}
+body.v-train .bar{margin-bottom:10px}
+body.v-train .views{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:0;padding:8px 0;background:rgba(8,32,47,.97);border-bottom:1px solid var(--line)}
 .welcome{max-width:460px;margin-inline:auto;display:flex;flex-direction:column;gap:12px;padding-top:calc(16px + env(safe-area-inset-top,0px))}
 .welcome input[type=text]{height:46px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;padding:0 12px;width:100%}
 .tag1{font-size:1.25rem;font-weight:800;margin:0}
@@ -347,6 +352,8 @@ body.v-welcome .foot{display:none}
 .plans button[aria-pressed="true"] small{color:#fff}
 .disc{font-size:.72rem;color:var(--muted);margin:6px 0 0;text-align:center}
 .reqbtn{display:flex;align-items:center;justify-content:center;align-self:stretch;min-height:44px;border:1px solid var(--line);border-radius:12px;color:var(--ink);font-weight:700;font-size:.92rem;text-decoration:none;background:rgba(37,211,102,.1)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-self:stretch;margin-top:4px}
+.acts .demo,.acts .reqbtn{margin-top:0;min-height:48px;padding:6px 8px;font-size:.92rem;gap:6px;text-align:center;line-height:1.2}
 .wabtn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1EA952,#25D366);color:#06301A;box-shadow:0 4px 14px rgba(37,211,102,.25)}
 
 .qcard .q{font-size:1.12rem;line-height:1.75;font-weight:700;margin:.3rem 0}
@@ -389,6 +396,30 @@ body.v-welcome .foot{display:none}
 .acc[open] summary::after{content:"−"}
 .acc .ab{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
 .acc .sb{display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px solid var(--line)}
+.addm{flex:none;background:rgba(255,90,54,.14);border:1px solid var(--accent);color:var(--ink);border-radius:8px;padding:4px 10px;font-size:.78rem;font-weight:700;min-height:34px;white-space:nowrap}
+.sbh{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.addrow{display:none;gap:8px;padding:0}
+.sb .addrow{padding:0}
+.addrow.on{display:flex}
+.mv{display:flex;flex-direction:column;gap:6px}
+.mi{display:flex;flex-direction:column;gap:4px;padding:8px 0;border-top:1px solid var(--line)}
+.mi:first-of-type{border-top:0}
+.mi1{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.92rem}
+.mi1 .inm{flex:1;min-width:0}
+.isel{flex:1;min-width:0;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:.9rem}
+.ix{flex:none;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.1rem;line-height:1}
+.mi2{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.iq{width:86px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font:inherit;font-family:var(--f-mono);text-align:center}
+.iu{color:var(--muted);font-size:.85rem}
+.ih{color:var(--muted);font-size:.74rem;flex:1;min-width:0}
+.ik{margin-inline-start:auto;font-size:.78rem}
+.mi.off{opacity:.45}
+.mi.off .inm{text-decoration:line-through}
+.mvt{direction:rtl;text-align:start;font-weight:700;color:var(--ink);font-size:.86rem;padding-top:6px;border-top:1px solid var(--line)}
+.mvb{display:flex;gap:8px}
+.mvb .btn{flex:1;min-height:42px;font-size:.88rem;padding:6px 8px}
+.src{font-size:.78rem;line-height:1.6}
+.addrow .btn{flex:1;min-height:40px;font-size:.88rem;padding:6px 8px}
 .ing{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .ing li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid var(--line);font-size:.92rem}
 .ing li:first-child{border-top:0}
@@ -415,6 +446,106 @@ input.cmi,textarea.cmx{width:100%;background:var(--bg);color:var(--ink);border:1
 input.cmi{flex:1 1 160px;min-width:0;height:42px}
 textarea.cmx{resize:vertical;min-height:84px}
 </style>
+
+<style id="v3css">
+/* ===== المظاهر الثلاثة (كلاسيك، عصري، فاتح) + شريط التنقل السفلي ===== */
+html{--t-bg:#08202F;--t-surface:#10324A;--t-ink:#F2F7FA;--t-muted:#B4C7D3;--t-line:#2A5878;--t-accent:#FF7A3F;--t-onac:#08202F;--t-ok:#3DDC97;--t-onok:#06231A;--t-body:#1C4666;--t-muscle:#2E5F85;--t-h1:#0B2A40;--t-h2:#0E4A55;--t-tag:#7FE3D8;--t-nav:rgba(8,32,47,.97);--t-scrim:rgba(2,12,20,.62)}
+html[data-v3="modern"]{--t-bg:#0F172A;--t-surface:#1E293B;--t-ink:#F8FAFC;--t-muted:#CBD5E1;--t-line:#334155;--t-accent:#F97316;--t-onac:#0F172A;--t-ok:#22C55E;--t-onok:#052E16;--t-body:#273449;--t-muscle:#475569;--t-h1:#1E293B;--t-h2:#172033;--t-tag:#FDBA74;--t-nav:rgba(15,23,42,.97);--t-scrim:rgba(2,6,23,.62)}
+html[data-v3="light"]{--t-bg:#F1F5F9;--t-surface:#FFFFFF;--t-ink:#0F172A;--t-muted:#475569;--t-line:#CBD5E1;--t-accent:#C2410C;--t-onac:#FFFFFF;--t-ok:#15803D;--t-onok:#FFFFFF;--t-body:#E2E8F0;--t-muscle:#CBD5E1;--t-h1:#FFF7ED;--t-h2:#FFEDD5;--t-tag:#C2410C;--t-nav:rgba(255,255,255,.97);--t-scrim:rgba(15,23,42,.4)}
+
+html:root:root:root:root:root,html body.v-welcome{
+  --bg:var(--t-bg);--surface:var(--t-surface);--ink:var(--t-ink);--muted:var(--t-muted);--line:var(--t-line);
+  --accent:var(--t-accent);--on-accent:var(--t-onac);--ok:var(--t-ok);--body:var(--t-body);--muscle:var(--t-muscle);--v3-nav-h:64px;color-scheme:dark}
+html[data-v3="light"]:root:root:root:root:root,html[data-v3="light"] body.v-welcome{color-scheme:light}
+html{background:var(--t-bg)}
+html body{background:var(--t-bg);color:var(--t-ink);line-height:1.65;padding-block-end:calc(var(--v3-nav-h) + 28px + env(safe-area-inset-bottom,0px))}
+html body::before{background:var(--t-bg)}
+html body.resting{padding-block-end:calc(var(--v3-nav-h) + 190px + env(safe-area-inset-bottom,0px))}
+html body.v-welcome{padding-block-end:28px}
+/* التنقل */
+html body .views{display:none!important}
+html body .top,html body.v-train .top{position:static;background:transparent;backdrop-filter:none;border-bottom:0;padding-block:14px 4px}
+html body.v-train .top{display:contents}
+/* لمس 44px */
+html body .btn{min-height:48px;border-radius:12px;background:var(--t-accent);color:var(--t-onac);box-shadow:none;font-weight:800;transition:filter .18s ease,transform .18s ease}
+html body .btn:hover{filter:brightness(1.08)}
+html body .btn:active{transform:scale(.98)}
+html body .btn.ghost{min-height:44px;background:transparent;color:var(--t-ink);border:1.5px solid var(--t-line);padding:6px 16px;font-size:.92rem}
+html body .btn.green{background:var(--t-ok);color:var(--t-onok)}
+html body .tab{min-height:52px;border-radius:12px;background:var(--t-surface);border-color:var(--t-line)}
+html body .tab[aria-pressed="true"]{background:var(--t-accent);border-color:var(--t-accent);color:var(--t-onac)}
+html body .tab[aria-pressed="true"] small{color:var(--t-onac);opacity:.85}
+html body .plans button[aria-pressed="true"]{background:var(--t-accent);border-color:var(--t-accent);color:var(--t-onac)}
+html body .plans button[aria-pressed="true"] small{color:var(--t-onac)}
+html body .seg button,html body .seg2 button,html body .moods .btn,html body .gbtns button,html body .gbtns a{min-height:44px;border-radius:10px}
+html body .seg button[aria-pressed="true"],html body .seg2 button[aria-pressed="true"]{color:var(--t-ink)}
+html body .seg2 button[aria-pressed="true"]{background:var(--t-accent);color:var(--t-onac);border-color:var(--t-accent)}
+html body .chip{min-height:44px;min-width:44px;justify-content:center}
+html body .ix,html body .addm,html body .iq,html body .isel{min-height:44px}
+html body .ix{width:44px}
+html body .addm{background:color-mix(in srgb,var(--t-accent) 14%,transparent);border-color:var(--t-accent);color:var(--t-ink)}
+html body input,html body select,html body textarea{font-size:16px}
+html body .donebtn{min-height:48px}
+html body .donebtn[aria-pressed="true"],html body .pray button[aria-pressed="true"]{background:var(--t-ok);border-color:var(--t-ok);color:var(--t-onok)}
+html body .donebtn[aria-pressed="true"] svg,html body .chk[aria-pressed="true"] svg{stroke:var(--t-onok)}
+html body .pray button{min-height:44px;min-width:44px}
+html body .chk2{min-height:44px}
+html body .chk2 input{width:24px;height:24px}
+html body .post .pa .btn.ghost,html body .post .pa button{min-height:44px}
+html body .hadith small a{display:inline-block;min-height:44px;line-height:44px}
+/* شاشة الترحيب: صفوف السوشيال تلف بدل ما تتخطى عرض الموبايل */
+html body .welcome{width:100%;min-width:0}
+html body .soc2{flex-wrap:wrap}
+html body .soc2 .chip.big,html body .soc2 .wacol{flex:1 1 120px;min-width:0}
+html body .soc2 .wacol .chip.big{width:100%}
+html body .wtag{color:var(--t-tag)}
+/* بطاقات */
+html body .card{background:var(--t-surface);border:1px solid var(--t-line);border-radius:16px;padding:16px;gap:12px;box-shadow:none}
+html body .card h2{font-size:1.1rem;font-weight:800;letter-spacing:0}
+html body main{gap:16px;padding-top:12px}
+html body .acc{border-radius:14px}
+html body .acc summary{min-height:52px}
+html body .ex{background:var(--t-surface);border:1px solid var(--t-line);box-shadow:none}
+html body .ex h3{color:var(--t-ink)}
+html body .dkscope{--ink:var(--t-ink);--muted:var(--t-muted);--surface:var(--t-surface);--line:var(--t-line);--bg:var(--t-bg);color:var(--t-ink);background:linear-gradient(160deg,var(--t-h1),var(--t-h2));border-color:var(--t-line)}
+html body .dkscope .tag1,html body .cele .hype{color:var(--t-tag)}
+html body .dkscope .sub b{color:var(--t-ink)}
+html body .dkscope .btn{box-shadow:none}
+html body .cele{background:linear-gradient(150deg,var(--t-h2),var(--t-h1));border-color:var(--t-ok);color:var(--t-ink)}
+html body .demo{border-color:var(--t-accent);background:color-mix(in srgb,var(--t-accent) 12%,transparent);color:var(--t-ink);min-height:48px}
+html body .reqbtn{min-height:48px;color:var(--t-ink)}
+html body .rank li.me{border-color:var(--t-accent)}
+html body .sub,html body .mm,html body small{color:var(--t-muted)}
+html body .dkscope .sub{color:var(--t-muted)}
+html body :focus-visible{outline:3px solid var(--t-accent);outline-offset:2px;border-radius:8px}
+html body .rest{bottom:calc(var(--v3-nav-h) + env(safe-area-inset-bottom,0px));padding-bottom:10px}
+html body .toast{bottom:calc(var(--v3-nav-h) + 96px + env(safe-area-inset-bottom,0px))}
+/* الشريط السفلي */
+#v3nav{position:fixed;inset:auto 0 0 0;z-index:35;background:var(--t-nav);backdrop-filter:blur(8px);border-top:1px solid var(--t-line);
+  display:grid;grid-template-columns:repeat(5,1fr);padding:0 max(8px,env(safe-area-inset-left,0px)) env(safe-area-inset-bottom,0px) max(8px,env(safe-area-inset-right,0px))}
+#v3nav.kb{display:none}
+#v3nav button{background:none;border:0;color:var(--t-muted);min-height:var(--v3-nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:inherit;font-size:.74rem;font-weight:700;cursor:pointer;position:relative;transition:color .18s ease}
+#v3nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#v3nav button[aria-current="page"]{color:var(--t-accent)}
+#v3nav button[aria-current="page"]::before{content:"";position:absolute;top:0;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--t-accent)}
+body.v-welcome #v3nav{display:none}
+#v3sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;background:var(--t-scrim)}
+#v3sheet[hidden]{display:none}
+#v3sheet .sh{width:100%;max-width:640px;margin-inline:auto;background:var(--t-surface);color:var(--t-ink);border:1px solid var(--t-line);border-radius:20px 20px 0 0;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:4px;animation:v3up .22s ease-out}
+#v3sheet .gr{width:40px;height:4px;border-radius:4px;background:var(--t-line);margin:0 auto 8px}
+#v3sheet button.it{background:none;border:0;color:var(--t-ink);display:flex;align-items:center;gap:14px;min-height:56px;padding:0 8px;border-radius:12px;font:inherit;font-size:1.02rem;font-weight:700;text-align:start;cursor:pointer}
+#v3sheet button.it:active,#v3sheet button.it[aria-current="page"]{background:var(--t-body)}
+#v3sheet button.it svg{width:24px;height:24px;stroke:var(--t-accent);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#v3sheet .th{border-top:1px solid var(--t-line);margin-top:6px;padding-top:12px;display:flex;flex-direction:column;gap:8px}
+#v3sheet .th b{font-size:.9rem;color:var(--t-muted);font-weight:700}
+#v3sheet .tr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#v3sheet .tr button{min-height:64px;border-radius:12px;border:2px solid var(--t-line);background:var(--t-bg);color:var(--t-ink);font:inherit;font-weight:700;font-size:.88rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+#v3sheet .tr button[aria-pressed="true"]{border-color:var(--t-accent)}
+#v3sheet .tr i{width:28px;height:28px;border-radius:50%;border:1px solid rgba(128,128,128,.5);display:block}
+@keyframes v3up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<script>try{var __t=localStorage.getItem("kt-theme");if(__t==="modern"||__t==="light")document.documentElement.setAttribute("data-v3",__t)}catch(e){}</script>
 </head>
 <body>
 <div id="gate"><div class="gb">
@@ -616,7 +747,7 @@ function defaults(){
   S.profile = S.profile || {}; var p = S.profile;
   if(!p.goal) p.goal = "gain"; if(!p.act) p.act = 1.55;
   if(p.cast===undefined) p.cast = ""; if(p.h===undefined) p.h = ""; if(p.age===undefined) p.age = ""; if(p.w===undefined) p.w = "";
-  S.meals = S.meals || {}; S.photos = S.photos || []; S.prefs.legSafe = false;
+  S.meals = S.meals || {}; S.favs = S.favs || []; S.photos = S.photos || []; S.prefs.legSafe = false;
   S.share = S.share || {};
   if(S.share.v!==3){ S.share = {v:3, showName:true, weight:false}; }
 }
@@ -835,8 +966,9 @@ function renderTrain(){
       '<figure class="fig">'+fig(e.m)+'</figure></div>'+
       '<p class="cue">'+e.cue+'</p>'+(e.warn?'<div class="banner">'+e.warn+'</div>':'')+lastHtml+
       '<div class="sets">'+rows+'</div>'+
-      '<a class="demo" href="https://www.youtube.com/results?search_query='+encodeURIComponent(e.q)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#EA4A25"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>شاهد الأداء الصحيح على يوتيوب</span></a>'+
-      '<a class="reqbtn" href="'+waLink('أهلًا كريم، أنا '+((S.profile.name||'').trim()||'متدرب')+'. عايز أبدّل تمرين «'+(AR[e.id]||e.n)+'» في يوم '+day.name+' (برنامج '+(S.plan||3)+' أيام). السبب: ')+'" target="_blank" rel="noopener noreferrer">اطلب تبديل التمرين ده</a>'+
+      '<div class="acts">'+'<a class="demo" href="https://www.youtube.com/results?search_query='+encodeURIComponent(e.q)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#EA4A25"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>شاهد على يوتيوب</span></a>'+
+      '<a class="reqbtn" href="'+waLink('أهلًا كريم، أنا '+((S.profile.name||'').trim()||'متدرب')+'. عايز أبدّل تمرين «'+(AR[e.id]||e.n)+'» في يوم '+day.name+' (برنامج '+(S.plan||3)+' أيام). السبب: ')+'" target="_blank" rel="noopener noreferrer">بدّل التمرين</a>'+
+      '</div>'+
     '</article>');
   });
   h.push('<div class="savebar"><button type="button" class="btn" data-act="save">حفظ تمرين اليوم</button></div>');
@@ -1383,6 +1515,10 @@ function qpick(tags,k,salt){
 function lastTrainDate(){ var m=null; S.sessions.forEach(function(s){ var d=dayOf(s.day); if(d && !d.rest && (m===null || s.date>m)) m=s.date; }); return m; }
 var MOODS={r:"جاهز",n:"عادي وشغال",t:"تعبان"};
 var LIGHTTIP="النسخة الخفيفة: خلّي مجموعتين بس لكل تمرين، وبوزن أقل بحوالي ٢٠٪، وخلّص اليوم. ده أحسن من إنك تفوّته.";
+function hadithCard(){
+  return '<section class="card hadith"><h2>قوة تنفعك</h2><p>«المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.»</p>'+
+    '<small>رواه مسلم · <a href="https://sunnah.com/muslim/46/52" target="_blank" rel="noopener noreferrer">صحيح مسلم 2664</a></small></section>';
+}
 function homeExtras(tk){
   var h="", ls=lastTrainDate(), gap=ls?diffD(tk,ls):0, m=(S.mood||{})[tk];
   if(!S.firstSeen && !S.sessions.length){
@@ -1394,15 +1530,20 @@ function homeExtras(tk){
   h+='<section class="card qcard"><h2>رسالة النهارده</h2><p class="q">'+qpick(tags,tk,m?7:0)+'</p></section>';
   h+='<section class="card"><h2>إنت عامل إيه النهارده؟</h2><div class="moods">'+["r","n","t"].map(function(x){ return '<button type="button" class="btn ghost" data-act="mood" data-m="'+x+'" aria-pressed="'+(m===x)+'">'+MOODS[x]+'</button>'; }).join("")+'</div>'+
     (m==="t"?'<p class="sub">'+LIGHTTIP+'</p>':(m==="r"?'<p class="sub">جامد! التزامك النهارده يخليك أقوى بكرة.</p>':(m==="n"?'<p class="sub">ممتاز، كمّل بنفس الإيقاع.</p>':'')))+'</section>';
+  h+=hadithCard();
   var ws=weekStartKey(tk), wk=weekTrainCount(ws), full=wk>=TARGET;
   h+='<section class="card'+(full?' gold':'')+'"><h2>تحدي الأسبوع</h2><p class="sub">'+(full?'كملت تحدي الأسبوع! 💪 إنت فعلًا وحش.':'خلّص '+TARGET+' تمارين الأسبوع ده. عملت '+wk+' لحد دلوقتي.')+'</p><div class="prog"><i style="width:'+Math.min(100,Math.round(wk/TARGET*100))+'%"></i></div></section>';
   var ti=planIdx(addD(tk,1)); if(DAYS[ti]) h+='<p class="sub nxt">بكرة: <b>'+DAYS[ti].name+'</b></p>';
   return h;
 }
-var PRESETS=[["الوجبة الأساسية (٢٠٠ جم صدور + ٢٠٠ جم أرز + ٢٠٠ جم سلطة)",630,69,64,8],["٣ بيض + عيش",380,21,28,20],["زبادي يوناني + شوفان",320,22,40,8],["شيك بروتين",150,25,6,3],["تونة + عيش",330,33,30,6],["موز + زبدة فول سوداني",300,8,35,16]];
-function presetCard(){
-  return '<section class="card"><h2>وجبات جاهزة</h2><p class="sub">اضغط تضيفها لأكل اليوم. الأرقام تقريبية، وتقدر تعدّلها بعد الإضافة.</p><div class="presets">'+PRESETS.map(function(p,i){ return '<button type="button" class="btn ghost" data-act="mealpreset" data-i="'+i+'">'+p[0]+'</button>'; }).join("")+'</div>'+
-    '<p class="sub">نصايح: ابدأ وجباتك بالبروتين، وشرب مية مع كل وجبة، وماتعتمدش على المكملات قبل ما أكلك الأساسي يكون مظبوط.</p></section>';
+function favCard(){
+  var fv=S.favs||[];
+  return '<section class="card"><h2>وجباتي المفضلة</h2>'+
+    (fv.length?'<p class="sub">اضغط «أضف لأكل اليوم» وهتتسجل بأرقامها على طول.</p>'+fv.map(function(m){
+      return '<div class="meal"><div class="mh"><span>'+esc(m.n||"وجبة")+'</span><span class="mm">'+Math.round(m.c)+' kcal</span></div>'+
+        '<div class="mm">P '+(m.p||0)+' · C '+(m.k||0)+' · F '+(m.f||0)+'</div>'+
+        '<div class="rowbtns"><button type="button" class="btn" data-act="favadd" data-id="'+m.id+'">أضف لأكل اليوم</button><button type="button" class="btn ghost" data-act="favdel" data-id="'+m.id+'">حذف</button></div></div>';
+    }).join(""):'<div class="empty">لسه مفيش وجبات مفضلة. اكتب وجبتك بأرقامها في «إضافة وجبة» فوق واضغط «احفظ كوجبة مفضلة»، وهتلاقيها هنا تضيفها بضغطة.</div>')+'</section>';
 }
 function siteSettings(){
   if(!window.__SID) return '';
@@ -1435,15 +1576,13 @@ function renderHome(){
   var prayRow="";
   if(faithOn()){
     var pr=(S.habits[tk]||{}).prayer||{}, pn=0; PRAYERS.forEach(function(p){ if(pr[p[0]]) pn++; });
-    prayRow='<div class="task"><div class="tl">الصلاة<small>اختياري · '+pn+' / 5</small></div><button type="button" class="btn ghost" data-act="prayopen" aria-expanded="'+prayOpen+'">'+(prayOpen?"إخفاء":"عرض")+'</button></div>'+
-      (prayOpen?'<div class="pray">'+PRAYERS.map(function(p){ return '<button type="button" data-act="pray" data-p="'+p[0]+'" aria-pressed="'+!!pr[p[0]]+'">'+p[1]+'</button>'; }).join("")+'</div>':'');
+    prayRow='<div class="task"><div class="tl">الصلاة<small>'+pn+' / 5</small></div></div>'+
+      '<div class="pray">'+PRAYERS.map(function(p){ return '<button type="button" data-act="pray" data-p="'+p[0]+'" aria-pressed="'+!!pr[p[0]]+'">'+p[1]+'</button>'; }).join("")+'</div>';
   }
   h.push('<section class="card"><h2>مهام النهارده · '+info.score+' / '+info.total+'</h2><div class="tasks">'+tasks+prayRow+'</div>'+
     '<p class="sub">اليوم الجيد = 3 مهام من 5 على الأقل. السلسلة الحالية: <b>'+curStreak()+'</b> يوم.</p></section>');
   h.push('<section class="card"><h2>محتاج تعديل في برنامجك؟</h2><p class="sub">عايز تبدّل تمرين، أو محتاج برنامج مخصوص ليك؟ ابعت لي طلبك على واتساب وهرد عليك.</p><div class="rowbtns"><a class="btn wabtn" href="'+waLink('أهلًا كريم، أنا '+((S.profile.name||'').trim()||'متدرب')+'. أنا على برنامج '+(S.plan||3)+' أيام وعايز أعدّل فيه / محتاج برنامج مخصوص. هدفي: ')+'" target="_blank" rel="noopener noreferrer">اطلب تعديل على واتساب</a></div></section>');
   h.push(codeCard());
-  if(faithOn()) h.push('<section class="card hadith"><h2>قوة تنفعك</h2><p>«المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.»</p>'+
-    '<small>رواه مسلم · <a href="https://sunnah.com/muslim/46/52" target="_blank" rel="noopener noreferrer">صحيح مسلم 2664</a></small></section>');
   h.push('<section class="card"><h2>إعدادات</h2><label class="fld">اسمك<input type="text" class="tx" id="p-name" value="'+esc(S.profile.name||"")+'"></label>'+siteSettings()+
     '<label class="fld">أسبوعك بيبدأ يوم'+startSel("p-start",S.weekStart===undefined?6:S.weekStart)+'</label>'+
     '<label class="fld">عدد أيام التمرين<select id="p-plan">'+[2,3,4,5].map(function(n){ return '<option value="'+n+'"'+(S.plan===n?' selected':'')+'>'+n+' أيام</option>'; }).join("")+'</select></label><p class="sub">'+PLANDESC[S.plan||3]+' تغيير العدد بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p></section>');
@@ -1525,7 +1664,7 @@ var foodDate=null, editMeal=null;
 function renderFood(){
   var ft=S.prefs.ft||"log", p=S.profile, la=latestAvg(), h=[];
   h.push('<div class="seg2 three"><button type="button" data-act="ft" data-v="log" aria-pressed="'+(ft==="log")+'">سجل أكلي</button><button type="button" data-act="ft" data-v="calc" aria-pressed="'+(ft==="calc")+'">حاسبة احتياجي</button><button type="button" data-act="ft" data-v="guide" aria-pressed="'+(ft==="guide")+'">وجبات ونصائح</button></div>');
-  if(ft==="guide"){ h.push(guideHtml()); $("app").innerHTML=h.join(""); return; }
+  if(ft==="guide"){ h.push(guideHtml()); $("app").innerHTML=h.join(""); mvInitAll(); return; }
   if(ft==="calc"){
     var goals=[["gain","تضخيم نضيف (+250)"],["maintain","تثبيت"],["cut","تنشيف (−400)"]];
     var acts=[[1.4,"نشاط خفيف (حركة قليلة)"],[1.55,"تمرين 3–5 أيام وحركة عادية"],[1.7,"نشاط عالي أو شغل بدني"]];
@@ -1552,7 +1691,6 @@ function renderFood(){
     }).join("")+'</div>':'<div class="empty">لسه ماسجلتش وجبات.</div>')+'</section>');
   var em=null; if(editMeal){ meals.forEach(function(m){ if(m.id===editMeal) em=m; }); if(!em) editMeal=null; }
   function v(x){ return em && em[x]!=null ? em[x] : ""; }
-  if(!em) h.push(presetCard());
   h.push('<section class="card"><h2>'+(em?"تعديل الوجبة":"إضافة وجبة")+'</h2>'+
     '<label class="fld">اسم الوجبة<input type="text" class="tx" id="ml-n" value="'+esc(v("n"))+'" placeholder="مثلًا: غدا"></label>'+
     '<div class="flds four"><label class="fld">سعرات<input type="text" inputmode="decimal" id="ml-c" value="'+v("c")+'"></label>'+
@@ -1560,7 +1698,8 @@ function renderFood(){
     '<label class="fld">كارب<input type="text" inputmode="decimal" id="ml-k" value="'+v("k")+'"></label>'+
     '<label class="fld">دهون<input type="text" inputmode="decimal" id="ml-f" value="'+v("f")+'"></label></div>'+
     '<p class="sub">لو سبت السعرات فاضية بتتحسب من الماكروز.</p>'+
-    '<div class="rowbtns"><button type="button" class="btn" data-act="mealsave">'+(em?"حفظ التعديل":"أضف الوجبة")+'</button>'+(em?'<button type="button" class="btn ghost" data-act="mealcancel">إلغاء</button>':'')+'</div></section>');
+    '<div class="rowbtns"><button type="button" class="btn" data-act="mealsave">'+(em?"حفظ التعديل":"أضف الوجبة")+'</button>'+(em?'<button type="button" class="btn ghost" data-act="mealcancel">إلغاء</button>':'<button type="button" class="btn ghost" data-act="favsave">احفظ كوجبة مفضلة</button>')+'</div></section>');
+  if(!em) h.push(favCard());
   $("app").innerHTML=h.join("");
 }
 
@@ -1791,7 +1930,21 @@ document.addEventListener("click", function(ev){
   else if(a==="selplan"){ selPlan=+b.getAttribute("data-n"); var nm0=($("w-name")||{}).value||"", st0=+($("w-start")||{}).value; selStart=isNaN(st0)?selStart:st0; renderWelcome(); $("w-name").value=nm0; }
   else if(a==="mood"){ S.mood=S.mood||{}; S.mood[todayKey()]=b.getAttribute("data-m"); persist(); renderAll(); }
   else if(a==="firstok"){ S.firstSeen=true; persist(); renderAll(); }
-  else if(a==="mealpreset"){ var pp=PRESETS[+b.getAttribute("data-i")], dk1=foodDate||todayKey(), ar1=S.meals[dk1]=S.meals[dk1]||[]; ar1.push({id:Date.now(),n:pp[0].split(" (")[0],c:pp[1],p:pp[2],k:pp[3],f:pp[4]}); persist(); toast("اتضافت الوجبة"); renderAll(); }
+  else if(a==="favsave"){
+    function fnum(id){ var v=parseFloat(($(id).value||"").replace(",",".")); return v>0?r1(v):0; }
+    var fm={n:($("ml-n").value||"").trim()||"وجبة مفضلة", c:fnum("ml-c"), p:fnum("ml-p"), k:fnum("ml-k"), f:fnum("ml-f")};
+    if(!fm.c) fm.c=Math.round(fm.p*4+fm.k*4+fm.f*9);
+    if(!(fm.c>0)){ toast("اكتب السعرات أو الماكروز"); return; }
+    fm.id=Date.now(); S.favs=S.favs||[]; S.favs.push(fm); persist(); toast("اتحفظت في وجباتك المفضلة"); renderAll();
+  }
+  else if(a==="favadd"){
+    var fid=+b.getAttribute("data-id"), fdk=foodDate||todayKey();
+    (S.favs||[]).forEach(function(x){ if(x.id===fid){ var ar=S.meals[fdk]=S.meals[fdk]||[]; ar.push({id:Date.now(),n:x.n,c:x.c,p:x.p,k:x.k,f:x.f}); } });
+    persist(); toast("اتضافت الوجبة لأكل اليوم"); renderAll();
+  }
+  else if(a==="favdel"){
+    var fid2=+b.getAttribute("data-id"); S.favs=(S.favs||[]).filter(function(x){ return x.id!==fid2; }); persist(); renderAll();
+  }
   else if(a==="delacc"){ window.__DELARM=true; renderAll(); }
   else if(a==="delno"){ window.__DELARM=false; renderAll(); }
   else if(a==="delacc2"){ if(window.__deleteAccount) window.__deleteAccount(); }
@@ -1979,37 +2132,13 @@ document.addEventListener("click", function(ev){
   else if(a==="sharemonth"){ if(monthCanvas) shareOut(monthCanvas,"ملخص-الشهر-"+todayKey().slice(0,7)+".png"); else toast("استنى الصورة تجهز"); }
 });
 document.addEventListener("change", function(ev){ var t=ev.target; if(t && t.id==="ph-file" && t.files && t.files[0]) addPhoto(t.files[0]); });
+document.addEventListener("input", function(ev){ var t=ev.target; if(t && t.classList && t.classList.contains("iq")){ var mv=t.closest(".mv"); if(mv) mvCalc(mv); } });
+document.addEventListener("change", function(ev){ var t=ev.target; if(t && t.classList && t.classList.contains("isel")){ var rw=t.closest(".mi"); rw.setAttribute("data-f",t.value); rw.querySelector(".iu").textContent=funit(t.value); rw.querySelector(".ih").textContent=FOODS[t.value].h||""; mvCalc(rw.closest(".mv")); } });
 
 /* ---------- التغذية: وجبات ونصائح ---------- */
-var MEALS=[
- {t:"شيك القريش",d:"بروتين عالي وخفيف على المعدة. مناسب بعد التمرين أو كسناك.",
-  ing:[["جبنة قريش قليلة الدسم","200 جم"],["موز متوسط","120 جم"],["لبن","200 مل"],["شوفان","30 جم"],["عسل أو تمر مهروس","15 جم"]],
-  mac:[535,36,75,12],how:"حط كل المكونات في الخلاط وشغّله لحد ما تطلع ناعمة. زوّد شوية لبن لو عايزه أخف."},
- {t:"مشروب الضخامة",d:"سعرات عالية في كوباية واحدة، لو بتعاني تاكل كفاية.",
-  ing:[["لبن كامل الدسم","300 مل"],["موز كبير","120 جم"],["شوفان","50 جم"],["زبدة فول سوداني","30 جم"],["تمر (حبتين)","20 جم"],["اختياري: سكوب بروتين واي","30 جم (+24 جم بروتين)"]],
-  mac:[730,27,95,30],how:"اخلط الكل ناعم. اشربه بين الوجبات مش بدلها."},
- {t:"مشروب الطاقة",d:"قبل التمرين بـ 30–45 دقيقة. كارب سريع من غير دهون تتقل على المعدة.",
-  ing:[["عصير برتقال طازج","250 مل"],["موز متوسط","120 جم"],["عسل","15 جم"],["ملح","رشة صغيرة"],["اختياري: قهوة اسبريسو","شوت واحد"]],
-  mac:[260,3,65,0.5],how:"اخلط الموز مع العصير والعسل والملح. القهوة اختيارية، وماتزودهاش لو بتسهرك أو بتخلي قلبك يدق."},
- {t:"بان كيك التضخيم",d:"فطار أو سناك بعد التمرين. بروتين وكارب ودهون معتدلة.",
-  ing:[["شوفان مطحون","60 جم"],["بيضة كاملة","1 (50 جم)"],["بياض بيض","66 جم (بياضين)"],["موز مهروس","100 جم"],["لبن","100 مل"],["بيكنج بودر","3 جم (نص معلقة صغيرة)"],["للتزيين: زبدة فول سوداني","15 جم"],["للتزيين: عسل","10 جم"]],
-  mac:[600,30,80,20],how:"اخلط كل المكونات الأساسية في عجينة، وصبّها على طاسة غير لاصقة على نار هادية. دقيقتين ونص لكل وش وبعدين زيّن."},
- {t:"رز بلبن صحي مع بيض مسلوق",d:"وجبة مشبعة بدل الرز بلبن التقيل. الحلاوة من التمر مش من السكر.",
-  ing:[["رز مصري (قبل الطبخ)","60 جم"],["لبن قليل الدسم","300 مل"],["تمر مفروم","20 جم"],["قرفة وفانيليا","حسب الرغبة"],["بيض مسلوق","2 بيضة كبيرة (100 جم)"]],
-  mac:[565,27,79,15],how:"سيّح الرز في اللبن على نار هادية مع التقليب لحد ما يستوي ويتكثف، وحلّيه بالتمر والقرفة. كله مع البيضتين المسلوقتين."},
- {t:"وجبة الأبطال للغداء",d:"الغدا الأساسي: بروتين نضيف + كارب + خضار.",
-  ing:[["صدور فراخ (وزن نيّ)","200 جم"],["رز بسمتي (وزن نيّ)","80 جم"],["خضار سوتيه أو سلطة","200 جم"],["زيت زيتون","10 جم (معلقة كبيرة)"],["توابل وليمون","حسب الرغبة"]],
-  mac:[650,54,74,14],how:"اشوي الصدور أو اسلقها بالتوابل. الرز يتسلق، والخضار تتسوتيه بنص زيت الزيتون والباقي على السلطة."},
- {t:"وجبات سريعة ومشبعة",d:"3 أفكار تتحضّر في 5 دقايق. اختار واحدة.",
-  sub:[
-   {t:"ساندوتش تونة",ing:[["عيش بلدي","80 جم"],["تونة بالمية (مصفّاة)","120 جم"],["زبادي يوناني بدل المايونيز","30 جم"],["خيار وطماطم","80 جم"]],mac:[380,39,47,5]},
-   {t:"أومليت وقريش",ing:[["بيض","3 بيضات (150 جم)"],["جبنة قريش","60 جم"],["عيش بلدي","40 جم"]],mac:[355,30,22,15]},
-   {t:"بوول زبادي",ing:[["زبادي يوناني","250 جم"],["شوفان","40 جم"],["موز","60 جم"],["عسل","10 جم"]],mac:[380,31,58,5]}
-  ]},
- {t:"سناك الطوارئ",d:"لما مفيش وقت ولا أكل جاهز. ماتسيبش نفسك جعان لحد الوجبة الجاية.",
-  ing:[["موزة","120 جم"],["لوز أو كاجو","25 جم"],["زبادي","150 جم"]],
-  mac:[345,12,39,18],how:"خلّي كيس لوز وتمر في شنطتك دايمًا، ولو معاك زبادي يبقى أحسن."}
-];
+/* قيم المكوّنات: USDA National Nutrient Database for Standard Reference, Release 28. v = [سعرات, بروتين, كارب, دهون] لكل 100 جم (أو 100 مل مضروبة في الكثافة d) */
+var FOODS={"cott":{"n":"جبنة قريش قليلة الدسم","v":[72.0,12.39,2.72,1.02],"s":"01016"},"ban":{"n":"موز (الموزة المتوسطة ≈ 118 جم)","v":[89.0,1.09,22.84,0.33],"s":"09040"},"straw":{"n":"فراولة","v":[32.0,0.67,7.68,0.3],"s":"09316"},"mango":{"n":"مانجو","v":[60.0,0.82,14.98,0.38],"s":"09176"},"grape":{"n":"عنب","v":[69.0,0.72,18.1,0.16],"s":"09132"},"honey":{"n":"عسل نحل","v":[304.0,0.3,82.4,0.0],"s":"19296","h":"معلقة كبيرة ≈ 21 جم"},"milkw":{"n":"لبن كامل الدسم","v":[61.0,3.15,4.8,3.25],"s":"01077","d":1.017},"milk2":{"n":"لبن نص دسم (2%)","v":[50.0,3.3,4.8,1.98],"s":"01079","d":1.017},"water":{"n":"ماء","v":[0,0,0,0],"d":1},"oats":{"n":"شوفان (وزن جاف)","v":[379.0,13.15,67.7,6.52],"s":"08120"},"pb":{"n":"زبدة فول سوداني","v":[598.0,22.21,22.31,51.36],"s":"16098","h":"معلقة كبيرة ≈ 16 جم"},"pn":{"n":"فول سوداني نيّ","v":[567.0,25.8,16.13,49.24],"s":"16087"},"date":{"n":"تمر (دقلة نور، منزوع النوى)","v":[282.0,2.45,75.03,0.39],"s":"09087","w":7.1,"pn":"حبة","h":"الحبة ≈ 7 جم"},"raisin":{"n":"زبيب","v":[299.0,3.07,79.18,0.46],"s":"09298"},"whey":{"n":"بروتين واي (بودرة)","v":[352.0,78.13,6.25,1.56],"s":"14066","h":"سكوب ≈ 32 جم"},"oj":{"n":"عصير برتقال طازج","v":[45.0,0.7,10.4,0.2],"s":"09206","d":1.017},"esp":{"n":"قهوة اسبريسو","v":[9.0,0.12,1.67,0.18],"s":"14210","d":0.987,"h":"الشوت ≈ 30 مل"},"egg":{"n":"بيض كامل (وزنه نيّ)","v":[143.0,12.56,0.72,9.51],"s":"01123","w":50,"pn":"بيضة","h":"البيضة الكبيرة ≈ 50 جم"},"eggb":{"n":"بيض مسلوق","v":[155.0,12.58,1.12,10.61],"s":"01129","w":50,"pn":"بيضة","h":"البيضة الكبيرة ≈ 50 جم"},"eggw":{"n":"بياض بيض","v":[52.0,10.9,0.73,0.17],"s":"01124","w":33,"pn":"بياضة","h":"البياضة ≈ 33 جم"},"bpw":{"n":"بيكنج بودر","v":[53.0,0.0,27.7,0.0],"s":"18369","h":"معلقة صغيرة ≈ 4.6 جم"},"cocoa":{"n":"كاكاو غير محلّى","v":[228.0,19.6,57.9,13.7],"s":"19165","h":"معلقة كبيرة ≈ 5 جم"},"chia":{"n":"بذور شيا","v":[486.0,16.54,42.12,30.74],"s":"12006"},"riceC":{"n":"رز أبيض مطبوخ (حبة متوسطة)","v":[130.0,2.38,28.59,0.21],"s":"20051"},"riceR":{"n":"رز أبيض نيّ (حبة متوسطة)","v":[360.0,6.61,79.34,0.58],"s":"20050"},"riceF":{"n":"دقيق رز","v":[366.0,5.95,80.13,1.42],"s":"20061"},"chick":{"n":"صدور دجاج مشوية (وزن بعد الطبخ)","v":[165.0,31.02,0.0,3.57],"s":"05064"},"tilap":{"n":"سمك بلطي مشوي (وزن بعد الطبخ)","v":[128.0,26.15,0.0,2.65],"s":"15262"},"mullet":{"n":"سمك بوري مشوي (وزن بعد الطبخ)","v":[150.0,24.81,0.0,4.86],"s":"15056"},"steak":{"n":"ستيك لحم مشوي (وزن بعد الطبخ)","v":[188.0,30.29,0.0,6.55],"s":"13455"},"potB":{"n":"بطاطس مسلوقة","v":[87.0,1.87,20.13,0.1],"s":"11365"},"potK":{"n":"بطاطس في الفرن","v":[93.0,1.96,21.55,0.1],"s":"11363"},"oil":{"n":"زيت زيتون","v":[884.0,0.0,0.0,100.0],"s":"04053","h":"معلقة كبيرة ≈ 13.5 جم"},"ful":{"n":"فول مدمس مطبوخ (من غير زيت)","v":[110.0,7.6,19.65,0.4],"s":"16053"},"tuna":{"n":"تونة بالمية (مصفّاة)","v":[86.0,19.44,0.0,0.96],"s":"15121"},"pita":{"n":"عيش بلدي (قمح كامل)","v":[262.0,9.8,55.89,1.71],"s":"18042","h":"الرغيف الصغير ≈ 28 جم، الكبير ≈ 64 جم"},"toast":{"n":"توست قمح كامل","v":[252.0,12.45,42.71,3.5],"s":"18075","w":32,"pn":"شريحة","h":"الشريحة ≈ 32 جم"},"gyog":{"n":"زبادي يوناني خالي الدسم","v":[59.0,10.19,3.6,0.39],"s":"01256"},"yog":{"n":"زبادي قليل الدسم","v":[63.0,5.25,7.04,1.55],"s":"01117","h":"العلبة الصغيرة ≈ 170 جم"},"almond":{"n":"لوز","v":[579.0,21.15,21.55,49.93],"s":"12061"},"cashew":{"n":"كاجو نيّ","v":[553.0,18.22,30.19,43.85],"s":"12087"},"apple":{"n":"تفاح","v":[52.0,0.26,13.81,0.17],"s":"09003"},"orange":{"n":"برتقال","v":[47.0,0.94,11.75,0.12],"s":"09200"},"guava":{"n":"جوافة","v":[68.0,2.55,14.32,0.95],"s":"09139"},"wmelon":{"n":"بطيخ","v":[30.0,0.61,7.55,0.15],"s":"09326"},"cinS":{"n":"قرفة مطحونة","v":[247.0,3.99,80.59,1.24],"s":"02010","w":2.6,"pn":"معلقة صغيرة","h":"المعلقة الصغيرة ≈ 2.6 جم"},"cocoaS":{"n":"كاكاو غير محلّى","v":[228.0,19.6,57.9,13.7],"s":"19165","w":5.4,"pn":"معلقة كبيرة","h":"المعلقة الكبيرة ≈ 5.4 جم"},"yogW":{"n":"زبادي عادي أو بلدي (كامل الدسم)","v":[61.0,3.47,4.66,3.25],"s":"01116","h":"العلبة الصغيرة ≈ 170 جم"},"salad":{"n":"سلطة خضراء (خس وخيار وطماطم)","v":[16.67,0.92,3.6,0.2],"s":"11251+11205+11529","h":"متوسط الأصناف الثلاثة بأجزاء متساوية"},"mixv":{"n":"خضار سوتيه مطبوخ (من غير زيت)","v":[65.0,2.86,13.09,0.15],"s":"11584"}};
+var MEALS=[{"t":"شيك الجبنة القريش (قبل النوم)","d":"بروتين صافي بطعم كريمي من غير طعم القريش. ممتاز كآخر وجبة قبل النوم.","v":[{"ing":[{"f":"cott","q":250},{"f":"ban","q":130,"a":["ban","straw","mango","grape","apple","orange","guava","wmelon"]},{"f":"honey","q":10},{"f":"milk2","q":100,"a":["milk2","milkw","water"]}],"how":"اضرب كل المكونات في الخلاط. غيّر نوع الفاكهة من القايمة، واستبدل العسل بسكر دايت لو عايز (ومتحسبوش هنا). زوّد اللبن أو الماء لو عايزه أخف."}]},{"t":"مشروب الضخامة","d":"سعرات عالية في كوباية واحدة، لو بتعاني تاكل كفاية. اختار الحجم اللي يناسبك وعدّل الكميات.","v":[{"t":"النسخة العادية","ing":[{"f":"milkw","q":300,"a":["milkw","milk2","water"]},{"f":"ban","q":120},{"f":"oats","q":50},{"f":"pb","q":30},{"f":"date","q":2},{"f":"whey","q":30,"o":1}],"how":"اخلط الكل ناعم. اشربه بين الوجبات مش بدلها. سكوب البروتين اختياري (فعّله بالضغط على ↺)."},{"t":"النسخة الكبيرة (تضخيم قوي)","ing":[{"f":"oats","q":100},{"f":"milkw","q":200,"a":["milkw","milk2","water"]},{"f":"pb","q":16,"a":["pb","pn"]},{"f":"honey","q":42},{"f":"raisin","q":30},{"f":"date","q":5}],"how":"سعرات عالية وباور للتضخيم النظيف. البلح من 3 لـ 7 حبات حسب شهيتك، وزبدة الفول السوداني تقدر تبدلها بفول سوداني (حوالي 50 جم)."}]},{"t":"مشروب الطاقة","d":"قبل التمرين بـ 30–45 دقيقة. كارب سريع من غير دهون تتقل على المعدة.","v":[{"ing":[{"f":"oj","q":250},{"f":"ban","q":120},{"f":"honey","q":15},{"f":"esp","q":30,"o":1}],"how":"اخلط الموز مع العصير والعسل ورشة ملح (الملح من غير سعرات). القهوة اختيارية وماتزودهاش لو بتسهرك أو بتخلي قلبك يدق."}]},{"t":"بان كيك التضخيم","d":"فطار أو سناك بعد التمرين. بروتين وكارب ودهون معتدلة.","v":[{"ing":[{"f":"oats","q":60},{"f":"egg","q":1},{"f":"eggw","q":2},{"f":"ban","q":100,"a":["ban","straw","mango","grape","apple","orange","guava","wmelon"]},{"f":"milkw","q":100,"a":["milkw","milk2","water"]},{"f":"bpw","q":3},{"f":"cinS","q":1},{"f":"cocoaS","q":1}],"how":"اطحن الشوفان واخلطه مع باقي المكونات الأساسية في عجينة، وصبّها على طاسة غير لاصقة على نار هادية. دقيقتين ونص لكل وش. القرفة والكاكاو بيتحطوا مع العجينة ومحسوبين في الأرقام. لو عايز طريقة بالفيديو ابحث في يوتيوب عن «بان كيك التضخيم»."}]},{"t":"رز بلبن صحي (فطار أو سناك للطاقة)","d":"وجبة طاقة وبروتين عالي، والحلاوة من التمر والفاكهة مش من السكر.","v":[{"ing":[{"f":"oats","q":50,"a":["oats","riceR","riceF"]},{"f":"milkw","q":300,"a":["milkw","milk2"]},{"f":"date","q":3},{"f":"ban","q":118},{"f":"pn","q":25},{"f":"raisin","q":25},{"f":"honey","q":21},{"f":"eggb","q":3},{"f":"cocoa","q":5,"o":1},{"f":"chia","q":10,"o":1}],"how":"اسلق الشوفان أو الرز أو دقيق الرز على النار كويس جدًا لحد ما يطرى ويقرّب للرز بلبن، وضيف عليه اللبن وباقي المكونات. البيض المسلوق جنب الوجبة بيرفع البروتين (3 إلى 4 بيضات). الكاكاو والشيا والقرفة اختيارية (القرفة من غير سعرات تُذكر)."}]},{"t":"وجبة الأبطال للغداء","d":"الغدا الأساسي المتوازن: بروتين صافي وكارب نضيف من غير خمول. اختار نوع البروتين اللي تحبه وعدّل الكميات.","v":[{"ing":[{"f":"chick","q":200,"a":["chick","tilap","mullet","steak"]},{"f":"riceC","q":200},{"f":"salad","q":200,"a":["salad","mixv"]}],"how":"الأوزان بعد الطبخ. لو أكلت 100 جم رز بدل 200 غيّر الرقم وهتتحسب السعرات تاني تلقائيًا. زيت الطبخ مش محسوب، ضيفه بنفسك لو استخدمته."}]},{"t":"وجبة البيض والبطاطس (فطار أو عشاء)","d":"طاقة وشبع جامد ومريحة للمعدة.","v":[{"ing":[{"f":"egg","q":4},{"f":"potB","q":300,"a":["potB","potK"]},{"f":"oil","q":13.5},{"f":"salad","q":150}],"how":"تبّل البطاطس بزيت الزيتون والبهارات وحطها في الفرن أو اسلقها. البطاطس الواحدة المتوسطة ≈ 136 جم."}]},{"t":"الفول والبيض البلدي (فطار قوي)","d":"ميكس بروتين وكارب معقد يثبّت البطن ويقفل الجوع لفترات طويلة.","v":[{"ing":[{"f":"egg","q":4,"a":["egg","eggb"]},{"f":"ful","q":200},{"f":"oil","q":10}],"how":"الفول بزيت الزيتون والليمون والكمون. الليمون والكمون من غير سعرات تُذكر."}]},{"t":"وجبة التونة السريعة (عشاء خفيف)","d":"أسرع وأسهل بروتين عالي لتنشيف أو عشاء خفيف بالليل، من غير تعقيد.","v":[{"ing":[{"f":"tuna","q":140},{"f":"salad","q":200}],"how":"علبة التونة المصفّاة ≈ 140 جم (راجع الوزن المكتوب على علبتك). السلطة بليمون وكمون. لو محتاج سعرات أكتر ضيف عيش من القايمة."}]},{"t":"وجبة التوست والبيض","d":"كلاسيكية وسريعة ومتاحة في أي بيت.","v":[{"ing":[{"f":"egg","q":4,"a":["egg","eggb"]},{"f":"toast","q":2,"a":["toast"]},{"f":"salad","q":100},{"f":"oil","q":5,"o":1}],"how":"الأومليت بالخضار أو مسلوق. لو عملته أومليت فعّل زيت الطبخ (↺). تقدر تحط عيش بلدي بدل التوست بالجرامات من وجبة تانية."}]},{"t":"وجبات سريعة ومشبعة","d":"3 أفكار تتحضّر في 5 دقايق. اختار واحدة.","v":[{"t":"ساندوتش تونة","ing":[{"f":"pita","q":80},{"f":"tuna","q":120},{"f":"gyog","q":30,"a":["gyog","yogW","yog"]},{"f":"salad","q":80}],"how":"الزبادي اليوناني بدل المايونيز."},{"t":"أومليت وقريش","ing":[{"f":"egg","q":3},{"f":"cott","q":60},{"f":"pita","q":40},{"f":"oil","q":5,"o":1}],"how":""},{"t":"بوول زبادي","ing":[{"f":"gyog","q":250,"a":["gyog","yogW","yog"]},{"f":"oats","q":40},{"f":"ban","q":60,"a":["ban","straw","mango","grape","apple","orange","guava","wmelon"]},{"f":"honey","q":10},{"f":"pn","q":20}],"how":"مفيش زبادي يوناني؟ اختار زبادي عادي أو بلدي من القايمة. الفول السوداني اختياري وتقدر تشيله بـ ×."}]},{"t":"سناك الطوارئ","d":"لما مفيش وقت ولا أكل جاهز. ماتسيبش نفسك جعان لحد الوجبة الجاية.","v":[{"ing":[{"f":"ban","q":120,"a":["ban","straw","mango","grape","apple","orange","guava","wmelon"]},{"f":"almond","q":25,"a":["almond","cashew","pn"]},{"f":"yog","q":150,"a":["yog","yogW","gyog"]}],"how":"خلّي كيس لوز أو فول سوداني وتمر في شنطتك دايمًا، ولو معاك زبادي يبقى أحسن. أي نوع فاكهة معاك ممكن تاخده بدل الموز، اختار أقرب نوع له من القايمة وعدّل الجرامات."}]}];
 var TIPS=[
  {t:"فلسفة الدايت",p:[
   "الدايت مش عقاب ولا قائمة ممنوعات. هو نظام تقدر تكمل عليه شهور، وأحسن نظام هو اللي بتلتزم بيه.",
@@ -2031,8 +2160,29 @@ var TIPS=[
   "في التمرين اشرب كام رشفة بين المجموعات، مش كمية كبيرة مرة واحدة.",
   "لو عندك مشكلة في الكلى أو القلب، اتبع كمية المياه اللي الدكتور حددها."]}
 ];
-function mealMac(m){ return '<div class="mac">≈ '+m[0]+' kcal · P '+m[1]+' · C '+m[2]+' · F '+m[3]+'</div>'; }
-function ingList(a){ return '<ul class="ing">'+a.map(function(x){ return '<li><span>'+x[0]+'</span><b>'+x[1]+'</b></li>'; }).join("")+'</ul>'; }
+function fgrams(f,q){ var o=FOODS[f]; return o.w ? q*o.w : (o.d ? q*o.d : q); }
+function funit(f){ var o=FOODS[f]; return o.pn || (o.d ? "مل" : "جم"); }
+function ingRow(g){
+  var o=FOODS[g.f], nm = g.a && g.a.length>1 ?
+    '<select class="isel" aria-label="اختار النوع">'+g.a.map(function(x){ return '<option value="'+x+'"'+(x===g.f?' selected':'')+'>'+FOODS[x].n+'</option>'; }).join("")+'</select>' :
+    '<span class="inm">'+o.n+'</span>';
+  return '<div class="mi'+(g.o?' off':'')+'" data-f="'+g.f+'"><div class="mi1">'+nm+'<button type="button" class="ix" data-act="gx" aria-label="شيل أو رجّع المكوّن">'+(g.o?'↺':'×')+'</button></div>'+
+    '<div class="mi2"><input type="text" inputmode="decimal" class="iq" value="'+g.q+'" aria-label="الكمية"><span class="iu">'+funit(g.f)+'</span><span class="ih">'+(o.h||"")+'</span><span class="ik mac"></span></div></div>';
+}
+function mvDefault(vr){ var t=[0,0,0,0]; vr.ing.forEach(function(g){ if(g.o) return; var o=FOODS[g.f], k=fgrams(g.f,g.q)/100; for(var i=0;i<4;i++) t[i]+=o.v[i]*k; }); return t; }
+function mvCalc(el){
+  var t=[0,0,0,0];
+  Array.prototype.forEach.call(el.querySelectorAll(".mi"),function(r){
+    var f=r.getAttribute("data-f"), o=FOODS[f], q=parseFloat(String(r.querySelector(".iq").value||"").replace(",","."));
+    if(!(q>=0)) q=0;
+    var k=fgrams(f,q)/100;
+    r.querySelector(".ik").textContent=Math.round(o.v[0]*k)+" kcal";
+    if(!r.classList.contains("off")) for(var i=0;i<4;i++) t[i]+=o.v[i]*k;
+  });
+  var tt=el.querySelector(".mvt"); if(tt) tt.innerHTML='الإجمالي: <span dir="ltr" style="unicode-bidi:isolate">≈ '+Math.round(t[0])+" kcal · P "+r1(t[1])+" · C "+r1(t[2])+" · F "+r1(t[3])+"</span>";
+  return t;
+}
+function mvInitAll(){ Array.prototype.forEach.call(document.querySelectorAll(".mv"),mvCalc); }
 function guideHtml(){
   var g=S.prefs.gd||"meals", h=[];
   h.push('<div class="gbtns"><a class="go" href="https://www.fatsecret.com/" target="_blank" rel="noopener noreferrer">بحث السعرات</a>'+
@@ -2042,13 +2192,21 @@ function guideHtml(){
   if(g==="tips"){
     h.push(TIPS.map(function(t){ return '<details class="acc"><summary><span>'+t.t+'</span></summary><div class="ab">'+t.p.map(function(x){ return '<p class="cue">'+x+'</p>'; }).join("")+'</div></details>'; }).join(""));
   } else {
-    h.push('<p class="sub">الأرقام تقريبية وبتختلف حسب الماركة والحجم. عدّل الكميات على احتياجك، وتجنّب أي مكوّن عندك حساسية منه.</p>');
-    h.push(MEALS.map(function(m){
-      var body='<p class="sub">'+m.d+'</p>';
-      if(m.sub){ body+=m.sub.map(function(s){ return '<div class="sb"><b>'+s.t+'</b>'+ingList(s.ing)+mealMac(s.mac)+'</div>'; }).join(""); }
-      else { body+=ingList(m.ing)+mealMac(m.mac)+'<p class="cue">'+m.how+'</p>'; }
-      return '<details class="acc"><summary><span>'+m.t+'</span>'+(m.mac?'<span class="mac">≈ '+m.mac[0]+' kcal</span>':'')+'</summary><div class="ab">'+body+'</div></details>';
+    h.push('<p class="sub">عدّل الكمية جنب أي مكوّن، أو اضغط × لو ماكلتوش، وغيّر النوع من القايمة. الأرقام بتتحسب تاني على طول، وبعدين ضيف الوجبة لأكلك. تجنّب أي مكوّن عندك حساسية منه.</p>');
+    function addUi(k){
+      return '<div class="addrow" id="ar-'+k+'"><button type="button" class="btn" data-act="gadd2" data-to="day" data-k="'+k+'">لأكل النهارده</button><button type="button" class="btn ghost" data-act="gadd2" data-to="fav" data-k="'+k+'">لوجباتي المفضلة</button></div>';
+    }
+    h.push(MEALS.map(function(m,i){
+      var multi=m.v.length>1, body='<p class="sub">'+m.d+'</p>';
+      body+=m.v.map(function(vr,j){ var k=i+"-"+j;
+        return '<div class="mv'+(multi?' sb':'')+'" id="mv-'+k+'">'+(multi?'<div class="sbh"><b>'+vr.t+'</b></div>':'')+
+          vr.ing.map(ingRow).join("")+'<div class="mvt mac"></div>'+
+          '<div class="mvb"><button type="button" class="btn" data-act="gadd2" data-to="day" data-k="'+k+'">لأكل النهارده</button><button type="button" class="btn ghost" data-act="gadd2" data-to="fav" data-k="'+k+'">لوجباتي المفضلة</button></div>'+
+          (vr.how?'<p class="cue">'+vr.how+'</p>':'')+'</div>'; }).join("");
+      var dt=multi?null:mvDefault(m.v[0]);
+      return '<details class="acc"><summary><span>'+m.t+'</span>'+(dt?'<span class="mac">≈ '+Math.round(dt[0])+' kcal</span>':'')+(multi?'':'<button type="button" class="addm" data-act="gadd" data-k="'+i+'-0">إضافة وجبة</button>')+'</summary><div class="ab">'+body+'</div></details>'+(multi?'':addUi(i+"-0"));
     }).join(""));
+    h.push('<p class="sub src">مصدر أرقام المكوّنات: قاعدة USDA الرسمية (National Nutrient Database for Standard Reference, Release 28)، لكل 100 جم من المكوّن. إجمالي الوجبة بيتحسب من الكميات اللي تكتبها، والأكل المطبوخ محسوب بوزنه بعد الطبخ والنيّ بوزنه نيّ حسب المكتوب جنب كل مكوّن. مفيش زيوت طبخ أو صوصات محسوبة غير اللي مكتوبة.</p>');
   }
   return h.join("");
 }
@@ -2211,6 +2369,19 @@ document.addEventListener("click", function(ev){
   var b=ev.target.closest("[data-act]"); if(!b) return;
   var a=b.getAttribute("data-act"), id=b.getAttribute("data-id");
   if(a==="gd"){ S.prefs.gd=b.getAttribute("data-v"); persist(); renderAll(); }
+  else if(a==="gadd"){ ev.preventDefault(); ev.stopPropagation(); var ar=$("ar-"+b.getAttribute("data-k")); if(ar){ var on=ar.classList.contains("on"); Array.prototype.forEach.call(document.querySelectorAll(".addrow.on"),function(x){ x.classList.remove("on"); }); if(!on) ar.classList.add("on"); } }
+  else if(a==="gx"){ var rw=b.closest(".mi"); rw.classList.toggle("off"); b.textContent=rw.classList.contains("off")?"↺":"×"; mvCalc(rw.closest(".mv")); }
+  else if(a==="gadd2"){
+    var gk=String(b.getAttribute("data-k")).split("-"), gm=MEALS[+gk[0]], gv=gm&&gm.v[+gk[1]], gel=$("mv-"+gk.join("-"));
+    if(gv && gel){
+      var gt=mvCalc(gel);
+      if(!(gt[0]>0)){ toast("كل المكوّنات صفر أو مشيلها. اكتب كمية الأول"); return; }
+      var nm=gm.v.length>1?gm.t+" - "+gv.t:gm.t, rec={id:Date.now(),n:nm,c:Math.round(gt[0]),p:r1(gt[1]),k:r1(gt[2]),f:r1(gt[3])};
+      if(b.getAttribute("data-to")==="fav"){ S.favs=S.favs||[]; S.favs.push(rec); persist(); toast("اتضافت لوجباتك المفضلة"); }
+      else { var gd0=foodDate||todayKey(); S.meals[gd0]=S.meals[gd0]||[]; S.meals[gd0].push(rec); persist(); toast("اتضافت لأكل النهارده. تقدر تعدّل أرقامها من سجل أكلي"); }
+      var ar2=$("ar-"+gk.join("-")); if(ar2) ar2.classList.remove("on");
+    }
+  }
   else if(a==="cmpub") cmPublish();
   else if(a==="cmimgx"){ CM.img=null; var pv=$("cmprev"); if(pv) pv.innerHTML=""; }
   else if(a==="cmrefresh"){ CM.loaded=false; CM.loading=false; cmLoad(); }
@@ -2297,6 +2468,58 @@ function run(u){
 }
 auth.onAuthStateChanged(function(u){ if(!u){ $("gate").hidden=false; return; } if(started) return; started=true; run(u); });
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+})();
+</script>
+
+<nav id="v3nav" aria-label="التنقل الرئيسي"></nav>
+<div id="v3sheet" hidden><div class="sh" role="dialog" aria-modal="true" aria-label="المزيد"><div class="gr"></div></div></div>
+<script>
+(function(){
+  var I={
+    home:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
+    train:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>',
+    food:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8a2 2 0 0 0 2 2v8"/><path d="M5 3v6M9 3v6"/><path d="M17 21V3c-2.5 1-4 4-4 8h4"/></svg>',
+    comm:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.6M18 14.3c1.8.8 3 2.6 3 5.7"/></svg>',
+    more:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
+    today:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg>',
+    log:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h12a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h7M8 13h5"/></svg>',
+    body:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 3 8-9"/><path d="M15 6h5v5"/></svg>',
+    share:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.3 10.8l7.4-3.6M8.3 13.2l7.4 3.6"/></svg>'
+  };
+  var main=[["home","vh","الرئيسية"],["today","vo","اليوم"],["train","vt","التمرين"],["food","vf","الأكل"]];
+  var more=[["comm","vc","المجتمع"],["log","vl","السجل"],["body","vb","الجسم"],["share","vs","الملخص"]];
+  var themes=[["classic","كلاسيك","#08202F"],["modern","عصري","#0F172A"],["light","فاتح","#F1F5F9"]];
+  var nav=document.getElementById("v3nav"), sh=document.getElementById("v3sheet"), box=sh.firstElementChild;
+  nav.innerHTML=main.map(function(m){return '<button type="button" data-v3="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join("")+'<button type="button" data-v3="more">'+I.more+'<span>المزيد</span></button>';
+  box.insertAdjacentHTML("beforeend",more.map(function(m){return '<button type="button" class="it" data-v3s="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join("")+
+    '<div class="th"><b>المظهر</b><div class="tr">'+themes.map(function(t){return '<button type="button" data-th="'+t[0]+'"><i style="background:'+t[2]+'"></i>'+t[1]+'</button>';}).join("")+'</div></div>');
+  function curTheme(){ var a=document.documentElement.getAttribute("data-v3"); return a==="modern"||a==="light"?a:"classic"; }
+  function setTheme(t){
+    if(t==="classic") document.documentElement.removeAttribute("data-v3"); else document.documentElement.setAttribute("data-v3",t);
+    try{ localStorage.setItem("kt-theme",t); }catch(e){}
+    var m=document.querySelector('meta[name="theme-color"]'); if(m){ m.setAttribute("content",themes.filter(function(x){return x[0]===t;})[0][2]); }
+    syncTheme();
+  }
+  function syncTheme(){ var c=curTheme(); Array.prototype.forEach.call(box.querySelectorAll("[data-th]"),function(b){ b.setAttribute("aria-pressed",b.getAttribute("data-th")===c); }); }
+  function go(id){ var b=document.getElementById(id); if(b){ b.click(); window.scrollTo(0,0); } }
+  function closeSheet(){ sh.hidden=true; }
+  nav.addEventListener("click",function(e){ var b=e.target.closest("[data-v3]"); if(!b) return; var v=b.getAttribute("data-v3"); if(v==="more"){ sh.hidden=!sh.hidden; if(!sh.hidden){ syncTheme(); var f=box.querySelector(".it"); if(f) f.focus(); } } else { closeSheet(); go(v); } });
+  sh.addEventListener("click",function(e){ var t=e.target.closest("[data-th]"); if(t){ setTheme(t.getAttribute("data-th")); return; } var b=e.target.closest("[data-v3s]"); if(b){ closeSheet(); go(b.getAttribute("data-v3s")); } else if(e.target===sh) closeSheet(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeSheet(); });
+  function isText(el){ return el && (el.tagName==="TEXTAREA" || (el.tagName==="INPUT" && /^(text|number|tel|search|email|date|url|password)?$/.test(el.type||""))); }
+  document.addEventListener("focusin",function(e){ if(isText(e.target)) nav.classList.add("kb"); });
+  document.addEventListener("focusout",function(){ setTimeout(function(){ if(!isText(document.activeElement)) nav.classList.remove("kb"); },50); });
+  function sync(){
+    var cur=""; ["vh","vo","vt","vl","vb","vf","vs","vc"].forEach(function(id){ var b=document.getElementById(id); if(b && b.getAttribute("aria-pressed")==="true") cur=id; });
+    var inMore=more.some(function(m){return m[1]===cur;});
+    Array.prototype.forEach.call(nav.querySelectorAll("button"),function(b){ var v=b.getAttribute("data-v3"); var on=v==="more"?inMore:v===cur; if(on) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+    Array.prototype.forEach.call(box.querySelectorAll(".it"),function(b){ if(b.getAttribute("data-v3s")===cur) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+  }
+  new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:["class"]});
+  var vw=document.querySelector(".views"); if(vw) new MutationObserver(sync).observe(vw,{attributes:true,subtree:true,attributeFilter:["aria-pressed"]});
+  document.addEventListener("click",function(){ setTimeout(sync,0); },true);
+  try{ var st=localStorage.getItem("kt-theme"); if(st==="modern"||st==="light") document.documentElement.setAttribute("data-v3",st); }catch(e){}
+  sync(); syncTheme();
 })();
 </script>
 </body>
