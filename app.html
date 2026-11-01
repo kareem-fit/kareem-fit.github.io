@@ -379,7 +379,7 @@ body.v-welcome .foot{display:none}
 #gate button.g2{background:transparent;border:1px solid #2A5878;color:#F2F7FA;padding:9px 16px;font-size:.9rem;width:auto}
 #gate a{color:#2CC1B8}
 #gate .emf{width:100%;display:flex;flex-direction:column;gap:8px;text-align:start}#gate .emf[hidden]{display:none}#gate .emf label{font-size:.9rem;font-weight:700}#gate .emf input{width:100%;min-height:48px;border-radius:12px;border:1.5px solid #2A5878;background:rgba(255,255,255,.06);color:#F2F7FA;font:inherit;font-size:1rem;padding:0 12px}#gate .emb{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}#gate .emb button{min-height:48px;width:100%;font-weight:800}#gate button.emlnk{border:0;text-decoration:underline;align-self:center}#gate #emtog{width:100%;padding:13px 16px;font-size:1rem;font-weight:800}
-#gate #emlk{width:100%;min-height:50px;font-weight:800}#gate .emhint{margin:0;font-size:.85rem;opacity:.85}#gate #empw{display:flex;flex-direction:column;gap:8px}#gate #empw[hidden]{display:none}
+#gate #emlk[hidden],#gate #emhint[hidden],#gate #empwt[hidden]{display:none}#gate #emlk{width:100%;min-height:50px;font-weight:800}#gate .emhint{margin:0;font-size:.85rem;opacity:.85}#gate #empw{display:flex;flex-direction:column;gap:8px}#gate #empw[hidden]{display:none}
 #kfi{position:fixed;inset-inline:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:998;background:#0E2C40;color:#F2F7FA;border:1.5px solid #FF7A3F;border-radius:18px;padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.5);font-family:inherit;direction:rtl;text-align:start}#kfi[hidden]{display:none}#kfi b{display:block;font-size:1.1rem;margin-bottom:4px}#kfi p{margin:0 0 10px;font-size:.95rem;line-height:1.7}#kfi ol{margin:0 0 10px;padding-inline-start:20px;font-size:.95rem;line-height:1.8}#kfi .kb{display:flex;gap:8px}#kfi button{flex:1;min-height:46px;border-radius:12px;font:inherit;font-weight:800;border:1.5px solid #FF7A3F;background:transparent;color:#F2F7FA}#kfi button.p{background:#FF7A3F;color:#1a0b00}
 #gate .warn{background:#3a2a12;border:1px solid #E0A82E;color:#FFE3A8;border-radius:10px;padding:10px 12px;font-size:.92rem;text-align:start}
 #gate .err{color:#FFB4A3;min-height:1.4em}
@@ -1531,10 +1531,10 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 <button type="button" class="g2" id="emtog" aria-expanded="false" aria-controls="emf">أو ادخل بالإيميل</button>
 <form id="emf" class="emf" hidden novalidate autocomplete="on">
 <label for="emi">الإيميل</label><input id="emi" type="email" inputmode="email" autocomplete="email" dir="ltr" placeholder="name@example.com">
-<button type="button" id="emlk">ابعتلي لينك الدخول (من غير باسورد)</button>
-<p class="emhint" id="emhint">هيوصلك إيميل فيه لينك، تضغط عليه وتدخل على طول. بص في Spam لو ما لقيتوش.</p>
-<button type="button" class="g2 emlnk" id="empwt" aria-expanded="false" aria-controls="empw">عندي باسورد</button>
-<div id="empw" hidden>
+<button type="button" id="emlk" hidden>ابعتلي لينك الدخول (من غير باسورد)</button>
+<p class="emhint" id="emhint" hidden>هيوصلك إيميل فيه لينك، تضغط عليه وتدخل على طول. بص في Spam لو ما لقيتوش.</p>
+<button type="button" class="g2 emlnk" id="empwt" hidden aria-expanded="true" aria-controls="empw">عندي باسورد</button>
+<div id="empw">
 <label for="emp">الباسورد (٦ حروف أو أكتر)</label><input id="emp" type="password" autocomplete="current-password" dir="ltr">
 <div class="emb"><button type="submit" id="emin">دخول</button><button type="button" class="g2" id="emnew">حساب جديد</button></div>
 <button type="button" class="g2 emlnk" id="emfg">نسيت الباسورد</button>
