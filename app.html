@@ -1989,7 +1989,7 @@ html[data-v3="light"] body.d3-vbody .seg2{background:rgba(255,255,255,.55);borde
 html[data-design="3"] #d3bg[data-b="today"]{background-position:var(--ix-today,50%) var(--iy-today,0%);background-size:var(--iz-today,100%) auto}
 html[data-design="3"] #d3bg[data-b="food"]{background-position:var(--ix-food,50%) var(--iy-food,0%);background-size:var(--iz-food,100%) auto}
 /* adjust panel (⋯ > ضبط الصور) */
-#v3sheet .d3-adjit{display:flex}
+html body #v3sheet .d3-adjit{display:none!important}html body.kf-own #v3sheet .d3-adjit{display:flex!important}
 /* KFIT-BANNERS */
 html[data-bi~="home"] .hx-ph{--hx-photo:var(--bi-home)}
 html[data-bi~="set"] .fx-ban:not(.fb){--hx-photo:var(--bi-set)}
@@ -5633,6 +5633,8 @@ function d3shell(){
   if(brand){ var mb=document.createElement("button"); mb.type="button"; mb.id="d3more"; mb.className="d3-more"; mb.setAttribute("aria-label","المزيد"); mb.setAttribute("data-d3","more"); mb.innerHTML=D3I.dots; brand.appendChild(mb); }
   var orb=document.createElement("button"); orb.type="button"; orb.id="d3orb"; orb.hidden=true; orb.setAttribute("data-d3","orb"); orb.innerHTML='<span id="d3oi"></span><span id="d3ot"></span>'; document.body.appendChild(orb);
 }
+/* KFIT-OWNER: image/banner adjust tool is for the coach only */
+document.addEventListener("click",function(){ try{ document.body.classList.toggle("kf-own",!!cmAdmin()); }catch(e){} },true);
 function d3sheet(){
   var sh=$("v3sheet"), box=sh&&sh.firstElementChild;
   if(box && box.querySelector(".it[data-v3s]") && !box.querySelector("[data-d3s]")){
@@ -5880,7 +5882,7 @@ document.addEventListener("click",function(ev){
   else if(a==="tab"){ var v=b.getAttribute("data-v"), id=D3TABS.filter(function(t){ return t[0]===v; })[0][1], t=$(id); if(t){ t.click(); window.scrollTo(0,0); } }
   else if(a==="more"){ var m=document.querySelector('#v3nav [data-v3="more"]'); if(m) m.click(); }
   else if(a==="orb"){ d3act(); }
-  else if(a==="adjon"){ BANON=true; var sh2=$("v3sheet"); if(sh2) sh2.hidden=true; banPanel(); banApply(); }
+  else if(a==="adjon"){ if(!cmAdmin()) return; BANON=true; var sh2=$("v3sheet"); if(sh2) sh2.hidden=true; banPanel(); banApply(); }
   else if(a==="adj"){ d3imgAct(b.getAttribute("data-k")); }
   else if(a==="dk"){ showDhikr(true); d3tick(); }
   else if(a==="mode"){ S.prefs.d3m=b.getAttribute("data-m")==="list"?"list":"focus"; persist(); renderAll(); window.scrollTo(0,0); }
