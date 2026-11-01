@@ -236,8 +236,8 @@ main>section:has(.steps) .btn{display:inline-flex;min-width:340px}
 .faq{max-width:760px;margin-inline:auto}
 .aboutS .about{max-width:820px;margin-inline:auto;padding:30px}
 .final{margin-top:90px;padding-bottom:50px}
-.banner{aspect-ratio:16/8;max-width:980px;margin-inline:auto}
-.banner img{object-position:50% 24%}
+.banner{aspect-ratio:5/4;max-width:760px;margin-inline:auto}
+.banner img{object-position:50% 20%}
 .bt{padding-bottom:34px}
 .bt .big{font-size:clamp(2.4rem,4vw,3.4rem)}
 .fin{margin-top:30px}
@@ -358,7 +358,19 @@ main>section:has(.steps) .btn{display:inline-flex;min-width:340px}
 </div>
 <div class="sticky"><a class="btn p" href="https://kareem-fit.github.io/app.html?src=ig-bio-sticky"><span class="bl">افتح التطبيق مجانًا</span></a></div>
 <script>
-try{if(/Instagram|FBAN|FBAV/i.test(navigator.userAgent))document.getElementById("iab").hidden=false;}catch(e){}
+try{
+var ua=navigator.userAgent,iab=/Instagram|FBAN|FBAV/i.test(ua),and=/Android/i.test(ua),ios=/iPhone|iPad|iPod/i.test(ua),note=document.getElementById("iab"),tried=false;
+if(iab){note.hidden=false;
+ var cp=document.createElement("button");cp.type="button";cp.textContent="انسخ الرابط";cp.style.cssText="display:block;margin-top:8px;padding:8px 14px;border-radius:10px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700";
+ cp.onclick=function(){var u="https://kareem-fit.github.io/app.html";try{navigator.clipboard.writeText(u).then(function(){cp.textContent="اتنسخ ✓"})}catch(e){var i=document.createElement("input");i.value=u;document.body.appendChild(i);i.select();try{document.execCommand("copy");cp.textContent="اتنسخ ✓"}catch(e2){}i.remove()}};
+ note.appendChild(cp);
+ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="app.html?src="]');if(!a||tried)return;
+  var u=a.href,h=u.replace(/^https?:\/\//,"");
+  if(and){e.preventDefault();location.href="intent://"+h+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(u)+";end";}
+  else if(ios){e.preventDefault();tried=true;location.href="googlechromes://"+h;setTimeout(function(){if(!document.hidden){note.hidden=false;note.scrollIntoView({behavior:"smooth",block:"center"});}},1500);}
+ },true);
+}
+}catch(e){}
 </script>
 <script>try{var st=document.querySelector(".sticky"),h=document.querySelector(".ctas"),fn=document.querySelector(".final"),vis={h:true,f:false};function up(){st.style.display=(!vis.h&&!vis.f)?"block":"none"}if(st&&h&&fn&&"IntersectionObserver"in window){new IntersectionObserver(function(e){vis.h=e[0].isIntersecting;up()}).observe(h);new IntersectionObserver(function(e){vis.f=e[0].isIntersecting;up()}).observe(fn)}else if(st){st.style.display="block"}}catch(e){}</script>
 </body>
