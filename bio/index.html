@@ -364,15 +364,16 @@ if(iab){note.hidden=false;
  var cp=document.createElement("button");cp.type="button";cp.textContent="انسخ الرابط";cp.style.cssText="display:block;margin-top:8px;padding:8px 14px;border-radius:10px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700";
  cp.onclick=function(){var u="https://kareem-fit.github.io/app.html";try{navigator.clipboard.writeText(u).then(function(){cp.textContent="اتنسخ ✓"})}catch(e){var i=document.createElement("input");i.value=u;document.body.appendChild(i);i.select();try{document.execCommand("copy");cp.textContent="اتنسخ ✓"}catch(e2){}i.remove()}};
  note.appendChild(cp);
- document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="app.html?src="]');if(!a)return;e.preventDefault();
+ function showOv(){
   var o=document.getElementById("kov");if(o){o.hidden=false;try{history.pushState({kov:1},"")}catch(x){}return}
   o=document.createElement("div");o.id="kov";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label","افتح في المتصفح");
   o.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(6,14,20,.97);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:28px 22px;text-align:center;font-family:inherit;direction:rtl";
   o.innerHTML='<style>@keyframes kb{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}#kov .ar{font-size:3.2rem;color:#FF7A3F;animation:kb 1s infinite;line-height:1}#kov li{list-style:none;background:rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;font-size:1.15rem;font-weight:800;text-align:right}#kov li b{color:#FF7A3F}#kov button{font:inherit;font-weight:800;font-size:1.05rem;border-radius:14px;padding:13px 20px;border:1.5px solid #FF7A3F;background:transparent;color:#fff;min-width:220px}#kov button.p{background:#FF7A3F;color:#1a0b00}</style><div class="ar" aria-hidden="true">↑</div><h2 style="margin:0;font-size:1.5rem">افتح الدفتر في المتصفح</h2><p style="margin:0;opacity:.85">عشان الدخول بجوجل يشتغل، لازم تفتحه برّا إنستجرام:</p><ol style="padding:0;margin:0;display:grid;gap:10px;width:100%;max-width:340px"><li>١) اضغط النقط الثلاثة <b>⋯</b> فوق</li><li>٢) اختار <b>«فتح في المتصفح»</b></li></ol><button type="button" class="p" id="kcp">انسخ الرابط</button><button type="button" id="kcl">رجوع</button>';
   document.body.appendChild(o);try{history.pushState({kov:1},"");window.addEventListener("popstate",function(){o.hidden=true})}catch(x){}
-  document.getElementById("kcl").onclick=function(){if(history.state&&history.state.kov){history.back()}else{o.hidden=true}};
+  document.getElementById("kcl").onclick=function(){o.hidden=true;try{if(history.state&&history.state.kov)history.back()}catch(x){}};
   var c=document.getElementById("kcp");c.onclick=function(){var u="https://kareem-fit.github.io/app.html";try{navigator.clipboard.writeText(u).then(function(){c.textContent="اتنسخ ✓ افتحه في كروم أو سفاري"})}catch(x){var i=document.createElement("input");i.value=u;document.body.appendChild(i);i.select();try{document.execCommand("copy");c.textContent="اتنسخ ✓ افتحه في كروم أو سفاري"}catch(y){}i.remove()}};
- },true);
+ }
+ var ob=document.createElement("button");ob.type="button";ob.textContent="أو افتحه في المتصفح";ob.style.cssText=cp.style.cssText;ob.onclick=showOv;note.appendChild(ob);
 }
 }catch(e){}
 </script>
