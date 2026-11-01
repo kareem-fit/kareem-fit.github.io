@@ -379,7 +379,7 @@ body.v-welcome .foot{display:none}
 #gate button.g2{background:transparent;border:1px solid #2A5878;color:#F2F7FA;padding:9px 16px;font-size:.9rem;width:auto}
 #gate a{color:#2CC1B8}
 #gate .emf{width:100%;display:flex;flex-direction:column;gap:8px;text-align:start}#gate .emf[hidden]{display:none}#gate .emf label{font-size:.9rem;font-weight:700}#gate .emf input{width:100%;min-height:48px;border-radius:12px;border:1.5px solid #2A5878;background:rgba(255,255,255,.06);color:#F2F7FA;font:inherit;font-size:1rem;padding:0 12px}#gate .emb{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}#gate .emb button{min-height:48px;width:100%;font-weight:800}#gate button.emlnk{border:0;text-decoration:underline;align-self:center}#gate #emtog{width:100%;padding:13px 16px;font-size:1rem;font-weight:800}
-#gate #emlk[hidden],#gate #emhint[hidden],#gate #empwt[hidden]{display:none}#gate #emlk{width:100%;min-height:50px;font-weight:800}#gate .emhint{margin:0;font-size:.85rem;opacity:.85}#gate #empw{display:flex;flex-direction:column;gap:8px}#gate #empw[hidden]{display:none}
+#gate a.g2{border:1px solid #2A5878;border-radius:12px;color:inherit!important;padding:9px 16px;font-size:.9rem;font-weight:700;text-decoration:none!important;background:transparent}#gate #emlk[hidden],#gate #emhint[hidden],#gate #empwt[hidden]{display:none}#gate #emlk{width:100%;min-height:50px;font-weight:800}#gate .emhint{margin:0;font-size:.85rem;opacity:.85}#gate #empw{display:flex;flex-direction:column;gap:8px}#gate #empw[hidden]{display:none}
 #kfi{position:fixed;inset-inline:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:998;background:#0E2C40;color:#F2F7FA;border:1.5px solid #FF7A3F;border-radius:18px;padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.5);font-family:inherit;direction:rtl;text-align:start}#kfi[hidden]{display:none}#kfi b{display:block;font-size:1.1rem;margin-bottom:4px}#kfi p{margin:0 0 10px;font-size:.95rem;line-height:1.7}#kfi ol{margin:0 0 10px;padding-inline-start:20px;font-size:.95rem;line-height:1.8}#kfi .kb{display:flex;gap:8px}#kfi button{flex:1;min-height:46px;border-radius:12px;font:inherit;font-weight:800;border:1.5px solid #FF7A3F;background:transparent;color:#F2F7FA}#kfi button.p{background:#FF7A3F;color:#1a0b00}
 #gate .warn{background:#3a2a12;border:1px solid #E0A82E;color:#FFE3A8;border-radius:10px;padding:10px 12px;font-size:.92rem;text-align:start}
 #gate .err{color:#FFB4A3;min-height:1.4em}
@@ -1525,7 +1525,7 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 <h1>Kareem<span class="gfit">-Fit</span></h1>
 <p>دفتر التمرين المجاني</p>
 <ul class="gv"><li>تمارين بصور بداية ونهاية وشرح بسيط</li><li>سجّل أوزانك وأكلك وشوف تقدمك</li><li>بياناتك محفوظة على حسابك</li></ul>
-<div class="warn" id="gwarn" hidden><b>افتح الرابط في المتصفح.</b> الدخول بجوجل مش بيشتغل من داخل إنستجرام أو التطبيقات. اضغط النقط الثلاثة واختار "فتح في المتصفح"، أو انسخ الرابط وافتحه في كروم أو سفاري.<br><button type="button" class="g2" id="gcp" style="margin-top:8px">انسخ الرابط</button></div>
+<div class="warn" id="gwarn" hidden><b>افتح الرابط في المتصفح.</b> الدخول بجوجل مش بيشتغل من داخل إنستجرام أو التطبيقات. اضغط النقط الثلاثة واختار "فتح في المتصفح"، أو انسخ الرابط وافتحه في كروم أو سفاري.<br><button type="button" class="g2" id="gcp" style="margin-top:8px">انسخ الرابط</button> <a class="g2" id="gwa" href="https://wa.me/" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;text-decoration:none">ابعت الرابط لنفسك على واتساب</a></div>
 <button type="button" id="gbtn">ادخل بحساب جوجل</button>
 <!-- KFIT-EMAIL -->
 <button type="button" class="g2" id="emtog" aria-expanded="false" aria-controls="emf">أو ادخل بالإيميل</button>
@@ -6110,6 +6110,7 @@ if(typeof KS==="undefined" || !KS.auth){
 }
 var $=function(i){return document.getElementById(i)}, started=false, fs=KS.fs, auth=KS.auth;
 try{ fs.enablePersistence({synchronizeTabs:true}).catch(function(){}); }catch(e){}
+try{ $("gwa").href="https://wa.me/?text="+encodeURIComponent("افتح اللينك ده في كروم أو سفاري:\n"+location.origin+location.pathname); }catch(e){}
 $("gcp").onclick=function(){ var b=this; KS.copy(location.origin+location.pathname).then(function(){ b.textContent="اتنسخ"; },function(){ b.textContent="انسخه من شريط العنوان"; }); };
 $("gbtn").onclick=function(){ $("gerr").textContent=""; if(KS.inApp()){ var w=$("gwarn"); w.hidden=false; try{ w.scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){} return; } KS.signIn().catch(function(e){ $("gerr").textContent=KS.signInMsg(e); }); };
 /* KFIT-EMAIL: email + password sign-in (works inside Instagram/TikTok browsers) */
