@@ -1,9 +1,17 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="cinema">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>لوحة المدرب | Kareem Samy</title><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#08202F">
 <style>
 :root{--bg:#08202F;--sf:#10324A;--ink:#F2F7FA;--mu:#9FB6C3;--ac:#FF5A36;--tq:#2CC1B8;--ln:#2A5878;--ok:#3DDC97}
+/* KFIT-ADMINTHEME */
+:root,:root[data-theme="cinema"]{--bg:#060C13;--sf:#0D1925;--ink:#EAF1F7;--mu:#8DA3B5;--ac:#FF6B35;--tq:#2CC1B8;--ln:#1E3448;--ok:#3DDC97;--bh:linear-gradient(135deg,#FF6B35,#FFA033);--bt:#1B0D04}
+:root[data-theme="aurora"]{--bg:#09091A;--sf:#121228;--ink:#EAEAF7;--mu:#A09CC0;--ac:#8B5CF6;--tq:#2DD4A8;--ln:#2E2E58;--ok:#3DDC97;--bh:linear-gradient(135deg,#8B5CF6,#2DD4A8);--bt:#07061A}
+:root[data-theme="light"]{--bg:#F3F6F9;--sf:#FFFFFF;--ink:#12212E;--mu:#566B7B;--ac:#E0522B;--tq:#0E8F88;--ln:#CBD6DF;--ok:#14804F;--bh:linear-gradient(135deg,#E0522B,#F08A2E);--bt:#FFFFFF}
+:root[data-theme="light"]{color-scheme:light}
+body{background:radial-gradient(900px 480px at 90% -8%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 62%),var(--bg);background-attachment:fixed}
+button,.btn{background:var(--bh);color:var(--bt)}button.g{background:transparent;color:var(--ink)}.tg{background:var(--ac);color:var(--bt)}
+.card{box-shadow:0 10px 28px rgba(0,0,0,.18)}
 *{box-sizing:border-box}html{color-scheme:dark}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,Tahoma,sans-serif;line-height:1.6;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 main{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
@@ -29,7 +37,7 @@ textarea{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var
 :focus-visible{outline:3px solid var(--tq);outline-offset:2px}
 </style></head>
 <body><main>
-<div class="row" style="justify-content:space-between"><h1>لوحة المدرب</h1><div class="row"><button class="g" id="rf" hidden>تحديث</button><button class="g" id="lo" hidden>خروج</button></div></div>
+<div class="row" style="justify-content:space-between"><h1>لوحة المدرب</h1><div class="row"><button class="g" id="th" type="button" aria-label="تبديل المظهر"></button><button class="g" id="rf" hidden>تحديث</button><button class="g" id="lo" hidden>خروج</button></div></div>
 <div id="gate"><p class="mu" id="gm">سجّل دخول بحساب الإدارة.</p><button id="gb">دخول بجوجل</button></div>
 <div id="modsec" hidden>
 <div class="card ao"><h2>نشر مباشر بشارة المدرب</h2>
@@ -43,12 +51,16 @@ textarea{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var
 </div>
 <div id="dash" hidden>
 <div class="kp card" id="kp"></div>
+<div class="card" id="chc"><h2>التسجيلات والنشاط آخر 30 يوم</h2><div id="ch"></div></div><!-- KFIT-CHART -->
 <div class="card"><h2>الفيديوهات والروابط</h2><p class="mu">الزيارات والضغط على "ابدأ" والتسجيلات لكل مصدر (?src=اسم).</p><div class="tw"><table id="st"></table></div></div>
 <div class="card"><h2>المسجلين</h2>
 <div class="row"><input id="q" placeholder="ابحث بالاسم أو الإيميل أو رقم التعريف"><button id="ex">تصدير CSV</button></div>
 <p class="mu" id="cnt"></p><div class="tw"><table id="ut"></table></div></div>
 </div>
 </main>
+<script>/* KFIT-ADMINTHEME */(function(){var h=document.documentElement,T=["cinema","aurora","light"],N={cinema:"سينما 🟠",aurora:"أورورا 🟣",light:"فاتح ☀"},b=document.getElementById("th");try{var v=localStorage.getItem("kp-theme");if(T.indexOf(v)>0)h.setAttribute("data-theme",v)}catch(e){}
+function ic(){b.textContent="🎨 "+N[h.getAttribute("data-theme")]}b.onclick=function(){var n=T[(T.indexOf(h.getAttribute("data-theme"))+1)%3];h.setAttribute("data-theme",n);try{localStorage.setItem("kp-theme",n)}catch(e){}ic()};ic()})();</script>
+
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -179,7 +191,17 @@ function paint(){
   $("st").innerHTML='<tr><th>المصدر</th><th>زيارات</th><th>ضغطوا ابدأ</th><th>سجّلوا</th><th>تمرنوا</th><th>تحويل</th><th></th></tr>'+rows.map(function(r){
     return '<tr><td dir="ltr">'+esc(r.k)+'</td><td class="n">'+r.v+'</td><td class="n">'+r.c+'</td><td class="n">'+r.s+'</td><td class="n">'+r.t+'</td><td class="n">'+(r.v?Math.round(r.s/r.v*100)+"%":"-")+'</td><td><div class="bar"><i style="width:'+Math.round(r.s/mx*100)+'%"></i></div></td></tr>';
   }).join("");
+  try{ chart(); }catch(e){}
   draw();
+}
+function chart(){
+  var D=86400000, N=30, now=new Date(), t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime()-(N-1)*D, A=[],B=[],i;
+  for(i=0;i<N;i++){ A.push(0); B.push(0); }
+  users.forEach(function(u){ var c=ts(u.createdAt), l=ts(u.lastSeen), x; if(c){ x=Math.floor((c-t0)/D); if(x>=0&&x<N) A[x]++; } if(l){ x=Math.floor((l-t0)/D); if(x>=0&&x<N) B[x]++; } });
+  function svg(S,cls,name){ var mx=Math.max(1,Math.max.apply(null,S)), W=600, H=110, bw=W/N, s='', tot=S.reduce(function(a,b){ return a+b; },0);
+    S.forEach(function(v,k){ var h=Math.round(v/mx*(H-18)); s+='<rect x="'+(k*bw+2).toFixed(1)+'" y="'+(H-h)+'" width="'+(bw-4).toFixed(1)+'" height="'+Math.max(h,v?2:0)+'" rx="3" fill="var(--'+cls+')"><title>'+new Date(t0+k*D).toLocaleDateString("ar-EG",{day:"numeric",month:"short"})+": "+v+'</title></rect>'; });
+    return '<div style="margin:8px 0"><div class="row" style="justify-content:space-between"><b>'+name+'</b><span class="mu">المجموع: '+tot+' · أعلى يوم: '+mx+'</span></div><svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+name+': '+tot+' آخر 30 يوم" style="display:block;max-height:140px">'+s+'<line x1="0" y1="'+H+'" x2="'+W+'" y2="'+H+'" stroke="var(--ln)"/></svg><div class="row mu" dir="ltr" style="justify-content:space-between;font-size:.78rem"><span>'+new Date(t0).toLocaleDateString("ar-EG",{day:"numeric",month:"short"})+'</span><span>النهارده</span></div></div>'; }
+  $("ch").innerHTML=svg(A,"ac","مسجّلين جداد كل يوم")+svg(B,"tq","آخر ظهور للمسجلين كل يوم")+'<p class="mu">آخر ظهور = يوم آخر مرة فتح فيها كل مسجّل التطبيق.</p>';
 }
 function filt(){ var q=($("q").value||"").trim().toLowerCase(); return users.filter(function(u){ return !q||[u.name,u.email,u.sid,u.phone].join(" ").toLowerCase().indexOf(q)>-1; }); }
 function draw(){

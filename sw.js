@@ -1,5 +1,5 @@
-var V="ks-v3";
-var SHELL=["./","index.html","app.html","fb.js","manifest.webmanifest","icon-192.png","avatar.jpg","hero.jpg"];
+var V="ks-v7";
+var SHELL=["./","index.html","app.html","fb.js","manifest.webmanifest","icon-192.png","icon-512.png","icons/apple-touch-icon-180.png","avatar.jpg","hero.jpg","home-hero.jpg"];
 self.addEventListener("install",function(e){ e.waitUntil(caches.open(V).then(function(c){ return c.addAll(SHELL); }).then(function(){ return self.skipWaiting(); })); });
 self.addEventListener("activate",function(e){ e.waitUntil(caches.keys().then(function(ks){ return Promise.all(ks.filter(function(k){ return k!==V; }).map(function(k){ return caches.delete(k); })); }).then(function(){ return self.clients.claim(); })); });
 self.addEventListener("fetch",function(e){
