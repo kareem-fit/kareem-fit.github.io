@@ -378,7 +378,7 @@ body.v-welcome .foot{display:none}
 #gate button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:14px 20px;font-weight:800;font-size:1.1rem;width:100%;background:#FF5A36;color:#fff}
 #gate button.g2{background:transparent;border:1px solid #2A5878;color:#F2F7FA;padding:9px 16px;font-size:.9rem;width:auto}
 #gate a{color:#2CC1B8}
-#gate .emf{width:100%;display:flex;flex-direction:column;gap:8px;text-align:start}#gate .emf[hidden]{display:none}#gate .emf label{font-size:.9rem;font-weight:700}#gate .emf input{width:100%;min-height:48px;border-radius:12px;border:1.5px solid #2A5878;background:rgba(255,255,255,.06);color:#F2F7FA;font:inherit;font-size:1rem;padding:0 12px}#gate .emb{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}#gate .emb button{min-height:48px;width:100%;font-weight:800}#gate button.emlnk{border:0;text-decoration:underline;align-self:center}#gate.kiab #gbtn{opacity:.55}#gate.kiab #emtog{background:var(--t-accent,#FF7A3F);color:var(--t-onac,#1a0b00);border-color:transparent;font-weight:800;font-size:1rem;padding:13px 16px}
+#gate .emf{width:100%;display:flex;flex-direction:column;gap:8px;text-align:start}#gate .emf[hidden]{display:none}#gate .emf label{font-size:.9rem;font-weight:700}#gate .emf input{width:100%;min-height:48px;border-radius:12px;border:1.5px solid #2A5878;background:rgba(255,255,255,.06);color:#F2F7FA;font:inherit;font-size:1rem;padding:0 12px}#gate .emb{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}#gate .emb button{min-height:48px;width:100%;font-weight:800}#gate button.emlnk{border:0;text-decoration:underline;align-self:center}#gate #emtog{width:100%;padding:13px 16px;font-size:1rem;font-weight:800}
 #gate .warn{background:#3a2a12;border:1px solid #E0A82E;color:#FFE3A8;border-radius:10px;padding:10px 12px;font-size:.92rem;text-align:start}
 #gate .err{color:#FFB4A3;min-height:1.4em}
 </style>
@@ -6103,15 +6103,14 @@ if(typeof KS==="undefined" || !KS.auth){
 }
 var $=function(i){return document.getElementById(i)}, started=false, fs=KS.fs, auth=KS.auth;
 try{ fs.enablePersistence({synchronizeTabs:true}).catch(function(){}); }catch(e){}
-if(KS.inApp()) $("gwarn").hidden=false;
 $("gcp").onclick=function(){ var b=this; KS.copy(location.origin+location.pathname).then(function(){ b.textContent="اتنسخ"; },function(){ b.textContent="انسخه من شريط العنوان"; }); };
-$("gbtn").onclick=function(){ $("gerr").textContent=""; KS.signIn().catch(function(e){ $("gerr").textContent=KS.signInMsg(e); }); };
+$("gbtn").onclick=function(){ $("gerr").textContent=""; if(KS.inApp()){ var w=$("gwarn"); w.hidden=false; try{ w.scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){} return; } KS.signIn().catch(function(e){ $("gerr").textContent=KS.signInMsg(e); }); };
 /* KFIT-EMAIL: email + password sign-in (works inside Instagram/TikTok browsers) */
 (function(){
   var tog=$("emtog"), f=$("emf"), ge=$("gerr"), em=$("emi"), pw=$("emp");
   function open(v){ f.hidden=!v; tog.setAttribute("aria-expanded",v?"true":"false"); if(v){ try{ em.focus(); }catch(e){} } }
   tog.onclick=function(){ open(f.hidden); };
-  if(KS.inApp()){ $("gate").classList.add("kiab"); open(true); }
+  if(KS.inApp()){ $("gate").classList.add("kiab"); }
   function msg(e){ var c=(e&&e.code)||"";
     if(c==="auth/invalid-email") return "الإيميل مش مكتوب صح.";
     if(c==="auth/missing-password"||c==="auth/weak-password") return "الباسورد لازم يكون ٦ حروف أو أكتر.";
