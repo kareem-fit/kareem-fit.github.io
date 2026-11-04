@@ -115,6 +115,17 @@ service cloud.firestore {
       allow create, update: if isAdmin()
         && request.resource.data.keys().hasOnly(['n','k','u','j'])
         && request.resource.data.j is string && request.resource.data.j.size() < 100000;
+
+      // تقارير المتدرب: المتدرب (معاه اللينك) يبعت تقرير جديد بس، والمدرب بس يقرأ ويحذف
+      match /reports/{rid} {
+        allow create: if exists(/databases/$(database)/documents/plans/$(id))
+          && request.resource.data.keys().hasOnly(['u','t','d','k','g'])
+          && request.resource.data.u is string && request.resource.data.u.size() <= 40
+          && request.resource.data.t is string && request.resource.data.t.size() <= 300
+          && request.resource.data.d is list && request.resource.data.d.size() <= 60
+          && request.resource.data.k is number && request.resource.data.g is number;
+        allow read, delete: if isAdmin();
+      }
     }
   }
 }
