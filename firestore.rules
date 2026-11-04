@@ -5,33 +5,116 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function isAdmin() {
       return signedIn()
-        && request.auth.token.email == "kateemsamy51@gmail.com"
+        && request.auth.token.email == 'kateemsamy51@gmail.com'
         && request.auth.token.email_verified == true;
     }
+    function isMod() {
+      return signedIn() && exists(/databases/$(database)/documents/mods/$(request.auth.uid));
+    }
+    function isStaff() { return isAdmin() || isMod(); }
+    function addedLikes() {
+      return request.resource.data.likes.toSet().difference(resource.data.likes.toSet());
+    }
+    function removedLikes() {
+      return resource.data.likes.toSet().difference(request.resource.data.likes.toSet());
+    }
+    function likeOnly() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+        && resource.data.pubAt > 0
+        && addedLikes().size() + removedLikes().size() <= 1
+        && (addedLikes().size() == 0 || addedLikes() == [request.auth.uid].toSet())
+        && (removedLikes().size() == 0 || removedLikes() == [request.auth.uid].toSet());
+    }
 
-    // بيانات التمرين الخاصة بكل مستخدم: صاحبها بس
-    match /users/{uid}/{document=**} {
+    match /stats/{statId} {
+      allow read: if isAdmin();
+      allow create: if statId.matches('^[vc]_[a-z0-9_-]*$')
+        && request.resource.data.keys().hasOnly(['n'])
+        && request.resource.data.n == 1;
+      allow update: if statId.matches('^[vc]_[a-z0-9_-]*$')
+        && request.resource.data.keys().hasOnly(['n'])
+        && request.resource.data.n == resource.data.n + 1;
+    }
+
+    match /profiles/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create, update, delete: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid}/data/{docId} {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
 
-    // ملف تعريف بسيط لكل مستخدم: صاحبه يكتب، وصاحبه والمدرب يقرأوا
-    match /profiles/{uid} {
-      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
-      allow create, update: if signedIn() && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['name','email','sid','phone','plan','workouts','lastTrain','lastSeen','createdAt','src'])
-        && (!('name' in request.resource.data) || (request.resource.data.name is string && request.resource.data.name.size() <= 60))
-        && (!('phone' in request.resource.data) || (request.resource.data.phone is string && request.resource.data.phone.size() <= 16))
-        && (!('src' in request.resource.data) || (request.resource.data.src is string && request.resource.data.src.size() <= 30));
-      allow delete: if signedIn() && request.auth.uid == uid;
+    match /board/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
     }
 
-    // عدّادات الزيارات: أي حد يزوّد بواحد، والمدرب بس يقرأ
-    match /stats/{id} {
-      allow read: if isAdmin();
-      allow create: if id.matches('^[vc]_[a-z0-9_-]{1,30}$')
-        && request.resource.data.keys().hasOnly(['n']) && request.resource.data.n == 1;
-      allow update: if id.matches('^[vc]_[a-z0-9_-]{1,30}$')
-        && request.resource.data.keys().hasOnly(['n']) && request.resource.data.n == resource.data.n + 1;
+    match /mods/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /posts/{pid} {
+      allow read: if signedIn()
+        && (resource.data.pubAt > 0 || resource.data.pinAt > 0
+            || resource.data.uid == request.auth.uid || isStaff());
+
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid','name','text','img','status','pubAt','pinAt','admin','likes','createdAt'])
+        && request.resource.data.keys().hasAll(['uid','name','text','status','pubAt','pinAt','admin','likes','createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name is string && request.resource.data.name.size() <= 40
+        && request.resource.data.text is string && request.resource.data.text.size() <= 500
+        && (!('img' in request.resource.data)
+            || (request.resource.data.img is string && request.resource.data.img.size() < 400000))
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.likes.size() == 0
+        && request.resource.data.pubAt is number && request.resource.data.pinAt is number
+        && (isAdmin()
+            || (request.resource.data.status == 'pending'
+                && request.resource.data.pubAt == 0
+                && request.resource.data.pinAt == 0
+                && request.resource.data.admin == false));
+
+      allow update: if signedIn() && (
+        (isAdmin()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','pubAt','pinAt','likes'])
+          && request.resource.data.status in ['pending','approved','rejected']
+          && ((request.resource.data.status == 'approved') == (request.resource.data.pubAt > 0))
+          && (request.resource.data.pinAt == 0 || request.resource.data.pubAt > 0))
+        || (isMod()
+          && resource.data.pinAt == 0
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','pubAt'])
+          && request.resource.data.status in ['pending','approved','rejected']
+          && ((request.resource.data.status == 'approved') == (request.resource.data.pubAt > 0)))
+        || likeOnly()
+      );
+
+      allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isStaff());
+
+      match /comments/{cid} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['uid','name','text','admin','createdAt'])
+          && request.resource.data.keys().hasAll(['uid','name','text','admin','createdAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.name is string && request.resource.data.name.size() <= 40
+          && request.resource.data.text is string
+          && request.resource.data.text.size() >= 1 && request.resource.data.text.size() <= 200
+          && request.resource.data.createdAt == request.time
+          && (isAdmin() || request.resource.data.admin == false);
+        allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      }
+    }
+
+    // خطط الأكل: أي حد معاه اللينك يقرأ خطة واحدة، والباقي للمدرب بس
+    match /plans/{id} {
+      allow get: if true;
+      allow list, delete: if isAdmin();
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(['n','k','u','j'])
+        && request.resource.data.j is string && request.resource.data.j.size() < 100000;
     }
   }
 }
