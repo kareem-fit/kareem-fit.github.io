@@ -13,7 +13,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.d3-yt{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;margin-top:10px;border:1.5px solid #EA4A25;border-radius:12px;background:rgba(234,74,37,.12);color:inherit;font-weight:800;font-size:.98rem;text-decoration:none}
+.d3-yt span{color:inherit}
+.d3-hd .d3-rc{margin-top:4px;min-height:30px;padding:0 10px;font-size:.8rem}
+</style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
 <style>
@@ -2252,7 +2255,8 @@ var AR = {fdbp:"ضغط صدر مستوي بالدمبل",hilo:"تفتيح كاب
 salr:"رفرفة جانبية بالكابل بذراع واحدة",bayes:"باي بالكابل (بايزيان)",rpd:"جهاز الكتف الخلفي",sspd:"دفع ترايسبس بالبار المستقيم",ssoh:"مد ترايسبس بالحبل فوق الراس",incurl:"باي بالدمبل على بنش مائل",hammer:"هامر كيرل بالدمبل",shrug:"هز الكتفين بالكابل (ترابيس)",wrist:"تمرين الساعد بالكابل",
 incfly:"تفتيح صدر بالكابل من أسفل لأعلى",cdips:"متوازي للصدر",legext:"مد الرجل على الجهاز (فخذ أمامي)",msp:"ضغط كتف على الجهاز",dlr:"رفرفة جانبية بالدمبل",legpress:"ضغط الرجل",
 crdf:"كتف خلفي بالكابل",calf:"تمرين السمانة",dbrdl:"رفعة رومانية بالدمبل",wgsr:"تجديف كابل بقبضة واسعة",sapd:"سحب لات بذراعين شبه مستقيمين",ccrunch:"كرنش بطن بالكابل",sapush:"دفع ترايسبس بالكابل بذراع واحدة",hipthrust:"دفع الحوض",preacher:"باي على جهاز البريتشر",birddog:"بيرد دوج (تقوية الكور والقطنية)",pallof:"بالوف برس بالكابل (ثبات الكور)",dbsp:"ضغط كتف بالدمبل",legcurl:"ثني الرجل نايم على البطن (هامسترينج)",abduct:"جهاز إبعاد الفخدين (مؤخرة جانبية)"};
-var RESTS = [90,120,150,180];
+var RESTS = [60,90,120,150,180];
+function restFor(e){ return S.prefs.restUser ? S.prefs.rest : (e&&e.rest ? e.rest : S.prefs.rest); }
 
 var BASE_DAYS = DAYS, LIB = {}, DAYMAP = {}, TARGET = 4;
 BASE_DAYS.forEach(function(d){ d.ex.forEach(function(e){ LIB[e.id] = e; }); });
@@ -2387,13 +2391,15 @@ initDay();
 var cloudTimer = null;
 
 var cloudDb = null, cloudUid = null, written = {};
+function pid(p){ return p.date+(p.k?"~"+p.k:""); }
+function psort(a,b){ return a.date<b.date?-1:a.date>b.date?1:String(a.k||"")<String(b.k||"")?-1:1; }
 function mkey(d){ return String(d).slice(0,7); }
 function splitState(){
   var rest = {}; Object.keys(S).forEach(function(k){ if(k!=="sessions" && k!=="meals" && k!=="photos") rest[k] = S[k]; });
   var docs = {};
   S.sessions.forEach(function(x){ var n = "sess-"+mkey(x.date); (docs[n] = docs[n] || []).push(x); });
   Object.keys(S.meals||{}).forEach(function(d){ var n = "meal-"+mkey(d); docs[n] = docs[n] || {}; docs[n][d] = S.meals[d]; });
-  (S.photos||[]).forEach(function(p){ docs["photo-"+p.date] = p; });
+  (S.photos||[]).forEach(function(p){ docs["photo-"+pid(p)] = p; });
   var out = {}; Object.keys(docs).forEach(function(n){ out[n] = JSON.stringify(docs[n]); });
   return {rest:rest, docs:out};
 }
@@ -2464,7 +2470,7 @@ function initCloud(){
           }catch(e){}
         });
         all.sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:b.id-a.id; });
-        photos.sort(function(a,b){ return a.date<b.date?-1:1; }); o.sessions = all; o.meals = meals; o.photos = photos; adopt(o);
+        photos.sort(psort); o.sessions = all; o.meals = meals; o.photos = photos; adopt(o);
       });
     } else if((!d || (d.t||0) < (S.t||0)) && (S.sessions.length || Object.keys(S.draft).length || Object.keys(S.weights).length || Object.keys(S.meals).length || S.photos.length || S.profile.name)){
       cloudPush(false);
@@ -2905,8 +2911,8 @@ document.addEventListener("click", function(ev){
   var a = b.getAttribute("data-act");
   if(a==="day"){ dayIdx = +b.getAttribute("data-i"); S.prefs.day = dayIdx; persist(); view = "train"; renderAll(); window.scrollTo(0,0); }
   else if(a==="view"){ view = b.getAttribute("data-v"); pendingDel = null; renderAll(); window.scrollTo(0,0); }
-  else if(a==="rest"){ S.prefs.rest = +b.getAttribute("data-s"); persist(); renderTabs(); updateProgress(); }
-  else if(a==="restcycle"){ var ri = RESTS.indexOf(S.prefs.rest); S.prefs.rest = RESTS[(ri+1)%RESTS.length]; persist(); updateProgress(); }
+  else if(a==="rest"){ S.prefs.restUser = true; S.prefs.rest = +b.getAttribute("data-s"); persist(); renderTabs(); updateProgress(); }
+  else if(a==="restcycle"){ var ri = S.prefs.restUser ? RESTS.indexOf(S.prefs.rest) : -1; S.prefs.restUser = true; S.prefs.rest = RESTS[(ri+1)%RESTS.length]; persist(); updateProgress(); if(d3on()) renderAll(); }
   else if(a==="legsafe"){ S.prefs.legSafe = !S.prefs.legSafe; persist(); renderAll(); }
   else if(a==="check"){
     var d = draftFor(DAYS[dayIdx]), x = d[b.getAttribute("data-ex")][+b.getAttribute("data-i")];
@@ -2914,7 +2920,7 @@ document.addEventListener("click", function(ev){
     b.setAttribute("aria-pressed", x.d);
     b.closest(".set").classList.toggle("done", x.d);
     updateProgress();
-    if(x.d){ try{ midCheck(); }catch(e){} } if(x.d){ var exo = null; DAYS[dayIdx].ex.forEach(function(q){ if(q.id===b.getAttribute("data-ex")) exo = q; }); startRest(exo && exo.rest ? exo.rest : S.prefs.rest); }
+    if(x.d){ try{ midCheck(); }catch(e){} } if(x.d){ var exo = null; DAYS[dayIdx].ex.forEach(function(q){ if(q.id===b.getAttribute("data-ex")) exo = q; }); startRest(restFor(exo)); }
   }
   else if(a==="rest-add"){ restEnd += (+b.getAttribute("data-s"))*1000; restTotal += (+b.getAttribute("data-s")); if(!restTick){ restTick = setInterval(tick,250); } tick(); }
   else if(a==="rest-skip"){ stopRest(); }
@@ -3689,7 +3695,7 @@ function bdPhotos(){
   var P=S.photos, tk=todayKey(), h='<div class="fx">'+bdHead(BDI.cam,"صور التقدم","شوف تطور جسمك مع الوقت");
   h+='<section class="fx-card"><label class="bd-up"><input type="file" id="ph-file" accept="image/*"><span class="bd-ui">'+BDI.cam+'</span><b>إضافة صورة جديدة</b><small>اختار صورة من المعرض أو صوّر بالكاميرا</small></label>'+
     '<label class="fld">التاريخ<input type="date" id="ph-date" value="'+tk+'"></label>'+
-    '<p class="sub">صورة كل أسبوعين بنفس الإضاءة والوضعية. الصور خاصة بيك وبتتحفظ على حسابك، ومحدش غيرك يشوفها.</p>'+
+    '<p class="sub">صورة كل أسبوعين بنفس الإضاءة والوضعية. تقدر تضيف أكتر من صورة في نفس اليوم (قدام / جنب / ضهر)، أو تختار تاريخ يوم فات نسيته. الصور خاصة بيك وبتتحفظ على حسابك، ومحدش غيرك يشوفها.</p>'+
     (P.length?'<p class="sub">'+(function(){ var dd=diffD(tk,P[P.length-1].date); return dd>=14?"عدّى "+dd+" يوم على آخر صورة، وقت صورة جديدة.":"آخر صورة من "+dd+" يوم."; })()+'</p>':'')+'</section>';
   if(P.length>=2){
     var f=P[0], l=P[P.length-1];
@@ -3698,8 +3704,8 @@ function bdPhotos(){
   }
   h+='<section class="fx-card"><div class="fx-lh"><h2>صورك السابقة</h2><span class="bd-ico">'+BDI.imgs+'</span></div>'+
     (P.length?'<div class="bd-ph">'+P.slice().reverse().map(function(p){
-      var c=(bdConf===p.date);
-      return '<div class="bd-p"><img src="'+p.img+'" alt="صورة '+sd(p.date)+'"><button type="button" class="bd-x'+(c?' conf':'')+'" data-act="phdel1" data-d="'+p.date+'" aria-label="حذف الصورة">'+(c?"تأكيد؟":FXI.del)+'</button><span>'+p.date.replace(/-/g,"/")+'</span></div>';
+      var c=(bdConf===pid(p));
+      return '<div class="bd-p"><img src="'+p.img+'" alt="صورة '+sd(p.date)+'"><button type="button" class="bd-x'+(c?' conf':'')+'" data-act="phdel1" data-d="'+pid(p)+'" aria-label="حذف الصورة">'+(c?"تأكيد؟":FXI.del)+'</button><span>'+p.date.replace(/-/g,"/")+'</span></div>';
     }).join("")+'</div>':'<div class="fx-empty">لسه ماضفتش صور.</div>')+'</section></div>';
   return h;
 }
@@ -4341,7 +4347,7 @@ document.addEventListener("click", function(ev){
   else if(a==="fxredo"){ fxShown=false; renderAll(); window.scrollTo(0,0); }
   else if(a==="bt"){ S.prefs.bt=b.getAttribute("data-v"); bdConf=null; persist(); renderAll(); window.scrollTo(0,0); }
   else if(a==="bdall"){ bdAll=!bdAll; renderAll(); }
-  else if(a==="phdel1"){ var pd=b.getAttribute("data-d"); if(bdConf===pd){ S.photos=S.photos.filter(function(x){ return x.date!==pd; }); bdConf=null; persist(); toast("اتحذفت الصورة"); } else { bdConf=pd; } renderAll(); }
+  else if(a==="phdel1"){ var pd=b.getAttribute("data-d"); if(bdConf===pd){ S.photos=S.photos.filter(function(x){ return pid(x)!==pd; }); bdConf=null; persist(); toast("اتحذفت الصورة"); } else { bdConf=pd; } renderAll(); }
   else if(a==="sm"){ S.prefs.sm=b.getAttribute("data-v"); persist(); renderAll(); window.scrollTo(0,0); }
   else if(a==="sbg"){ S.share.bg=b.getAttribute("data-v"); persist(); renderAll(); }
   else if(a==="lgopen"){ var li=+b.getAttribute("data-id"); lgOpen[li]=!lgOpen[li]; if(!lgOpen[li] && pendingDel===li) pendingDel=null; renderAll(); }
@@ -4431,9 +4437,10 @@ function addPhoto(file){
       var sc=Math.min(1,480/im.width), c=document.createElement("canvas"); c.width=Math.round(im.width*sc); c.height=Math.round(im.height*sc);
       c.getContext("2d").drawImage(im,0,0,c.width,c.height);
       var dt=($("ph-date")&&$("ph-date").value)||todayKey();
-      S.photos=S.photos.filter(function(p){ return p.date!==dt; });
-      S.photos.push({date:dt,img:c.toDataURL("image/jpeg",0.7)});
-      S.photos.sort(function(a,b){ return a.date<b.date?-1:1; });
+      var np={date:dt,img:c.toDataURL("image/jpeg",0.7)};
+      if(S.photos.some(function(p){ return p.date===dt; })) np.k=Date.now().toString(36);
+      S.photos.push(np);
+      S.photos.sort(psort);
       persist(); toast("اتحفظت الصورة"); renderAll();
     };
     im.onerror=function(){ toast("الصورة دي مش مدعومة"); };
@@ -5510,7 +5517,7 @@ function d3vals(e,arr,si){
 function d3head(day,mode){
   var cnt=d3counts(day), list=d3dayExs(day), f=mode==="focus";
   return '<div class="d3-hd"><div class="d3-mini" role="img" aria-label="تم '+cnt[0]+' من '+cnt[1]+'"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="var(--d3-line)"/><circle id="d3mini" cx="24" cy="24" r="20" stroke="var(--d3-acc)"/></svg><span>'+cnt[0]+'</span></div>'+
-    '<div class="t"><b>'+esc(day.name)+'</b><small>'+cnt[0]+' من '+cnt[1]+' مجموعة · '+list.length+' تمارين</small></div>'+
+    '<div class="t"><b>'+esc(day.name)+'</b><small>'+cnt[0]+' من '+cnt[1]+' مجموعة · '+list.length+' تمارين</small><button type="button" class="dh-rest d3-rc" data-act="restcycle" aria-label="مدة الراحة بين المجموعات. اضغط للتغيير"><span>راحة <b>'+(S.prefs.restUser?mmss(S.prefs.rest):"تلقائي")+'</b></span></button></div>'+
     '<div class="d3-seg" role="group" aria-label="طريقة العرض"><button type="button" data-d3="mode" data-m="focus" aria-pressed="'+f+'">تركيز</button><button type="button" data-d3="mode" data-m="list" aria-pressed="'+!f+'">قائمة</button></div></div>';
 }
 function d3focus(day,d){
@@ -5529,7 +5536,7 @@ function d3focus(day,d){
     '<p class="tg"><b>'+e.s+' × '+(e.rp||(e.lo+"–"+e.hi))+'</b>'+(e.u?(e.us||" لكل دراع"):"")+' · '+(e.rt?"راحة "+e.rt:"قريب من الفشل")+'</p>'+
     '<ul class="chips">'+(e.tag?'<li>'+e.tag+'</li>':"")+e.m.map(function(k){ return '<li>'+MN[k]+'</li>'; }).join("")+'</ul></div>'+comboFig(e)+'</div>'+
     pairHtml(e)+howHtml(e.id)+
-    (up?'<div class="d3-up">↑ جاهز تزوّد الوزن: جرّب '+nextW(e,last)+' kg</div>':"")+lastH+'<p class="cue">'+e.cue+'</p>'+(e.warn?'<div class="banner">'+e.warn+'</div>':"")+'</article>');
+    (up?'<div class="d3-up">↑ جاهز تزوّد الوزن: جرّب '+nextW(e,last)+' kg</div>':"")+lastH+'<p class="cue">'+e.cue+'</p>'+(e.warn?'<div class="banner">'+e.warn+'</div>':"")+'<a class="d3-yt" href="'+ytHref(e)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#EA4A25"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>شاهد على يوتيوب</span></a></article>');
   h.push('<div class="d3-dots" role="group" aria-label="مجموعات التمرين">'+dots+'</div>');
   if(si>=0){
     h.push('<div class="d3-st"><div><div class="d3-stl"><span>الوزن (kg)</span><span><button type="button" class="d3-stepbtn" data-d3="step" aria-label="حجم خطوة الوزن">± '+d3f(step)+'</button></span></div>'+
@@ -5581,7 +5588,7 @@ function d3act(){
   updateProgress(); try{ midCheck(); }catch(er){}
   var left=d3counts(day);
   if(left[0]===left[1]){ stopRest(); toast("خلّصت كل المجموعات. اضغط «حفظ تمرين اليوم»"); d3draw(); return; }
-  if(!was) startRest(e.rest?e.rest:S.prefs.rest);
+  if(!was) startRest(restFor(e));
   var exDone=!arr.some(function(y){ return !y.d; });
   if(exDone && ix<list.length-1){ toast("خلّصت "+(AR[e.id]||e.n)); d3draw(); setTimeout(function(){ if(view==="train" && D3.ix[day.id]===ix){ for(var k=1;k<list.length;k++){ var j=ix+k; if(j<list.length && (d[list[j].id]||[]).some(function(y){ return !y.d; })){ d3go(day,j,"sl"); return; } } } },900); }
   else { toast("اتسجلت المجموعة "+(si+1)); d3draw(); }
@@ -5596,6 +5603,7 @@ function d3draw(dir){
 function d3tick(){
   var ring=$("d3ring"); if(!ring) return;
   var left=restEnd?(restEnd-Date.now())/1000:0, on=!!restTick, def=S.prefs.rest;
+  try{ var dd=DAYS[dayIdx], ce=d3dayExs(dd)[d3idx(dd)]; def=restFor(ce); }catch(e){}
   var rf=$("d3rf"), C=2*Math.PI*62, frac=0, txt, lab;
   if(on && left>0){ frac=restTotal?left/restTotal:0; txt=mmss(Math.ceil(left)); lab=left<=10?"استعد":"راحة"; }
   else if(!on && restEnd && Date.now()>=restEnd && Date.now()-restEnd<8000){ txt="0:00"; lab="يلا المجموعة الجاية"; }
