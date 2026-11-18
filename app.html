@@ -2328,7 +2328,28 @@ function applyOverride(days){
     return Object.assign({},d,{ex:ex});
   });
 }
-function buildDays0(n){
+/* KFIT-WEEK: coach picks what happens on each weekday (w[dow] = rest|cardio|mob|day id) */
+var WKOK=/^(rest|cardio|mob|d[1-4]|p[0-9][a-z])$/;
+function weekPick(id,i,n){
+  if(id==="rest"||id==="cardio"||id==="mob") return mkRest(id,i,n);
+  var bi={d1:0,d2:1,d3:3,d4:5}[id];
+  if(bi!==undefined){ return Object.assign({},BASE_DAYS[bi],{wd:WDS[i][0],dow:WDS[i][1]}); }
+  var k=id.slice(1); if(/^p/.test(id) && TPL[k]) return mkDay(id,TPL[k][0],i,TPL[k][1]);
+  return mkRest("rest",i,n);
+}
+function applyWeek(list,n){
+  var ov=(typeof S!=="undefined" && S)?S.override:null;
+  if(!ov || !Array.isArray(ov.w) || ov.w.length!==7 || ov.p!==n) return list;
+  var seen={};
+  return list.map(function(d,i){
+    var k=ov.w[WDS[i][1]];
+    if(typeof k!=="string" || !WKOK.test(k)) return d;
+    if(k!=="rest" && k!=="cardio" && k!=="mob"){ if(seen[k]) return mkRest("rest",i,n); seen[k]=1; }
+    return weekPick(k,i,n);
+  });
+}
+function buildDays0(n){ return applyWeek(buildDays00(n),n); }
+function buildDays00(n){
   if(n===4) return BASE_DAYS.map(function(d,i){ return Object.assign({},d,{wd:WDS[i][0],dow:WDS[i][1]}); });
   return ((WS===5&&SCHF[n])?SCHF[n]:SCH[n]).map(function(k,i){ if(k==="d1" || k==="d2"){ var bd=BASE_DAYS[k==="d1"?0:1]; return Object.assign({},bd,{wd:WDS[i][0],dow:WDS[i][1]}); } return TPL[k] ? mkDay("p"+k,TPL[k][0],i,TPL[k][1]) : mkRest(k,i,n); });
 }
@@ -2368,6 +2389,7 @@ function decodeCode(c){
 
 function validCode(o){
   if(!o || !Array.isArray(o.ops) || o.ops.length>60) return false;
+  if(o.w!==undefined && !(Array.isArray(o.w) && o.w.length===7 && o.w.every(function(k){ return k===null || (typeof k==="string" && WKOK.test(k)); }))) return false;
   var known={};
   return o.ops.every(function(op){
     if(!op || typeof op.d!=="string" || !/^[a-z0-9]{1,8}$/.test(op.d)) return false;
@@ -4330,6 +4352,7 @@ document.addEventListener("click", function(ev){
     if(o.u){ if(!o.i || o.i!==window.__SID){ $("codemsg").textContent="الكود ده مش صح. اتأكد إنك نسخته كامل من رسالة المدرب."; return; } S.canMine=true; persist(); renderAll(); toast("اتفتحت لك شاشة برنامجي"); return; }
     S.override={code:"",n:String(o.n||"").slice(0,40),ops:o.ops};
     if(o.p===4 || SCH[o.p]) S.plan=o.p;
+    if(o.w){ S.override.w=o.w; S.override.p=S.plan; }
     initDay(); persist(); renderAll(); toast("اتطبّق برنامجك المخصوص");
   }
   else if(a==="codeoff"){ S.override=null; initDay(); persist(); renderAll(); toast("رجع البرنامج الأصلي"); }
