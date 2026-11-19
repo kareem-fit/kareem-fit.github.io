@@ -1,0 +1,1 @@
+Quran text: Tanzil Project (tanzil.net), Uthmani, Hafs. Copyright (C) 2007-2021 Tanzil Project. Creative Commons Attribution 3.0. Permission is granted to copy and distribute verbatim copies of this text, but CHANGING IT IS NOT ALLOWED.
