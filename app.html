@@ -397,6 +397,11 @@ body.v-welcome .foot{display:none}
 #qtm .qtb img{max-height:42vh;max-height:42dvh}
 #qtm .qtr{grid-template-columns:1.6fr 1.2fr .9fr;gap:6px}
 #qtm .qtr .btn{min-height:46px;padding:0 6px;font-size:.92rem}.qtimgw{max-height:62vh;display:flex;justify-content:center}.qtb img{max-height:62vh;width:auto;max-width:100%;margin:0 auto}.cx-mod{display:flex;gap:8px;padding:10px 0 2px}.cx-mod .btn{flex:1;min-height:44px}
+.hx-faith{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:12px 12px 6px;margin:12px 0;display:grid;gap:8px}
+.hx-faith h2{margin:0 2px 2px;font-size:1.05rem}
+.fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
+.fh-r.due{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.fh-r.ok{opacity:.75}
+.fh-i{font-size:1.5rem}.fh-t{flex:1;display:grid}.fh-t small{color:var(--muted)}.fh-s{font-weight:800;color:var(--muted)}.fh-r.ok .fh-s{color:#4FCB8A}.fh-r.due .fh-s{color:var(--accent)}
 .ad-bs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .ad-b{display:grid;gap:2px;justify-items:center;padding:14px 8px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--text);min-height:92px}
 .ad-b.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
@@ -3760,6 +3765,16 @@ function hxAdhk(tk){
   function btn(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return '<button type="button" class="ad-b'+(t===cur?' on':'')+(ok?' ok':'')+'" data-act="adopen" data-t="'+t+'"><span class="ad-i">'+ic+'</span><b>'+l+'</b><small>'+(ok?'تقبّل الله ✓':p.done+' من '+p.total)+'</small></button>'; }
   return '<section class="hx-had ad-home" aria-label="الأذكار"><div class="hx-hb"><h2>الأذكار</h2><div class="ad-bs">'+btn("m","أذكار الصباح","☀️")+btn("e","أذكار المساء","🌙")+'</div></div></section>';
 }
+function qMark(){ var k=todayKey(); if(!S.qday) S.qday={}; if(S.qday[k]) return; S.qday[k]=1; var ks=Object.keys(S.qday).sort(); while(ks.length>30) delete S.qday[ks.shift()]; persist(); if(view==="home") renderAll(); }
+var QMT=null;
+function qMarkLater(){ clearTimeout(QMT); if(S.qday&&S.qday[todayKey()]) return; QMT=setTimeout(function(){ if(view==="qsura"||view==="qpage") qMark(); },30000); }
+function hxFaith(tk){
+  if(!faithOn()||(S.prefs&&S.prefs.hfc===false)) return "";
+  var cur=adNow(), qd=!!(S.qday&&S.qday[tk]);
+  function row(ic,l,ok,sub,on,act){ return '<button type="button" class="fh-r'+(ok?' ok':'')+(on&&!ok?' due':'')+'" '+act+'><span class="fh-i">'+ic+'</span><span class="fh-t"><b>'+l+'</b><small>'+sub+'</small></span><span class="fh-s">'+(ok?'✓':'لسه')+'</span></button>'; }
+  function ad(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return row(ic,l,ok,ok?'تقبّل الله منك':(p.done?p.done+' من '+p.total:'ابدأ دلوقتي'),t===cur,'data-act="adopen" data-t="'+t+'"'); }
+  return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖","القرآن",qd,qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة",false,'data-act="view" data-v="ibd"')+'</section>';
+}
 function renderAdhk(){
   var tk=todayKey(), t=AD.t, L=adList(t), day=adDay(tk), m=day[t], p=adProg(tk,t);
   var h='<div class="fx ad"><div class="ad-top"><button type="button" class="sm-gh" data-act="adback">رجوع</button><h2>'+(t==="m"?"أذكار الصباح":t==="e"?"أذكار المساء":"أذكار النوم")+'</h2></div>'+
@@ -3898,6 +3913,7 @@ function qSheet(){
   o.addEventListener("click",function(e){ if(e.target===o) o.remove(); });
 }
 function renderQsura(){
+  qMarkLater();
   var n=QS.n, idx=QD.idx;
   function top(nm,meta){
     return '<div class="q-top"><button type="button" class="q-ib" data-act="qback" aria-label="رجوع">›</button><div class="q-tt"><b>'+(nm?'سورة '+esc(nm):'…')+'</b><small>'+(meta?meta[2].toLocaleString("ar-EG")+' آية · '+(meta[3]?"مكية":"مدنية"):'')+'</small></div>'+
@@ -3978,7 +3994,7 @@ function qVerseHtml(s_,v_,bm){
   return '<span class="q-pv'+(bm?' bm':'')+'" data-act="qbm" data-s="'+s_+'" data-v="'+v_+'">'+lw+'</span> ';
 }
 function renderQpage(){
-  rcInit(); var pg=Math.max(1,Math.min(604,QS.pg||1)); QS.pg=pg;
+  rcInit(); qMarkLater(); var pg=Math.max(1,Math.min(604,QS.pg||1)); QS.pg=pg;
   function shell(inner,ttl,sub){
     return '<div class="fx ib q-rd2 q-pgv"><div class="q-top"><button type="button" class="q-ib" data-act="qback" aria-label="رجوع">›</button><div class="q-tt"><b>'+ttl+'</b><small>'+sub+'</small></div>'+
       '<button type="button" class="q-ib" data-act="qmode" aria-label="عرض آية بآية">☰</button><button type="button" class="q-ib" data-act="qfsh" aria-label="حجم الخط">Aa</button></div>'+inner+'</div>';
@@ -4014,6 +4030,7 @@ function qAudio(){
   AU=new Audio(); AU.preload="none";
   AU.addEventListener("ended",function(){ if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
   AU.addEventListener("play",qBar); AU.addEventListener("pause",qBar);
+  AU.addEventListener("timeupdate",function(){ if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
   try{ if("mediaSession" in navigator){ var ms=navigator.mediaSession;
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
@@ -4053,7 +4070,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -4892,6 +4909,7 @@ document.addEventListener("click", function(ev){
   else if(a==="qtsz"){ qtSize=b.getAttribute("data-v")||"story"; qtPaint(); }
   else if(a==="qtx"){ var qm=document.getElementById("qtm"); if(qm) qm.remove(); }
   else if(a==="cardiotog"){ var ck=todayKey()+"|"+DAYS[dayIdx].id; S.cardio=S.cardio||{}; if(S.cardio[ck]) delete S.cardio[ck]; else S.cardio[ck]=1; persist(); renderAll(); }
+  else if(a==="hfc"){ S.prefs.hfc=(S.prefs.hfc===false); persist(); renderAll(); }
   else if(a==="faith"){ S.prefs.faith=!faithOn(); persist(); renderAll(); }
   else if(a==="prayopen"){ prayOpen=!prayOpen; renderAll(); }
   else if(a==="pray"){ S.habits[k]=S.habits[k]||{}; var pr=S.habits[k].prayer=S.habits[k].prayer||{}; var id=b.getAttribute("data-p"); pr[id]=!pr[id]; persist(); renderAll(); }
@@ -5455,6 +5473,7 @@ function renderSet(){
     return '<button type="button" class="st-t" data-act="theme" data-t="'+t[0]+'" aria-pressed="'+(cur===t[0])+'"><span class="st-pv" style="background:'+t[2]+'"><i style="background:'+t[3]+'"></i><i style="background:'+(t[0]==="light"||t[0]==="calm"?"#0F172A":"#F8FAFC")+'"></i></span><b>'+t[1]+'</b></button>';
   }).join("")+'</div></section>');
   h.push('<section class="fx-card">'+stHead(SETI.palette,"الأذكار والنوايا")+'<p class="sub">النية قبل التمرين، والأذكار، وتتبّع الصلاة، والحديث في الرئيسية. شغّالة عند الكل من الأول، وتقدر تقفلها لو مش عايزها.</p><button type="button" class="sm-gh wide" data-act="faith" role="switch" aria-checked="'+faithOn()+'"><span>'+(faithOn()?'مفعّلة ✓':'مقفولة')+'</span>'+(faithOn()?'اقفلها':'شغّلها')+'</button></section>');
+  h.push('<section class="fx-card">'+stHead(SETI.palette,"بطاقة الأذكار والقرآن")+'<p class="sub">بطاقة في الرئيسية بتفكّرك بأذكار الصباح والمساء وبقراءة القرآن النهارده. بتظهر بس لو الأذكار مفعّلة.</p><button type="button" class="sm-gh wide" data-act="hfc" role="switch" aria-checked="'+(S.prefs.hfc!==false)+'"><span>'+(S.prefs.hfc!==false?'ظاهرة ✓':'مخفية')+'</span>'+(S.prefs.hfc!==false?'اخفيها':'اظهرها')+'</button></section>');
   h.push(installCard());
   h.push('<section class="fx-card">'+stHead(SMI.db,"بياناتك")+'<p class="sub">ملف فيه كل تمارينك وأوزانك وقياساتك ووجباتك. بياناتك أصلًا محفوظة على حسابك، والملف للاحتياط بس.</p><button type="button" class="sm-gh wide" data-act="dljson"><span>'+SMI.down+'</span>نزّل ملف البيانات</button></section>');
   h.push(restoreCard().replace('<section class="card">','<section class="fx-card">'));
