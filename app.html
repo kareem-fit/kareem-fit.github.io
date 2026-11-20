@@ -401,6 +401,19 @@ body.v-welcome .foot{display:none}
 .hx-faith h2{margin:0 2px 2px;font-size:1.05rem}
 .fh-st{font-size:.8rem;font-weight:700;color:#F0A83C;background:rgba(240,168,60,.14);border:1px solid rgba(240,168,60,.45);padding:2px 10px;border-radius:12px;margin-inline-start:6px;white-space:nowrap}
 .q-wd{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:0 0 10px;background:var(--surface)}.q-wd span{flex:1;font-weight:700}.q-wd small{display:block;color:var(--muted);font-weight:500}.q-wd select{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:0 8px;font:inherit}
+.wk-pl{flex-direction:column;align-items:stretch!important;gap:8px}.wk-hd{display:flex;align-items:center;gap:14px}
+.wk-hd>b{flex:none;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--f-disp,"Barlow Condensed"),sans-serif;font-size:1.9rem;background:color-mix(in srgb,var(--t-accent,#FF7A3F) 16%,transparent);color:var(--t-accent,#FF7A3F)}
+.wk-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:2px}
+.wk-d{border-radius:10px;padding:6px 0 5px;text-align:center;font-size:.64rem;line-height:1.3;border:1px solid var(--t-line,#2A5878);color:var(--t-muted,#7C93A2);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px;overflow:hidden}
+.wk-d b{font-size:.68rem;font-weight:700}.wk-d.t{background:var(--t-accent,#FF7A3F);border-color:var(--t-accent,#FF7A3F);color:var(--t-onac,#08202F)}.wk-d.c{border-color:#3DB8A0;color:#7FE0C8}
+.wk-nm{font-size:.8rem;color:var(--t-muted,#BFD2DD);line-height:1.8}
+.wk-lg{display:flex;gap:12px;flex-wrap:wrap;font-size:.75rem;color:var(--t-muted,#9FB6C3);margin:0 2px 10px}.wk-lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:4px;vertical-align:middle;border:1px solid var(--t-line,#2A5878)}.wk-lg i.t{background:var(--t-accent,#FF7A3F);border-color:var(--t-accent,#FF7A3F)}.wk-lg i.c{border-color:#3DB8A0}
+.wk-q{display:block;width:100%;border:1.5px dashed var(--t-accent,#FF7A3F);color:var(--t-accent,#FF7A3F);background:none;border-radius:14px;padding:12px;font:inherit;font-weight:700;margin:10px 0}
+.wk-qz{border:1px solid var(--t-line,#2A5878);border-radius:16px;padding:14px;margin:10px 0;display:grid;gap:8px}.wk-qz h4{margin:4px 0;font-size:1.05rem}
+.wk-st{display:flex;gap:6px}.wk-st i{flex:1;height:5px;border-radius:3px;background:var(--t-line,#2A5878)}.wk-st i.on{background:var(--t-accent,#FF7A3F)}
+.wk-o{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--t-line,#2A5878);background:none;color:inherit;border-radius:12px;padding:12px 14px;font:inherit;font-weight:700;min-height:48px}.wk-o small{color:var(--t-muted,#9FB6C3);font-weight:500}
+.wk-rec{border:1.5px solid #3DDC97;background:rgba(61,220,151,.08);border-radius:14px;padding:12px}.wk-rec b{font-size:1.1rem}.wk-rec p{margin:4px 0;font-size:.88rem;line-height:1.7}
+.wk-rows{display:grid;gap:8px;margin-bottom:10px}.wk-row{display:flex;align-items:center;gap:10px}.wk-row b{width:76px;flex:none}.wk-row select{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--t-line,#2A5878);background:var(--t-surface,#0F2E44);color:inherit;padding:0 10px;font:inherit}.wk-lock{color:var(--t-muted,#9FB6C3);font-size:.85rem}
 .st-q{margin:14px 0 2px;font-size:1.02rem}
 .fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
 .fh-r.due{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.fh-r.ok{opacity:.75}
@@ -2468,8 +2481,8 @@ function weekPick(id,i,n){
   var k=id.slice(1); if(/^p/.test(id) && TPL[k]) return mkDay(id,TPL[k][0],i,TPL[k][1]);
   return mkRest("rest",i,n);
 }
-function applyWeek(list,n){
-  var ov=(typeof S!=="undefined" && S)?S.override:null;
+function applyWeek(list,n,ovr){
+  var ov=ovr||((typeof S!=="undefined" && S)?S.override:null);
   if(!ov || !Array.isArray(ov.w) || ov.w.length!==7 || ov.p!==n) return list;
   var seen={};
   return list.map(function(d,i){
@@ -2480,7 +2493,7 @@ function applyWeek(list,n){
     return weekPick(k,i,n);
   });
 }
-function buildDays0(n){ return applyWeek(buildDays00(n),n); }
+function buildDays0(n){ return applyWeek(applyWeek(buildDays00(n),n),n,(typeof S!=="undefined" && S)?S.uweek:null); }
 function buildDays00(n){
   if(n===4) return BASE_DAYS.map(function(d,i){ return Object.assign({},d,{wd:WDS[i][0],dow:WDS[i][1]}); });
   return ((WS===5&&SCHF[n])?SCHF[n]:SCH[n]).map(function(k,i){ if(k==="d1" || k==="d2"){ var bd=BASE_DAYS[k==="d1"?0:1]; return Object.assign({},bd,{wd:WDS[i][0],dow:WDS[i][1]}); } return TPL[k] ? mkDay("p"+k,TPL[k][0],i,TPL[k][1]) : mkRest(k,i,n); });
@@ -4846,6 +4859,45 @@ function showDhikr(on){
 }
 function needWelcome(){ return !S.welcomed && !(S.profile.name); }
 var TAG = "النهارده بتبني نسختك الأقوى", selPlan = 3, selStart = 5;
+function wkVal(d){ if(d.act) return "x"; if(!d.rest) return d.id; return d.name===BASE_DAYS[4].name?"cardio":(d.name===BASE_DAYS[6].name?"mob":"rest"); }
+function wkShort(d){ if(d.act) return "نشاط"; if(!d.rest) return d.name.replace("فول بودي ",""); var v=wkVal(d); return v==="cardio"?"كارديو":v==="mob"?"مرونة":"راحة"; }
+function wkLegend(){ return '<div class="wk-lg"><span><i class="t"></i>تمرين</span><span><i class="c"></i>كارديو / مرونة</span><span><i></i>راحة</span></div>'; }
+function wkStrip(ds){ return '<span class="wk-strip">'+ds.map(function(d){ var v=wkVal(d), k=(!d.rest)?"t":(v==="cardio"||v==="mob"||v==="x")?"c":""; return '<span class="wk-d '+k+'"><b>'+d.wd.replace(/^ال/,"")+'</b>'+esc(wkShort(d))+'</span>'; }).join("")+'</span>'; }
+function wkNames(ds){ var t=ds.filter(function(d){ return !d.rest; }).map(function(d){ return d.wd; }); return 'يعني هتتمرن: '+(t.length?t.join(" و"):"ولا يوم")+' · وراحة أو كارديو في الباقي'; }
+function wkOpts(n){ return buildDays00(n).filter(function(d){ return !d.rest; }).map(function(d){ return [d.id,d.name]; }); }
+function wkArrange(){
+  if(S.mine&&S.mine.days) return "";
+  var n=S.plan||3, ws=wkOpts(n);
+  var rows=DAYS.map(function(d){
+    var v=wkVal(d); if(v==="x") return '<div class="wk-row"><b>'+d.wd+'</b><span class="wk-lock">نشاط خاص من المدرب</span></div>';
+    var o=ws.map(function(w){ return '<option value="'+w[0]+'"'+(v===w[0]?' selected':'')+'>'+esc(w[1])+'</option>'; }).join("")+
+      '<option value="rest"'+(v==="rest"?' selected':'')+'>راحة</option><option value="cardio"'+(v==="cardio"?' selected':'')+'>كارديو خفيف</option><option value="mob"'+(v==="mob"?' selected':'')+'>مرونة وبطن</option>';
+    return '<div class="wk-row"><b>'+d.wd+'</b><select class="wk-sel" data-dow="'+d.dow+'" aria-label="تمرين يوم '+d.wd+'">'+o+'</select></div>';
+  }).join("");
+  return '<h3 class="st-q">رتّب أيامك بنفسك</h3><p class="sub">اختار تمرين كل يوم. لو حطيت تمرين في يوم وكان في يوم تاني، هيتبدلوا مع بعض.</p><div class="wk-rows">'+rows+'</div>'+
+    (S.uweek&&S.uweek.p===n?'<button type="button" class="sm-gh wide" data-act="wkreset">رجّع الترتيب الأساسي</button>':'');
+}
+function wkApply(dow,val){
+  var n=S.plan||3, by={}; DAYS.forEach(function(d){ by[d.dow]=wkVal(d); });
+  if(by[dow]==="x") return;
+  var prev=by[dow];
+  if(val!=="rest"&&val!=="cardio"&&val!=="mob"){ Object.keys(by).forEach(function(k){ if(+k!==dow && by[k]===val) by[k]=(prev==="x"?"rest":prev); }); }
+  by[dow]=val;
+  S.uweek={p:n,w:[0,1,2,3,4,5,6].map(function(d){ return by[d]==="x"?null:by[d]; })};
+  initDay(); persist(); renderAll(); toast("اتغيّر جدولك");
+}
+var WQ={open:false,lvl:0,days:0};
+function wkRec(){ var l=WQ.lvl,d=WQ.days; var n=l===1?Math.min(d,3):l===2?Math.min(d,4):d; return Math.max(2,Math.min(5,n)); }
+function wkQuizHtml(){
+  if(!WQ.open) return '<button type="button" class="wk-q" data-act="wkq">مش عارف تختار؟ خلّيني أرشّحلك</button>';
+  var st=!WQ.lvl?1:!WQ.days?2:3;
+  function opt(act,k,t,sm,on){ return '<button type="button" class="wk-o'+(on?' on':'')+'" data-act="'+act+'" data-k="'+k+'"><span>'+t+'</span>'+(sm?'<small>'+sm+'</small>':'')+'</button>'; }
+  var h='<div class="wk-qz"><div class="wk-st"><i class="on"></i><i class="'+(st>1?'on':'')+'"></i></div>';
+  if(st===1) h+='<h4>بقالك قد إيه بتتمرن؟</h4>'+opt("wkl",1,"لسه ببدأ","أقل من ٣ شهور")+opt("wkl",2,"بتمرن بانتظام","من ٣ شهور لسنة")+opt("wkl",3,"متمرّس","أكتر من سنة");
+  else if(st===2) h+='<h4>تقدر تتمرن كام يوم في الأسبوع؟</h4>'+opt("wkd",2,"يومين","")+opt("wkd",3,"٣ أيام","")+opt("wkd",4,"٤ أيام","")+opt("wkd",5,"٥ أيام أو أكتر","");
+  else { var n=wkRec(), w=WPLAN[n]; h+='<div class="wk-rec"><b>✓ نرشّحلك: '+w[0]+'</b><p>'+w[1]+'.</p><p>'+wkNames(buildDays00(n))+'</p></div><button type="button" class="btn" data-act="wkpick" data-n="'+n+'">اختار النظام ده</button>'; }
+  return h+'<button type="button" class="sm-gh wide" data-act="wkq">إلغاء</button></div>';
+}
 function startSel(id,cur){ return '<select id="'+id+'" aria-label="أول يوم في أسبوعك">'+[5,6,0,1,2,3,4].map(function(d){ return '<option value="'+d+'"'+(d===cur?" selected":"")+'>'+WNAMES[d]+'</option>'; }).join("")+'</select>'; }
 function planPicker(sel,act){
   return '<div class="plans">'+[2,3,4,5].map(function(n){ return '<button type="button" data-act="'+act+'" data-n="'+n+'" aria-pressed="'+(sel===n)+'"><b>'+n+'</b><small>أيام</small></button>'; }).join("")+'</div><p class="sub" id="plandesc">'+PLANDESC[sel]+'</p>';
@@ -4889,6 +4941,11 @@ document.addEventListener("click", function(ev){
   var b=ev.target.closest("[data-act]"); if(!b) return;
   var a=b.getAttribute("data-act"), k=todayKey();
   if(a==="enter"){ wzGrab(); S.profile.name=(selName||"").trim(); S.plan=selPlan; S.weekStart=selStart; initDay(); S.welcomed=true; persist(); view="home"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="wkq"){ WQ.open=!WQ.open; WQ.lvl=0; WQ.days=0; renderAll(); }
+  else if(a==="wkl"){ WQ.lvl=+b.getAttribute("data-k"); renderAll(); }
+  else if(a==="wkd"){ WQ.days=+b.getAttribute("data-k"); renderAll(); }
+  else if(a==="wkpick"){ var pn=+b.getAttribute("data-n"); WQ.open=false; WQ.lvl=0; WQ.days=0; S.plan=pn; initDay(); persist(); renderAll(); toast("اتغيّر النظام لـ "+WPLAN[pn][0]+" في الأسبوع"); }
+  else if(a==="wkreset"){ S.uweek=null; initDay(); persist(); renderAll(); toast("رجع الترتيب الأساسي"); }
   else if(a==="setplan"){ var np=+b.getAttribute("data-n"); if(np!==S.plan){ S.plan=np; initDay(); persist(); renderAll(); toast("اتغيّر النظام لـ "+WPLAN[np][0]+" في الأسبوع"); } }
   else if(a==="setstart"){ var nd=+b.getAttribute("data-d"); if(nd!==S.weekStart){ S.weekStart=nd; initDay(); persist(); renderAll(); toast("أسبوعك بقى بيبدأ يوم "+WNAMES[nd]); } }
   else if(a==="selplan"){ selPlan=+b.getAttribute("data-n"); wzGrab(); renderWelcome(); }
@@ -5486,12 +5543,13 @@ function renderSet(){
     (window.__SID?'<p class="sub">رقم التعريف بتاعك: <b dir="ltr">'+window.__SID+'</b> (ابعته للمدرب لو طلبت تعديل)</p><label class="fld">رقم واتساب (اختياري، علشان المدرب يرد عليك)<input type="tel" class="tx" id="p-phone" dir="ltr" value="'+esc(p.phone||"")+'" placeholder="201xxxxxxxxx"></label>':'')+'</section>');
   var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
   h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+
-    '<h3 class="st-q">كام يوم بتتمرن في الأسبوع؟</h3><p class="sub">اختار النظام المناسب لوقتك ومستواك، والجدول كله بيتغيّر على حسبه.</p>'+
-    '<div class="wz-plans">'+[2,3,4,5].map(function(n){ var w=WPLAN[n];
-      return '<button type="button" class="wz-plan" data-act="setplan" data-n="'+n+'" aria-pressed="'+(cp===n)+'"><b>'+n+'</b><span class="wz-pt"><strong>'+w[0]+'</strong><small>'+w[1]+'</small><em>'+w[2]+'</em></span>'+(n===3?'<u>الأنسب</u>':'')+'</button>'; }).join("")+'</div>'+
-    '<h3 class="st-q">أسبوعك بيبدأ يوم إيه؟</h3><p class="sub">ده اليوم اللي بيتحسب منه تحدي الأسبوع وجدول التمارين.</p>'+
+    '<h3 class="st-q">كام يوم بتتمرن في الأسبوع؟</h3><p class="sub">دوس على النظام وشوف أيام تمرينك على طول.</p>'+wkLegend()+
+    '<div class="wz-plans">'+[2,3,4,5].map(function(n){ var w=WPLAN[n], sel=(cp===n), ds=sel?DAYS:buildDays00(n);
+      return '<button type="button" class="wz-plan wk-pl" data-act="setplan" data-n="'+n+'" aria-pressed="'+sel+'"><span class="wk-hd"><b>'+n+'</b><span class="wz-pt"><strong>'+w[0]+(sel?' ✓':'')+'</strong><small>'+w[1]+'</small><em>'+w[2]+'</em></span></span>'+wkStrip(ds)+(sel?'<span class="wk-nm">'+wkNames(ds)+'</span>':'')+(n===3?'<u>الأنسب</u>':'')+'</button>'; }).join("")+'</div>'+
+    wkQuizHtml()+
+    '<h3 class="st-q">أسبوعك بيبدأ يوم إيه؟</h3><p class="sub">ده اليوم اللي بيتحسب منه تحدي الأسبوع.</p>'+
     '<div class="wz-days">'+[5,6,0,1,2,3,4].map(function(d){ return '<button type="button" class="wz-day" data-act="setstart" data-d="'+d+'" aria-pressed="'+(cs===d)+'">'+WNAMES[d]+'</button>'; }).join("")+'</div>'+
-    '<div class="wz-sum"><b>جدولك دلوقتي</b><span>'+WPLAN[cp][0]+' في الأسبوع · بيبدأ '+WNAMES[cs]+'</span></div>'+
+    wkArrange()+
     '<p class="sub">تغيير النظام بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p></section>');
   h.push(codeCard().replace('<section class="card">','<section class="fx-card">'));
   var cur=(window.__curTheme?window.__curTheme():"classic");
@@ -6369,7 +6427,7 @@ function d3shell(){
 }
 /* KFIT-OWNER: image/banner adjust tool is for the coach only */
 document.addEventListener("click",function(){ try{ document.body.classList.toggle("kf-own",!!cmAdmin()); }catch(e){} },true);
-document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } if(e.target && e.target.id==="qwd"){ S.prefs.wird=+e.target.value||0; persist(); renderQlist(); } });
+document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } if(e.target && e.target.classList && e.target.classList.contains("wk-sel")){ wkApply(+e.target.getAttribute("data-dow"),e.target.value); return; } if(e.target && e.target.id==="qwd"){ S.prefs.wird=+e.target.value||0; persist(); renderQlist(); } });
 document.addEventListener("input",function(e){ if(e.target && e.target.id==="qfr"){ S.prefs.qfs=+e.target.value; qFsApply(); return; } if(e.target && e.target.id==="qsrch"){ QS.q=e.target.value; qRows(); } });
 function d3sheet(){
   var sh=$("v3sheet"), box=sh&&sh.firstElementChild;
