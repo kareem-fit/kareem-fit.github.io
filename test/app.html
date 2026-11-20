@@ -443,6 +443,23 @@ body.v-welcome .foot{display:none}
 .q-bk{width:34px;height:34px;display:block}.q-bk .kf-logo{width:100%;height:100%}
 .q-page{border-radius:20px;border:1px solid var(--line);background:var(--surface);padding:12px 12px 6px;margin-top:8px}
 .q-page .q-bis{margin:6px 0 8px;color:#F0BE3C;padding-bottom:10px;border-bottom:1px solid rgba(240,190,60,.25)}
+.q-rd2{padding-bottom:110px}
+.q-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.q-tt{flex:1;display:grid;justify-items:center;text-align:center}.q-tt b{font-size:1.1rem}.q-tt small{color:var(--muted)}
+.q-ib{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--text);font-size:1.05rem;font-weight:700;display:grid;place-items:center;flex:none}
+.q-rd2 .q-bis{border:0;padding:0;margin:18px 0 6px;color:#F0BE3C;font-size:calc(var(--qfs,1.7rem) * .95)}
+.q-rd2 .q-txt{font-family:"Amiri Quran","Cairo",serif;font-size:var(--qfs,1.7rem);line-height:2.05;text-align:right;text-justify:none;word-spacing:0;letter-spacing:0;padding:0}
+.q-rd2 .q-v{margin:0;padding:12px 6px;border-radius:12px;border-bottom:1px solid rgba(255,255,255,.05);display:block}
+.q-rd2 .q-v.bm{background:rgba(240,190,60,.12);border-bottom-color:transparent;box-shadow:-3px 0 0 #F0BE3C inset}
+.q-rd2 .q-n{display:inline-grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;border:1.5px solid #F0BE3C;color:#F0BE3C;font-style:normal;margin-inline-start:.35em;vertical-align:middle;line-height:1}
+.q-lw{white-space:nowrap}
+.q-rd2 .q-n b{font-family:"Cairo",sans-serif;font-size:.5em;font-weight:700}
+#qfsh{position:fixed;inset:0;z-index:1002;background:rgba(0,0,0,.55);display:flex;align-items:flex-end}
+#qfsh .qs-b{width:100%;background:var(--surface);border-radius:24px 24px 0 0;padding:10px 20px calc(20px + env(safe-area-inset-bottom));display:grid;gap:12px}
+#qfsh .qs-g{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto;display:block}
+#qfsh h3{margin:6px 0 0;text-align:center}
+#qfsh .qs-pv{font-family:"Amiri Quran","Cairo",serif;font-size:var(--qfs,1.7rem);text-align:center;margin:8px 0;color:#F0BE3C;min-height:3em;display:grid;place-items:center}
+#qfsh .qs-r{display:flex;align-items:center;gap:14px;direction:rtl}#qfsh input[type=range]{flex:1;accent-color:var(--accent);height:34px}
 #kfarr{position:fixed;inset-inline:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:999;display:flex;flex-direction:column;align-items:center;pointer-events:none;color:#FF7A3F;font-weight:900;font-size:1rem;text-shadow:0 2px 8px #000}#kfarr svg{width:44px;height:44px;animation:kfbob 1s ease-in-out infinite}</style>
 <style>
 /* v4: تغذية + مجتمع */
@@ -3784,29 +3801,45 @@ function qRows(){
   });
   box.innerHTML=h||'<div class="fx-empty">مفيش سورة بالاسم ده.</div>';
 }
-function qFs(){ var f=(S.prefs&&S.prefs.qfs)||3; return Math.max(1,Math.min(5,f)); }
+var QSIZES=[1.3,1.5,1.7,1.9,2.1,2.35,2.6];
+function qFs(){ var f=(S.prefs&&S.prefs.qfs)||3; return Math.max(1,Math.min(7,f)); }
+function qFsApply(){ var r=document.documentElement; r.style.setProperty("--qfs",QSIZES[qFs()-1]+"rem"); }
+function qSheet(){
+  var o=document.getElementById("qfsh"); if(o){ o.remove(); return; }
+  o=document.createElement("div"); o.id="qfsh"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","حجم خط المصحف");
+  o.innerHTML='<div class="qs-b"><i class="qs-g"></i><h3>حجم خط المصحف</h3><p class="qs-pv" id="qspv"></p><div class="qs-r"><span style="font-size:.9rem">أ</span><input type="range" id="qfr" min="1" max="7" step="1" value="'+qFs()+'" aria-label="حجم الخط"><span style="font-size:1.6rem">أ</span></div><button type="button" class="btn" data-act="qfsx">تمام</button></div>';
+  document.body.appendChild(o);
+  var pv=document.getElementById("qspv"); pv.textContent=(QD.v[1]&&QD.v[1][0])||"";
+  o.addEventListener("click",function(e){ if(e.target===o) o.remove(); });
+}
 function renderQsura(){
   var n=QS.n, idx=QD.idx;
-  function head(nm){ return '<div class="ad-top"><button type="button" class="sm-gh" data-act="qback">رجوع</button><h2>'+(nm?'سورة '+esc(nm):'…')+'</h2></div>'; }
-  if(!idx){ $("app").innerHTML='<div class="fx ib">'+head("")+'<div class="fx-empty">بيحمّل…</div></div>'; qIdx(function(j){ if(view==="qsura") renderQsura(); }); return; }
-  var nm=idx[n-1][1];
+  function top(nm,meta){
+    return '<div class="q-top"><button type="button" class="q-ib" data-act="qback" aria-label="رجوع">›</button><div class="q-tt"><b>'+(nm?'سورة '+esc(nm):'…')+'</b><small>'+(meta?meta[2].toLocaleString("ar-EG")+' آية · '+(meta[3]?"مكية":"مدنية"):'')+'</small></div>'+
+      (nm?'<button type="button" class="q-ib" data-act="qplay" data-n="'+n+'" aria-label="استماع">'+(QA.n===n&&AU&&!AU.paused?"⏸":"▶")+'</button><button type="button" class="q-ib" data-act="qfsh" aria-label="حجم الخط">Aa</button>':'')+'</div>';
+  }
+  if(!idx){ $("app").innerHTML='<div class="fx ib q-rd2">'+top("")+'<div class="fx-empty">بيحمّل…</div></div>'; qIdx(function(j){ if(view==="qsura") renderQsura(); }); return; }
+  var nm=idx[n-1][1], meta=idx[n-1];
   function paint(v){
     if(view!=="qsura"||QS.n!==n) return;
-    if(!v){ $("app").innerHTML='<div class="fx ib">'+head(nm)+'<div class="fx-empty">ماقدرتش أحمّل السورة. اتأكد من النت وجرّب تاني.</div><button type="button" class="btn" data-act="qsura" data-n="'+n+'">جرّب تاني</button></div>'; return; }
-    var bm=S.qbm&&S.qbm.n===n?S.qbm.v:0, fs=qFs();
-    var body='<div class="q-page">'+(n!==1&&n!==9?'<p class="q-bis">'+esc(QD.v[1]?QD.v[1][0]:"")+'</p>':'')+'<div class="q-txt q-f'+fs+'">'+v.map(function(t,i){ if(i===0 && n!==1 && n!==9) t=t.split(" ").slice(4).join(" "); return '<span class="q-v'+(bm===i+1?' bm':'')+'" data-act="qbm" data-v="'+(i+1)+'">'+esc(t)+' <i class="q-n">\uFD3F'+(i+1).toLocaleString("ar-EG")+'\uFD3E</i></span>'; }).join(" ")+'</div></div>';
-    var playing=QA.n===n&&AU&&!AU.paused;
-    var meta=idx[n-1], ban='<div class="q-ban"><span class="q-bk"><svg class="kf-logo" viewBox="0 0 1199 1059" aria-hidden="true"><use href="#kfk"/></svg></span><b>سورة '+esc(nm)+'</b><small>'+meta[2].toLocaleString("ar-EG")+' آية · '+(meta[3]?"مكية":"مدنية")+' · رقمها '+n.toLocaleString("ar-EG")+'</small></div>';
-    $("app").innerHTML='<div class="fx ib">'+head(nm)+ban+
-      '<div class="q-tools"><button type="button" class="btn" data-act="qplay" data-n="'+n+'">'+(playing?"⏸ إيقاف":"🎧 استماع")+'</button><button type="button" class="sm-gh" data-act="qfs" data-d="-1" aria-label="صغّر الخط">أ−</button><button type="button" class="sm-gh" data-act="qfs" data-d="1" aria-label="كبّر الخط">أ+</button></div>'+
-      '<p class="sub">دوس على أي آية عشان تعلّم مكانك.</p>'+body+
+    if(!v){ $("app").innerHTML='<div class="fx ib q-rd2">'+top(nm,meta)+'<div class="fx-empty">ماقدرتش أحمّل السورة. اتأكد من النت وجرّب تاني.</div><button type="button" class="btn" data-act="qsura" data-n="'+n+'">جرّب تاني</button></div>'; return; }
+    var bm=S.qbm&&S.qbm.n===n?S.qbm.v:0; qFsApply();
+    var verses=v.map(function(t,i){
+      if(i===0 && n!==1 && n!==9) t=t.split(" ").slice(4).join(" ");
+      var sp=t.lastIndexOf(" "), lw=sp<0?esc(t):esc(t.slice(0,sp+1))+'<span class="q-lw">'+esc(t.slice(sp+1))+'\u00A0<i class="q-n"><b>'+(i+1).toLocaleString("ar-EG")+'</b></i></span>';
+      if(sp<0) lw+='\u00A0<i class="q-n"><b>'+(i+1).toLocaleString("ar-EG")+'</b></i>';
+      return '<p class="q-v'+(bm===i+1?' bm':'')+'" data-act="qbm" data-v="'+(i+1)+'">'+lw+'</p>';
+    }).join("");
+    $("app").innerHTML='<div class="fx ib q-rd2">'+top(nm,meta)+
+      (n!==1&&n!==9?'<p class="q-bis">'+esc(QD.v[1]?QD.v[1][0]:"")+'</p>':'')+
+      '<div class="q-txt">'+verses+'</div>'+
       '<div class="q-nav">'+(n<114?'<button type="button" class="sm-gh" data-act="qsura" data-n="'+(n+1)+'">السورة اللي بعدها ›</button>':'<span></span>')+(n>1?'<button type="button" class="sm-gh" data-act="qsura" data-n="'+(n-1)+'">‹ السورة اللي قبلها</button>':'<span></span>')+'</div>'+
-      '<p class="disc">نص المصحف برواية حفص من مشروع تنزيل (tanzil.net) بدون أي تعديل.</p></div>';
+      '<p class="disc">دوس على أي آية عشان تعلّم مكانك. نص المصحف برواية حفص من مشروع تنزيل (tanzil.net) بدون أي تعديل.</p></div>';
   }
   if(!QD.v[1]) qLoad("quran/1.json",function(j){ if(j) QD.v[1]=j; load2(); }); else load2();
   function load2(){
     if(QD.v[n]) return paint(QD.v[n]);
-    $("app").innerHTML='<div class="fx ib">'+head(nm)+'<div class="fx-empty">بيحمّل…</div></div>';
+    $("app").innerHTML='<div class="fx ib q-rd2">'+top(nm,meta)+'<div class="fx-empty">بيحمّل…</div></div>';
     qLoad("quran/"+n+".json",function(j){ if(j) QD.v[n]=j; paint(j); });
   }
 }
@@ -5757,7 +5790,8 @@ document.addEventListener("click", function(ev){
   else if(a==="qplay"){ qPlay(+b.getAttribute("data-n")||1); if(view==="qsura") setTimeout(renderQsura,50); }
   else if(a==="qstop"){ if(AU){ AU.pause(); } QA.n=0; qBar(); if(view==="qsura") renderQsura(); }
   else if(a==="qbm"){ var qv=+b.getAttribute("data-v"); S.qbm={n:QS.n,v:qv}; persist(); var ys=window.scrollY; renderQsura(); window.scrollTo(0,ys); toast("علّمت آية "+qv.toLocaleString("ar-EG")); }
-  else if(a==="qfs"){ var nf=Math.max(1,Math.min(5,qFs()+(+b.getAttribute("data-d")))); S.prefs.qfs=nf; persist(); var yf=window.scrollY; renderQsura(); window.scrollTo(0,yf); }
+  else if(a==="qfsh") qSheet();
+  else if(a==="qfsx"){ var fo=document.getElementById("qfsh"); if(fo) fo.remove(); }
   else if(a==="adundo"){ var ui=+b.getAttribute("data-i"), um=adDay(todayKey())[AD.t]; if(um[ui]>0){ um[ui]--; persist(); var uy=window.scrollY; renderAdhk(); window.scrollTo(0,uy); } }
   else if(a==="cmok" || a==="cmno"){
     if(!cmAdmin()) return;
@@ -6083,7 +6117,8 @@ function d3shell(){
 }
 /* KFIT-OWNER: image/banner adjust tool is for the coach only */
 document.addEventListener("click",function(){ try{ document.body.classList.toggle("kf-own",!!cmAdmin()); }catch(e){} },true);
-document.addEventListener("input",function(e){ if(e.target && e.target.id==="qsrch"){ QS.q=e.target.value; qRows(); } });
+document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } });
+document.addEventListener("input",function(e){ if(e.target && e.target.id==="qfr"){ S.prefs.qfs=+e.target.value; qFsApply(); return; } if(e.target && e.target.id==="qsrch"){ QS.q=e.target.value; qRows(); } });
 function d3sheet(){
   var sh=$("v3sheet"), box=sh&&sh.firstElementChild;
   if(box && box.querySelector(".it[data-v3s]") && !box.querySelector("[data-d3s]")){
