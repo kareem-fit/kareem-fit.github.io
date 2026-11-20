@@ -432,9 +432,15 @@ body.v-welcome .foot{display:none}
 .q-v{cursor:pointer;border-radius:8px}.q-v.bm{background:rgba(240,190,60,.16);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 4px}
 .q-n{font-style:normal;color:var(--accent);font-size:.8em}
 .q-nav{display:flex;justify-content:space-between;gap:8px;margin:14px 0}
-#qau{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:900;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--accent);box-shadow:0 8px 30px rgba(0,0,0,.4)}
-#qau .qa-t{flex:1;display:grid}#qau .qa-t small{color:var(--muted)}
-#qau button{min-width:46px;min-height:46px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--text);font-size:1.1rem}
+#qau{position:fixed;left:10px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:900}
+#qau .qa-fab{width:52px;height:52px;border-radius:50%;border:2px solid var(--accent);background:var(--surface);color:var(--text);font-size:1.4rem;box-shadow:0 6px 22px rgba(0,0,0,.45);display:grid;place-items:center;padding:0}
+#qau.on .qa-fab{animation:qapulse 2s ease-in-out infinite}
+@keyframes qapulse{0%,100%{box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 0 0 rgba(240,190,60,.45)}50%{box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 0 9px rgba(240,190,60,0)}}
+@media (prefers-reduced-motion:reduce){#qau.on .qa-fab{animation:none}}
+#qau .qa-pn{width:min(290px,calc(100vw - 20px));display:grid;gap:8px;padding:10px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--accent);box-shadow:0 8px 30px rgba(0,0,0,.45)}
+#qau .qa-t{display:grid}#qau .qa-t small{color:var(--muted)}
+#qau .qa-bt{display:flex;gap:6px;justify-content:space-between}
+#qau .qa-bt button{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--text);font-size:1.1rem}
 .q-ban{display:grid;justify-items:center;gap:2px;padding:16px 12px 14px;margin:6px 0 12px;border-radius:20px;border:1.5px solid rgba(240,190,60,.55);background:linear-gradient(180deg,rgba(240,190,60,.10),rgba(255,122,63,.06));position:relative}
 .q-ban::before{content:"";position:absolute;inset:5px;border-radius:15px;border:1px solid rgba(240,190,60,.25);pointer-events:none}
 .q-ban b{font-family:"Amiri Quran","Cairo",serif;font-size:1.9rem;font-weight:400;color:#F0BE3C;line-height:1.5}
@@ -4008,6 +4014,10 @@ function qAudio(){
   AU=new Audio(); AU.preload="none";
   AU.addEventListener("ended",function(){ if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
   AU.addEventListener("play",qBar); AU.addEventListener("pause",qBar);
+  try{ if("mediaSession" in navigator){ var ms=navigator.mediaSession;
+    ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
+    ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
+    ms.setActionHandler("stop",function(){ AU.pause(); }); } }catch(e){}
   AU.addEventListener("error",function(){ toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
   return AU;
 }
@@ -4026,8 +4036,19 @@ function qBar(){
   var b=document.getElementById("qau");
   if(!AU||!QA.n){ if(b) b.remove(); return; }
   if(!b){ b=document.createElement("div"); b.id="qau"; document.body.appendChild(b); }
-  var nm=QD.idx?QD.idx[QA.n-1][1]:QA.n;
-  b.innerHTML='<span class="qa-t"><b>سورة '+esc(String(nm))+'</b><small>'+RECITER.name+'</small></span><button type="button" data-act="qplay" data-n="'+QA.n+'" aria-label="'+(AU.paused?"تشغيل":"إيقاف مؤقت")+'">'+(AU.paused?"▶":"⏸")+'</button><button type="button" data-act="qstop" aria-label="إغلاق المشغّل">✕</button>';
+  var nm=QD.idx?QD.idx[QA.n-1][1]:QA.n, pl=!AU.paused;
+  b.className=pl?"on":"";
+  if(!QA.open){
+    b.innerHTML='<button type="button" class="qa-fab" data-act="qaopen" aria-label="مشغّل القرآن">'+(pl?"🔊":"🎧")+'</button>';
+  } else {
+    b.innerHTML='<div class="qa-pn"><span class="qa-t"><b>سورة '+esc(String(nm))+'</b><small>'+esc(RECITER.name)+'</small></span><div class="qa-bt">'+
+      '<button type="button" data-act="qprev" aria-label="السورة اللي قبلها"'+(QA.n<=1?' disabled':'')+'>⏭</button>'+
+      '<button type="button" data-act="qplay" data-n="'+QA.n+'" aria-label="'+(pl?"إيقاف مؤقت":"تشغيل")+'">'+(pl?"⏸":"▶")+'</button>'+
+      '<button type="button" data-act="qnext" aria-label="السورة اللي بعدها"'+(QA.n>=114?' disabled':'')+'>⏮</button>'+
+      '<button type="button" data-act="qaopen" aria-label="تصغير">▾</button>'+
+      '<button type="button" data-act="qstop" aria-label="إغلاق المشغّل">✕</button></div></div>';
+  }
+  try{ if("mediaSession" in navigator) navigator.mediaSession.playbackState=pl?"playing":"paused"; }catch(e){}
   if(view==="qlist") qRows();
 }
 function renderHome(){
@@ -5968,7 +5989,10 @@ document.addEventListener("click", function(ev){
   else if(a==="qdlx") qdlDelAll();
   else if(a==="qback"){ view="qlist"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qplay"){ qPlay(+b.getAttribute("data-n")||1); if(view==="qsura") setTimeout(renderQsura,50); }
-  else if(a==="qstop"){ if(AU){ AU.pause(); } QA.n=0; qBar(); if(view==="qsura") renderQsura(); }
+  else if(a==="qaopen"){ QA.open=!QA.open; qBar(); }
+  else if(a==="qnext"){ if(QA.n<114) qPlay(QA.n+1,true); }
+  else if(a==="qprev"){ if(QA.n>1) qPlay(QA.n-1,true); }
+  else if(a==="qstop"){ if(AU){ AU.pause(); } QA.n=0; QA.open=false; qBar(); if(view==="qsura") renderQsura(); }
   else if(a==="qbm"){ var qv=+b.getAttribute("data-v"), qs=+b.getAttribute("data-s")||QS.n; var had=S.qbm&&S.qbm.n===qs&&S.qbm.v===qv; if(had) S.qbm=null; else S.qbm={n:qs,v:qv}; persist(); var ys=window.scrollY; if(view==="qpage") renderQpage(); else renderQsura(); window.scrollTo(0,ys); toast(had?"شلت العلامة":"علّمت آية "+qv.toLocaleString("ar-EG")); }
   else if(a==="qfsh") qSheet();
   else if(a==="qfsx"){ var fo=document.getElementById("qfsh"); if(fo) fo.remove(); }
