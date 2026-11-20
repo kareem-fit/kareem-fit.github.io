@@ -399,6 +399,8 @@ body.v-welcome .foot{display:none}
 #qtm .qtr .btn{min-height:46px;padding:0 6px;font-size:.92rem}.qtimgw{max-height:62vh;display:flex;justify-content:center}.qtb img{max-height:62vh;width:auto;max-width:100%;margin:0 auto}.cx-mod{display:flex;gap:8px;padding:10px 0 2px}.cx-mod .btn{flex:1;min-height:44px}
 .hx-faith{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:12px 12px 6px;margin:12px 0;display:grid;gap:8px}
 .hx-faith h2{margin:0 2px 2px;font-size:1.05rem}
+.fh-st{font-size:.8rem;font-weight:700;color:#F0A83C;background:rgba(240,168,60,.14);border:1px solid rgba(240,168,60,.45);padding:2px 10px;border-radius:12px;margin-inline-start:6px;white-space:nowrap}
+.q-wd{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:0 0 10px;background:var(--surface)}.q-wd span{flex:1;font-weight:700}.q-wd small{display:block;color:var(--muted);font-weight:500}.q-wd select{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:0 8px;font:inherit}
 .fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
 .fh-r.due{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.fh-r.ok{opacity:.75}
 .fh-i{font-size:1.5rem}.fh-t{flex:1;display:grid}.fh-t small{color:var(--muted)}.fh-s{font-weight:800;color:var(--muted)}.fh-r.ok .fh-s{color:#4FCB8A}.fh-r.due .fh-s{color:var(--accent)}
@@ -3765,15 +3767,22 @@ function hxAdhk(tk){
   function btn(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return '<button type="button" class="ad-b'+(t===cur?' on':'')+(ok?' ok':'')+'" data-act="adopen" data-t="'+t+'"><span class="ad-i">'+ic+'</span><b>'+l+'</b><small>'+(ok?'تقبّل الله ✓':p.done+' من '+p.total)+'</small></button>'; }
   return '<section class="hx-had ad-home" aria-label="الأذكار"><div class="hx-hb"><h2>الأذكار</h2><div class="ad-bs">'+btn("m","أذكار الصباح","☀️")+btn("e","أذكار المساء","🌙")+'</div></div></section>';
 }
-function qMark(){ var k=todayKey(); if(!S.qday) S.qday={}; if(S.qday[k]) return; S.qday[k]=1; var ks=Object.keys(S.qday).sort(); while(ks.length>30) delete S.qday[ks.shift()]; persist(); if(view==="home") renderAll(); }
-var QMT=null;
+function dkey(d){ return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+function fMark(){ var k=todayKey(); if(!S.fdays) S.fdays={}; if(S.fdays[k]) return; S.fdays[k]=1; var ks=Object.keys(S.fdays).sort(); while(ks.length>400) delete S.fdays[ks.shift()]; persist(); }
+function fStreak(){ var f=S.fdays||{}, d=new Date(), n=0; if(!f[dkey(d)]) d.setDate(d.getDate()-1); while(f[dkey(d)]){ n++; d.setDate(d.getDate()-1); } return n; }
+function wirdN(){ return +(S.prefs&&S.prefs.wird)||0; }
+function wirdDone(){ var a=(S.qpgs&&S.qpgs[todayKey()])||[]; return a.length; }
+function qPgMark(pg){ var k=todayKey(); if(!S.qpgs) S.qpgs={}; var a=S.qpgs[k]||(S.qpgs[k]=[]); if(a.indexOf(pg)>-1) return; a.push(pg); var ks=Object.keys(S.qpgs).sort(); while(ks.length>30) delete S.qpgs[ks.shift()]; persist(); if(wirdN()&&a.length===wirdN()){ toast("تقبّل الله، خلصت وردك النهارده ✓"); fMark(); } }
+function qMark(){ var k=todayKey(); fMark(); if(!S.qday) S.qday={}; if(S.qday[k]) return; S.qday[k]=1; var ks=Object.keys(S.qday).sort(); while(ks.length>30) delete S.qday[ks.shift()]; persist(); if(view==="home") renderAll(); }
+var QMT=null, QPT=null;
 function qMarkLater(){ clearTimeout(QMT); if(S.qday&&S.qday[todayKey()]) return; QMT=setTimeout(function(){ if(view==="qsura"||view==="qpage") qMark(); },30000); }
 function hxFaith(tk){
   if(!faithOn()||(S.prefs&&S.prefs.hfc===false)) return "";
-  var cur=adNow(), qd=!!(S.qday&&S.qday[tk]);
+  var cur=adNow(), qd=!!(S.qday&&S.qday[tk]), wn=wirdN(), wd=wirdDone(), st=fStreak();
+  if(wn) qd=wd>=wn;
   function row(ic,l,ok,sub,on,act){ return '<button type="button" class="fh-r'+(ok?' ok':'')+(on&&!ok?' due':'')+'" '+act+'><span class="fh-i">'+ic+'</span><span class="fh-t"><b>'+l+'</b><small>'+sub+'</small></span><span class="fh-s">'+(ok?'✓':'لسه')+'</span></button>'; }
   function ad(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return row(ic,l,ok,ok?'تقبّل الله منك':(p.done?p.done+' من '+p.total:'ابدأ دلوقتي'),t===cur,'data-act="adopen" data-t="'+t+'"'); }
-  return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖","القرآن",qd,qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة",false,'data-act="view" data-v="ibd"')+'</section>';
+  return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده'+(st>0?' <span class="fh-st">🔥 '+st.toLocaleString("ar-EG")+(st===1?' يوم':st===2?' يومين':st<=10?' أيام':' يوم')+' ورا بعض</span>':'')+'</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖",wn?"ورد القرآن":"القرآن",qd,wn?(qd?"خلصت وردك ("+wn.toLocaleString("ar-EG")+" صفحة)":"قريت "+wd.toLocaleString("ar-EG")+" من "+wn.toLocaleString("ar-EG")+" صفحة"):(qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة"),false,'data-act="view" data-v="ibd"')+'</section>';
 }
 function renderAdhk(){
   var tk=todayKey(), t=AD.t, L=adList(t), day=adDay(tk), m=day[t], p=adProg(tk,t);
@@ -3797,7 +3806,7 @@ function adTap(i){
   var keys=Object.keys(S.adhk).sort(); while(keys.length>14){ delete S.adhk[keys.shift()]; }
   persist();
   var before=adProg(tk,t).done, y=window.scrollY; renderAdhk(); window.scrollTo(0,y);
-  if(m[i]>=r[1]){ var p=adProg(tk,t); if(p.done>=p.total) toast("تقبّل الله منك"); }
+  if(m[i]>=r[1]){ var p=adProg(tk,t); if(p.done>=p.total){ toast("تقبّل الله منك"); fMark(); } }
 }
 
 /* ===== القرآن والعبادات ===== */
@@ -3879,13 +3888,18 @@ function renderIbd(){
   $("app").innerHTML=h;
   if(S.qbm && !QD.idx) qIdx(function(){ if(view==="ibd") renderIbd(); });
 }
+function wirdCtl(){
+  var w=wirdN(), o=[0,1,2,3,5,10,20].map(function(v){ return '<option value="'+v+'"'+(v===w?' selected':'')+'>'+(v?v.toLocaleString("ar-EG")+" صفحة":"من غير ورد")+'</option>'; }).join("");
+  var d=w?Math.ceil(604/w):0;
+  return '<div class="q-wd"><span>الورد اليومي<small>'+(w?'اليوم: '+wirdDone().toLocaleString("ar-EG")+' من '+w.toLocaleString("ar-EG")+' · ختمة كل '+d.toLocaleString("ar-EG")+' يوم تقريبًا':'حدد كام صفحة تقرا كل يوم (بيتحسب في وضع صفحات المصحف)')+'</small></span><select id="qwd" aria-label="الورد اليومي">'+o+'</select></div>';
+}
 function renderQlist(){
   rcInit(); if(!QDL.loaded) qdlLoad(function(){ if(view==="qlist") qRows(); });
   var pm=(S.prefs&&S.prefs.qm)==="p";
   var ctl=QS.l?
     '<button type="button" class="ib-row q-rc" data-act="qrcs"><span class="ib-ic">🎙️</span><span class="ib-tx"><b>القارئ: '+esc(RECITER.name)+'</b><small>دوس عشان تغيّر القارئ</small></span><span class="ib-ch">‹</span></button>':
     '<div class="seg2 q-md"><button type="button" data-act="qmodel" data-m="v" aria-pressed="'+(!pm)+'">آية بآية</button><button type="button" data-act="qmodel" data-m="p" aria-pressed="'+pm+'">صفحات المصحف</button></div>'+
-    (pm?'<div class="q-go"><input type="number" id="qpgi" min="1" max="604" inputmode="numeric" placeholder="رقم الصفحة (١–٦٠٤)" aria-label="رقم الصفحة"><button type="button" class="btn" data-act="qpgo">اذهب</button></div>':'');
+    wirdCtl()+(pm?'<div class="q-go"><input type="number" id="qpgi" min="1" max="604" inputmode="numeric" placeholder="رقم الصفحة (١–٦٠٤)" aria-label="رقم الصفحة"><button type="button" class="btn" data-act="qpgo">اذهب</button></div>':'');
   var el='<div class="fx ib"><div class="ad-top"><button type="button" class="sm-gh" data-act="ibback">رجوع</button><h2>'+(QS.l?"الاستماع":"المصحف")+'</h2></div>'+ctl+'<input type="search" id="qsrch" class="q-srch" placeholder="ابحث باسم السورة" aria-label="ابحث باسم السورة" value="'+esc(QS.q||"")+'"><div id="qrows"></div>'+
     '<p class="disc">نص المصحف برواية حفص من مشروع تنزيل (tanzil.net) بدون أي تعديل. '+(QS.l?'التلاوة بصوت '+esc(RECITER.name)+'.':'')+'</p></div>';
   $("app").innerHTML=el;
@@ -4005,7 +4019,7 @@ function renderQpage(){
     if(view!=="qpage"||QS.pg!==pg) return;
     var first=segs[0][0], ttl="سورة "+QD.idx[first-1][1], sub="الجزء "+qJuzOf(pg).toLocaleString("ar-EG")+" · صفحة "+pg.toLocaleString("ar-EG");
     if(!ok){ $("app").innerHTML=shell('<div class="fx-empty">ماقدرتش أحمّل الصفحة. اتأكد من النت (أو نزّل النص من «التحميل بدون نت») وجرّب تاني.</div><button type="button" class="btn" data-act="qpg" data-p="'+pg+'">جرّب تاني</button>',ttl,sub); return; }
-    qFsApply();
+    qFsApply(); (function(g){ clearTimeout(QPT); QPT=setTimeout(function(){ if(view==="qpage"&&QS.pg===g) qPgMark(g); },8000); })(pg);
     var body='<div class="q-frame">';
     segs.forEach(function(x){
       var sn=x[0];
@@ -4025,12 +4039,15 @@ function qGoPage(pg){ QS.pg=Math.max(1,Math.min(604,+pg||1)); view="qpage"; rend
   document.addEventListener("touchend",function(e){ if(view!=="qpage"||!e.changedTouches[0]||!x0) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=0;
     if(Math.abs(dx)>80&&Math.abs(dy)<45&&Date.now()-t0<700){ if(document.getElementById("qfsh")||document.getElementById("qrcs")) return; qGoPage(QS.pg+(dx>0?1:-1)); } },{passive:true});
 })();
+var QPOS_K="kf_qpos", QPT2=0;
+function qposGet(){ try{ return JSON.parse(localStorage.getItem(QPOS_K)||"null"); }catch(e){ return null; } }
+function qposSet(v){ try{ if(v) localStorage.setItem(QPOS_K,JSON.stringify(v)); else localStorage.removeItem(QPOS_K); }catch(e){} }
 function qAudio(){
   if(AU) return AU;
   AU=new Audio(); AU.preload="none";
-  AU.addEventListener("ended",function(){ if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
+  AU.addEventListener("ended",function(){ qposSet(null); if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
   AU.addEventListener("play",qBar); AU.addEventListener("pause",qBar);
-  AU.addEventListener("timeupdate",function(){ if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
+  AU.addEventListener("timeupdate",function(){ if(QA.n&&AU.currentTime>3&&Date.now()-QPT2>4000){ QPT2=Date.now(); qposSet({n:QA.n,rc:QA.rc,t:Math.floor(AU.currentTime)}); } if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
   try{ if("mediaSession" in navigator){ var ms=navigator.mediaSession;
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
@@ -4044,7 +4061,10 @@ function qPlay(n,force){
   function go(){ var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); }); try{ if("mediaSession" in navigator){ var nm=QD.idx?QD.idx[n-1][1]:""; navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+nm,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){} qBar(); }
   if(QA.n!==n || force || QA.rc!==RECITER.id){
     QA.n=n; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
-    function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u; go(); }
+    var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
+    function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
+      if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }
+      go(); }
     if(QDL.loaded && !QDL.keys["a:"+rc.id+":"+n]) setSrc(rc.u(n));
     else kvGet("a:"+rc.id+":"+n).then(function(b){ setSrc(b?URL.createObjectURL(b):rc.u(n)); }).catch(function(){ setSrc(rc.u(n)); });
   } else go();
@@ -6340,7 +6360,7 @@ function d3shell(){
 }
 /* KFIT-OWNER: image/banner adjust tool is for the coach only */
 document.addEventListener("click",function(){ try{ document.body.classList.toggle("kf-own",!!cmAdmin()); }catch(e){} },true);
-document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } });
+document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } if(e.target && e.target.id==="qwd"){ S.prefs.wird=+e.target.value||0; persist(); renderQlist(); } });
 document.addEventListener("input",function(e){ if(e.target && e.target.id==="qfr"){ S.prefs.qfs=+e.target.value; qFsApply(); return; } if(e.target && e.target.id==="qsrch"){ QS.q=e.target.value; qRows(); } });
 function d3sheet(){
   var sh=$("v3sheet"), box=sh&&sh.firstElementChild;
