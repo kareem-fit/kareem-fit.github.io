@@ -463,6 +463,12 @@ body.v-welcome .foot{display:none}
 .q-sh .qs-b{width:100%;background:var(--surface);border-radius:24px 24px 0 0;padding:10px 20px calc(20px + env(safe-area-inset-bottom));display:grid;gap:10px}
 .q-sh .qs-g{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto;display:block}.q-sh h3{margin:6px 0 0;text-align:center}
 .q-rcb{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:54px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);font-weight:700}.q-rcb small{color:var(--muted);font-weight:500}.q-rcb[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.q-frame{position:relative;border:1.5px solid rgba(240,190,60,.55);border-radius:10px;padding:10px 12px 8px;margin:8px 0;background:linear-gradient(180deg,rgba(240,190,60,.06),rgba(240,190,60,.015));box-shadow:0 0 0 4px var(--bg,#0b1b2b),0 0 0 5.5px rgba(240,190,60,.25)}
+.q-frame::before,.q-frame::after{content:"";position:absolute;width:14px;height:14px;border:2px solid #F0BE3C;opacity:.85}
+.q-frame::before{top:-1px;right:-1px;border-left:0;border-bottom:0;border-top-right-radius:10px}.q-frame::after{bottom:-1px;left:-1px;border-right:0;border-top:0;border-bottom-left-radius:10px}
+.q-frame .q-sb{margin:2px 0 6px;position:relative}.q-frame .q-sb::before,.q-frame .q-sb::after{content:"۞";position:absolute;top:50%;transform:translateY(-50%);font-size:1.1rem;opacity:.8}.q-frame .q-sb::before{right:12px}.q-frame .q-sb::after{left:12px}
+.q-fn{text-align:center;margin-top:4px}.q-fn span{display:inline-block;min-width:34px;padding:2px 12px;border:1px solid rgba(240,190,60,.5);border-radius:14px;color:#F0BE3C;font-size:.85rem}
+.q-rd2 .q-frame .q-v{border-bottom-color:rgba(240,190,60,.08)}
 .q-pgv .q-pt{font-family:"Amiri Quran","Cairo",serif;font-size:calc(var(--qfs,1.7rem) * .86);line-height:2.15;text-align:right;padding:0 2px;margin:0 0 6px}
 .q-pgv .q-pv{cursor:pointer;border-radius:6px}.q-pgv .q-pv.bm{background:rgba(240,190,60,.2);box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .q-sb{margin:14px 0 4px;text-align:center;padding:8px;border-radius:12px;border:1px solid rgba(240,190,60,.45);background:rgba(240,190,60,.08);color:#F0BE3C}.q-sb b{font-size:1.5rem;font-family:"Amiri Quran","Cairo",serif}
@@ -3906,8 +3912,9 @@ function renderQsura(){
       return '<p class="q-v'+(bm===i+1?' bm':'')+'" data-act="qbm" data-v="'+(i+1)+'">'+lw+'</p>';
     }).join("");
     $("app").innerHTML='<div class="fx ib q-rd2">'+top(nm,meta)+
+      '<div class="q-frame"><div class="q-sb"><b>سورة '+esc(nm)+'</b></div>'+
       (n!==1&&n!==9?'<p class="q-bis">'+esc(QD.v[1]?QD.v[1][0]:"")+'</p>':'')+
-      '<div class="q-txt">'+verses+'</div>'+
+      '<div class="q-txt">'+verses+'</div></div>'+
       '<div class="q-nav">'+(n<114?'<button type="button" class="sm-gh" data-act="qsura" data-n="'+(n+1)+'">السورة اللي بعدها ›</button>':'<span></span>')+(n>1?'<button type="button" class="sm-gh" data-act="qsura" data-n="'+(n-1)+'">‹ السورة اللي قبلها</button>':'<span></span>')+'</div>'+
       '<p class="disc">دوس على أي آية عشان تعلّم مكانك. نص المصحف برواية حفص من مشروع تنزيل (tanzil.net) بدون أي تعديل.</p></div>';
   }
@@ -3979,14 +3986,14 @@ function renderQpage(){
     var first=segs[0][0], ttl="سورة "+QD.idx[first-1][1], sub="الجزء "+qJuzOf(pg).toLocaleString("ar-EG")+" · صفحة "+pg.toLocaleString("ar-EG");
     if(!ok){ $("app").innerHTML=shell('<div class="fx-empty">ماقدرتش أحمّل الصفحة. اتأكد من النت (أو نزّل النص من «التحميل بدون نت») وجرّب تاني.</div><button type="button" class="btn" data-act="qpg" data-p="'+pg+'">جرّب تاني</button>',ttl,sub); return; }
     qFsApply();
-    var body="";
+    var body='<div class="q-frame">';
     segs.forEach(function(x){
       var sn=x[0];
       if(x[1]===1){ body+='<div class="q-sb"><b>سورة '+esc(QD.idx[sn-1][1])+'</b></div>'+((sn!==1&&sn!==9)?'<p class="q-bis">'+esc(QD.v[1][0])+'</p>':''); }
       var seg=""; for(var v=x[1];v<=x[2];v++) seg+=qVerseHtml(sn,v,S.qbm&&S.qbm.n===sn&&S.qbm.v===v);
       body+='<div class="q-pt">'+seg+'</div>';
     });
-    body+='<div class="q-pn"><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg+1)+'"'+(pg>=604?' disabled':'')+'>الصفحة اللي بعدها ›</button><span>'+pg.toLocaleString("ar-EG")+' / '+(604).toLocaleString("ar-EG")+'</span><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg-1)+'"'+(pg<=1?' disabled':'')+'>‹ الصفحة اللي قبلها</button></div>'+
+    body+='<div class="q-fn"><span>'+pg.toLocaleString("ar-EG")+'</span></div></div><div class="q-pn"><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg+1)+'"'+(pg>=604?' disabled':'')+'>الصفحة اللي بعدها ›</button><span>'+pg.toLocaleString("ar-EG")+' / '+(604).toLocaleString("ar-EG")+'</span><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg-1)+'"'+(pg<=1?' disabled':'')+'>‹ الصفحة اللي قبلها</button></div>'+
       '<div class="q-go"><input type="number" id="qpgi" min="1" max="604" inputmode="numeric" placeholder="روح لصفحة…" aria-label="رقم الصفحة"><button type="button" class="btn" data-act="qpgo">اذهب</button></div>'+
       '<p class="disc">اسحب يمين أو شمال لتقليب الصفحات. دوس على أي آية عشان تعلّم مكانك. ترقيم الصفحات حسب مصحف المدينة (١٥ سطر).</p>';
     $("app").innerHTML=shell(body,ttl,sub);
@@ -5964,7 +5971,7 @@ document.addEventListener("click", function(ev){
   else if(a==="qback"){ view="qlist"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qplay"){ qPlay(+b.getAttribute("data-n")||1); if(view==="qsura") setTimeout(renderQsura,50); }
   else if(a==="qstop"){ if(AU){ AU.pause(); } QA.n=0; qBar(); if(view==="qsura") renderQsura(); }
-  else if(a==="qbm"){ var qv=+b.getAttribute("data-v"), qs=+b.getAttribute("data-s")||QS.n; S.qbm={n:qs,v:qv}; persist(); var ys=window.scrollY; if(view==="qpage") renderQpage(); else renderQsura(); window.scrollTo(0,ys); toast("علّمت آية "+qv.toLocaleString("ar-EG")); }
+  else if(a==="qbm"){ var qv=+b.getAttribute("data-v"), qs=+b.getAttribute("data-s")||QS.n; var had=S.qbm&&S.qbm.n===qs&&S.qbm.v===qv; if(had) S.qbm=null; else S.qbm={n:qs,v:qv}; persist(); var ys=window.scrollY; if(view==="qpage") renderQpage(); else renderQsura(); window.scrollTo(0,ys); toast(had?"شلت العلامة":"علّمت آية "+qv.toLocaleString("ar-EG")); }
   else if(a==="qfsh") qSheet();
   else if(a==="qfsx"){ var fo=document.getElementById("qfsh"); if(fo) fo.remove(); }
   else if(a==="adundo"){ var ui=+b.getAttribute("data-i"), um=adDay(todayKey())[AD.t]; if(um[ui]>0){ um[ui]--; persist(); var uy=window.scrollY; renderAdhk(); window.scrollTo(0,uy); } }
