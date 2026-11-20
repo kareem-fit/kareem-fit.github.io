@@ -401,6 +401,7 @@ body.v-welcome .foot{display:none}
 .hx-faith h2{margin:0 2px 2px;font-size:1.05rem}
 .fh-st{font-size:.8rem;font-weight:700;color:#F0A83C;background:rgba(240,168,60,.14);border:1px solid rgba(240,168,60,.45);padding:2px 10px;border-radius:12px;margin-inline-start:6px;white-space:nowrap}
 .q-wd{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:0 0 10px;background:var(--surface)}.q-wd span{flex:1;font-weight:700}.q-wd small{display:block;color:var(--muted);font-weight:500}.q-wd select{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:0 8px;font:inherit}
+.st-q{margin:14px 0 2px;font-size:1.02rem}
 .fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
 .fh-r.due{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.fh-r.ok{opacity:.75}
 .fh-i{font-size:1.5rem}.fh-t{flex:1;display:grid}.fh-t small{color:var(--muted)}.fh-s{font-weight:800;color:var(--muted)}.fh-r.ok .fh-s{color:#4FCB8A}.fh-r.due .fh-s{color:var(--accent)}
@@ -4888,6 +4889,8 @@ document.addEventListener("click", function(ev){
   var b=ev.target.closest("[data-act]"); if(!b) return;
   var a=b.getAttribute("data-act"), k=todayKey();
   if(a==="enter"){ wzGrab(); S.profile.name=(selName||"").trim(); S.plan=selPlan; S.weekStart=selStart; initDay(); S.welcomed=true; persist(); view="home"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="setplan"){ var np=+b.getAttribute("data-n"); if(np!==S.plan){ S.plan=np; initDay(); persist(); renderAll(); toast("اتغيّر النظام لـ "+WPLAN[np][0]+" في الأسبوع"); } }
+  else if(a==="setstart"){ var nd=+b.getAttribute("data-d"); if(nd!==S.weekStart){ S.weekStart=nd; initDay(); persist(); renderAll(); toast("أسبوعك بقى بيبدأ يوم "+WNAMES[nd]); } }
   else if(a==="selplan"){ selPlan=+b.getAttribute("data-n"); wzGrab(); renderWelcome(); }
   else if(a==="wnext"){ wzGrab(); if(wStep===1 && !(selName||"").trim()){ var ni=$("w-name"); if(ni){ ni.focus(); ni.classList.add("wz-bad"); } return; } wStep=Math.min(3,wStep+1); renderWelcome(); window.scrollTo(0,0); }
   else if(a==="wback"){ wzGrab(); wStep=Math.max(1,wStep-1); renderWelcome(); window.scrollTo(0,0); }
@@ -5481,9 +5484,15 @@ function renderSet(){
     '<div class="st-pb"><label class="sm-chg">'+(ph?'تغيير الصورة':'اختار صورة')+'<input type="file" id="me-file2" accept="image/*"></label>'+(ph?'<button type="button" class="sm-chg" data-act="meedit">تعديل الصورة</button>':'')+'</div></div></div>'+
     (u&&u.email?'<p class="sub st-em" dir="ltr">'+esc(u.email)+'</p>':'')+
     (window.__SID?'<p class="sub">رقم التعريف بتاعك: <b dir="ltr">'+window.__SID+'</b> (ابعته للمدرب لو طلبت تعديل)</p><label class="fld">رقم واتساب (اختياري، علشان المدرب يرد عليك)<input type="tel" class="tx" id="p-phone" dir="ltr" value="'+esc(p.phone||"")+'" placeholder="201xxxxxxxxx"></label>':'')+'</section>');
+  var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
   h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+
-    '<label class="fld">عدد أيام التمرين<select id="p-plan">'+[2,3,4,5].map(function(n){ return '<option value="'+n+'"'+(S.plan===n?' selected':'')+'>'+n+' أيام</option>'; }).join("")+'</select></label><p class="sub">'+PLANDESC[S.plan||3]+' تغيير العدد بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p>'+
-    '<label class="fld">أسبوعك بيبدأ يوم'+startSel("p-start",S.weekStart===undefined?5:S.weekStart)+'</label></section>');
+    '<h3 class="st-q">كام يوم بتتمرن في الأسبوع؟</h3><p class="sub">اختار النظام المناسب لوقتك ومستواك، والجدول كله بيتغيّر على حسبه.</p>'+
+    '<div class="wz-plans">'+[2,3,4,5].map(function(n){ var w=WPLAN[n];
+      return '<button type="button" class="wz-plan" data-act="setplan" data-n="'+n+'" aria-pressed="'+(cp===n)+'"><b>'+n+'</b><span class="wz-pt"><strong>'+w[0]+'</strong><small>'+w[1]+'</small><em>'+w[2]+'</em></span>'+(n===3?'<u>الأنسب</u>':'')+'</button>'; }).join("")+'</div>'+
+    '<h3 class="st-q">أسبوعك بيبدأ يوم إيه؟</h3><p class="sub">ده اليوم اللي بيتحسب منه تحدي الأسبوع وجدول التمارين.</p>'+
+    '<div class="wz-days">'+[5,6,0,1,2,3,4].map(function(d){ return '<button type="button" class="wz-day" data-act="setstart" data-d="'+d+'" aria-pressed="'+(cs===d)+'">'+WNAMES[d]+'</button>'; }).join("")+'</div>'+
+    '<div class="wz-sum"><b>جدولك دلوقتي</b><span>'+WPLAN[cp][0]+' في الأسبوع · بيبدأ '+WNAMES[cs]+'</span></div>'+
+    '<p class="sub">تغيير النظام بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p></section>');
   h.push(codeCard().replace('<section class="card">','<section class="fx-card">'));
   var cur=(window.__curTheme?window.__curTheme():"classic");
   var TH=[["classic","كلاسيك","#08202F","#FF7A3F"],["modern","عصري","#0F172A","#F97316"],["light","فاتح","#F1F5F9","#C2410C"],["black","أسود","#000000","#FF7A3F"],["calm","هادي","#FAF5FF","#6D28D9"]];
