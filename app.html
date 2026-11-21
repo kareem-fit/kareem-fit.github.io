@@ -414,6 +414,9 @@ body.v-welcome .foot{display:none}
 .wk-o{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--t-line,#2A5878);background:none;color:inherit;border-radius:12px;padding:12px 14px;font:inherit;font-weight:700;min-height:48px}.wk-o small{color:var(--t-muted,#9FB6C3);font-weight:500}
 .wk-rec{border:1.5px solid #3DDC97;background:rgba(61,220,151,.08);border-radius:14px;padding:12px}.wk-rec b{font-size:1.1rem}.wk-rec p{margin:4px 0;font-size:.88rem;line-height:1.7}
 .wk-rows{display:grid;gap:8px;margin-bottom:10px}.wk-row{display:flex;align-items:center;gap:10px}.wk-row b{width:76px;flex:none}.wk-row select{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--t-line,#2A5878);background:var(--t-surface,#0F2E44);color:inherit;padding:0 10px;font:inherit}.wk-lock{color:var(--t-muted,#9FB6C3);font-size:.85rem}
+.fh-sh{margin-inline-start:8px;min-height:34px;padding:0 14px;border-radius:99px;border:1px solid var(--accent);background:none;color:var(--accent);font:inherit;font-size:.8rem;font-weight:700}
+.wn-b{max-height:88vh;overflow:auto}.wn-i{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--line)}.wn-ic{font-size:1.6rem}.wn-t{flex:1;display:grid}.wn-t small{color:var(--muted);line-height:1.7}.wn-i .sm-gh{flex:none;min-height:40px;padding:0 14px}
+.sm-up.wide{display:flex;justify-content:center;align-items:center;min-height:46px;margin-top:8px;cursor:pointer}
 .trn-sum{display:flex;align-items:center;gap:12px}.trn-sum>span{flex:1;display:grid;gap:2px}.trn-sum small{color:var(--muted);font-size:.82rem;line-height:1.7}.trn-sum .sm-gh{flex:none;min-height:44px;padding:0 18px}
 .st-q{margin:14px 0 2px;font-size:1.02rem}
 .fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
@@ -3033,6 +3036,7 @@ function renderAll(){
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
+  if(view==="home") setTimeout(wnMaybe,600);
 }
 
 /* ---------- rest timer ---------- */
@@ -3798,7 +3802,7 @@ function hxFaith(tk){
   if(wn) qd=wd>=wn;
   function row(ic,l,ok,sub,on,act){ return '<button type="button" class="fh-r'+(ok?' ok':'')+(on&&!ok?' due':'')+'" '+act+'><span class="fh-i">'+ic+'</span><span class="fh-t"><b>'+l+'</b><small>'+sub+'</small></span><span class="fh-s">'+(ok?'✓':'لسه')+'</span></button>'; }
   function ad(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return row(ic,l,ok,ok?'تقبّل الله منك':(p.done?p.done+' من '+p.total:'ابدأ دلوقتي'),t===cur,'data-act="adopen" data-t="'+t+'"'); }
-  return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده'+(st>0?' <span class="fh-st">🔥 '+st.toLocaleString("ar-EG")+(st===1?' يوم':st===2?' يومين':st<=10?' أيام':' يوم')+' ورا بعض</span>':'')+'</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖",wn?"ورد القرآن":"القرآن",qd,wn?(qd?"خلصت وردك ("+wn.toLocaleString("ar-EG")+" صفحة)":"قريت "+wd.toLocaleString("ar-EG")+" من "+wn.toLocaleString("ar-EG")+" صفحة"):(qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة"),false,'data-act="view" data-v="ibd"')+'</section>';
+  return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده'+(st>0?' <span class="fh-st">🔥 '+st.toLocaleString("ar-EG")+(st===1?' يوم':st===2?' يومين':st<=10?' أيام':' يوم')+' ورا بعض</span><button type="button" class="fh-sh" data-act="fshare" aria-label="شارك إنجازك">شارك</button>':'')+'</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖",wn?"ورد القرآن":"القرآن",qd,wn?(qd?"خلصت وردك ("+wn.toLocaleString("ar-EG")+" صفحة)":"قريت "+wd.toLocaleString("ar-EG")+" من "+wn.toLocaleString("ar-EG")+" صفحة"):(qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة"),false,'data-act="view" data-v="ibd"')+'</section>';
 }
 function renderAdhk(){
   var tk=todayKey(), t=AD.t, L=adList(t), day=adDay(tk), m=day[t], p=adProg(tk,t);
@@ -4593,8 +4597,8 @@ function drawQuote(txt,logo,sz){
   for(fs=Z.mf;fs>=34;fs-=4){ x.direction="rtl"; x.font="800 "+fs+"px "+CV.AR; lines=cvWrap(x,txt,maxW); lh=Math.round(fs*1.7); if(lines.length*lh<=avail) break; }
   var tot=lines.length*lh, lab=H<800?64:(H>=1000?160:110), qm=H<800?0:110, block=lab+qm+tot+50, y0=top+Math.max(0,(bot-top-block)/2);
   var showDate=H>=1000, dt=pk(tk).toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"long"});
-  x.font="800 50px "+CV.AR; var lw=x.measureText("رسالة اليوم").width;
-  cvText(x,"رسالة اليوم",W/2,y0+44,"800 50px "+CV.AR,GOLD,"center");
+  x.font="800 50px "+CV.AR; var qh=qtHdr||"رسالة اليوم", lw=x.measureText(qh).width;
+  cvText(x,qh,W/2,y0+44,"800 50px "+CV.AR,GOLD,"center");
   x.strokeStyle="rgba(240,190,60,.55)"; x.lineWidth=3; x.beginPath(); x.moveTo(W/2+lw/2+30,y0+30); x.lineTo(W/2+lw/2+130,y0+30); x.moveTo(W/2-lw/2-30,y0+30); x.lineTo(W/2-lw/2-130,y0+30); x.stroke();
   if(showDate) cvText(x,dt,W/2,y0+96,"600 34px "+CV.AR,"rgba(255,255,255,.62)","center");
   var ty=y0+lab+qm;
@@ -4617,8 +4621,10 @@ function qtPaint(){
   }
   var bs=document.querySelectorAll("#qtm [data-act='qtsz']"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed",String(bs[i].getAttribute("data-v")===qtSize));
 }
-function openQuoteShare(){
-  var txt=todayMsgText(); if(!txt){ toast("مفيش رسالة النهارده"); return; }
+var qtHdr="";
+function openQuoteShare(ov){
+  qtHdr=ov?"إنجازي":"";
+  var txt=ov||todayMsgText(); if(!txt){ toast("مفيش رسالة النهارده"); return; }
   withFonts(function(){ qtLogo(function(logo){
     qtTxt=txt; qtLg=logo;
     var m=document.getElementById("qtm"); if(m) m.remove();
@@ -4987,6 +4993,10 @@ document.addEventListener("click", function(ev){
   }
   else if(a==="codeoff"){ S.override=null; initDay(); persist(); renderAll(); toast("رجع البرنامج الأصلي"); }
   else if(a==="shareqt"){ openQuoteShare(); }
+  else if(a==="fshare"){ var st2=fStreak(); if(st2>0) openQuoteShare(st2.toLocaleString("ar-EG")+(st2===1?" يوم":st2===2?" يومين":st2<=10?" أيام":" يوم")+" ورا بعض على أذكاري وقراءة القرآن، والحمد لله. ابدأ إنت كمان."); }
+  else if(a==="bkdl"){ bkDownload(); }
+  else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w1"; persist(); }
+  else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w1"; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qtgo"){ if(qtCanvas) shareOut(qtCanvas,"رسالة-اليوم-"+todayKey()+".png"); }
   else if(a==="qtdl"){ if(qtCanvas) qtCanvas.toBlob(function(bl){ if(bl) saveFile("رسالة-اليوم-"+todayKey()+".png",bl,"اتنزّلت الصورة"); },"image/png"); }
   else if(a==="qtsz"){ qtSize=b.getAttribute("data-v")||"story"; qtPaint(); }
@@ -5533,6 +5543,44 @@ function installCard(){
   return h+'</section>';
 }
 function stHead(ic,t){ return '<div class="fx-lh"><h2>'+t+'</h2><span class="bd-ico">'+ic+'</span></div>'; }
+function bkDownload(){
+  try{
+    var d={}; Object.keys(S).forEach(function(k){ if(k!=="photos") d[k]=S[k]; });
+    var txt=JSON.stringify({app:"kareem-fit",v:1,exported:new Date().toISOString(),data:d});
+    var name="kareem-fit-backup-"+todayKey()+".json", bl=new Blob([txt],{type:"application/json"}), f=null;
+    try{ f=new File([bl],name,{type:"application/json"}); }catch(e){}
+    if(f&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],title:"نسخة Kareem-Fit"}).catch(function(){}); return; }
+    var a=document.createElement("a"); a.href=URL.createObjectURL(bl); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); toast("اتحمّلت النسخة");
+  }catch(e){ toast("ماقدرتش أعمل النسخة"); }
+}
+function bkRestore(file){
+  if(!file) return;
+  if(file.size>25*1024*1024){ toast("الملف كبير أوي مش نسخة تطبيق"); return; }
+  var r=new FileReader();
+  r.onload=function(){
+    var o; try{ o=JSON.parse(String(r.result)); }catch(e){ toast("الملف ده مش نسخة صالحة"); return; }
+    var d=o&&o.app==="kareem-fit"&&o.data;
+    if(!d||typeof d!=="object"||!Array.isArray(d.sessions)){ toast("الملف ده مش نسخة من Kareem-Fit"); return; }
+    if(!confirm("هترجّع البيانات من النسخة دي (تمارين "+d.sessions.length+" جلسة) وتستبدل بيانات الموبايل الحالية. نكمل؟")) return;
+    Object.keys(d).forEach(function(k){ if(k==="__proto__"||k==="constructor"||k==="prototype") return; S[k]=d[k]; });
+    try{ defaults(); initDay(); persist(); }catch(e){}
+    toast("اتّرجعت البيانات ✓"); setTimeout(function(){ location.reload(); },900);
+  };
+  r.onerror=function(){ toast("ماقدرتش أقرا الملف"); };
+  r.readAsText(file);
+}
+function wnMaybe(){
+  if(view!=="home"||!S.welcomed||(S.prefs&&S.prefs.wn)||document.getElementById("wnm")) return;
+  var m=document.createElement("div"); m.id="wnm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","جديد في التطبيق");
+  function it(ic,t,d,v,l){ return '<div class="wn-i"><span class="wn-ic">'+ic+'</span><span class="wn-t"><b>'+t+'</b><small>'+d+'</small></span>'+(v?'<button type="button" class="sm-gh" data-act="wngo" data-v="'+v+'">'+l+'</button>':'')+'</div>'; }
+  m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>جديد في Kareem-Fit</h3>'+
+    it("📖","المصحف كامل","آية بآية أو صفحات المصحف، بالتلاوة وبدون نت","ibd","افتح")+
+    it("☀️","أذكار الصباح والمساء والنوم","مع عدّاد وبطاقة «عبادتك النهارده» وسلسلة أيامك","home","")+
+    it("🗓️","رتّب تمرينك بنفسك","اختار تمرين كل يوم، وشوف شريط أسبوعك","trn","جرّب")+
+    it("💾","نسخة احتياطية","احفظ بياناتك وارجّعها من الإعدادات","set","شوف")+
+    '<button type="button" class="btn" data-act="wnok">تمام، ابدأ</button></div>';
+  document.body.appendChild(m);
+}
 function renderTrn(){
   var h=['<div class="fx st"><div class="ad-top"><button type="button" class="sm-gh" data-act="trnback">رجوع</button><h2>تعديل التمرين</h2></div>'];
   var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
@@ -5562,6 +5610,7 @@ function renderSet(){
   var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
   h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+'<div class="trn-sum"><span><b>'+WPLAN[cp][0]+' في الأسبوع</b><small>'+wkNames(DAYS)+' · الأسبوع بيبدأ '+WNAMES[cs]+'</small></span><button type="button" class="sm-gh" data-act="trnopen">تعديل</button></div></section>');
   h.push(codeCard().replace('<section class="card">','<section class="fx-card">'));
+  h.push('<section class="fx-card">'+stHead(SETI.user,"نسخة احتياطية")+'<p class="sub">حمّل ملف فيه تمارينك وأوزانك وكل بياناتك، وارجّعه لو غيّرت الموبايل أو مسحت التطبيق. الصور مش داخلة في النسخة.</p><button type="button" class="btn" data-act="bkdl">حمّل نسختي</button><label class="sm-up wide">رجّع من نسخة<input type="file" id="bk-file" accept="application/json,.json" hidden></label></section>');
   var cur=(window.__curTheme?window.__curTheme():"classic");
   var TH=[["classic","كلاسيك","#08202F","#FF7A3F"],["modern","عصري","#0F172A","#F97316"],["light","فاتح","#F1F5F9","#C2410C"],["black","أسود","#000000","#FF7A3F"],["calm","هادي","#FAF5FF","#6D28D9"]];
   var fz=(window.__curFs?window.__curFs():"n");
@@ -6439,7 +6488,7 @@ function d3shell(){
 }
 /* KFIT-OWNER: image/banner adjust tool is for the coach only */
 document.addEventListener("click",function(){ try{ document.body.classList.toggle("kf-own",!!cmAdmin()); }catch(e){} },true);
-document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } if(e.target && e.target.classList && e.target.classList.contains("wk-sel")){ wkApply(+e.target.getAttribute("data-dow"),e.target.value); return; } if(e.target && e.target.id==="qwd"){ S.prefs.wird=+e.target.value||0; persist(); renderQlist(); } });
+document.addEventListener("change",function(e){ if(e.target && e.target.id==="qfr"){ persist(); } if(e.target && e.target.id==="bk-file"){ bkRestore(e.target.files&&e.target.files[0]); e.target.value=""; return; } if(e.target && e.target.classList && e.target.classList.contains("wk-sel")){ wkApply(+e.target.getAttribute("data-dow"),e.target.value); return; } if(e.target && e.target.id==="qwd"){ S.prefs.wird=+e.target.value||0; persist(); renderQlist(); } });
 document.addEventListener("input",function(e){ if(e.target && e.target.id==="qfr"){ S.prefs.qfs=+e.target.value; qFsApply(); return; } if(e.target && e.target.id==="qsrch"){ QS.q=e.target.value; qRows(); } });
 function d3sheet(){
   var sh=$("v3sheet"), box=sh&&sh.firstElementChild;
