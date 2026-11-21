@@ -414,6 +414,7 @@ body.v-welcome .foot{display:none}
 .wk-o{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--t-line,#2A5878);background:none;color:inherit;border-radius:12px;padding:12px 14px;font:inherit;font-weight:700;min-height:48px}.wk-o small{color:var(--t-muted,#9FB6C3);font-weight:500}
 .wk-rec{border:1.5px solid #3DDC97;background:rgba(61,220,151,.08);border-radius:14px;padding:12px}.wk-rec b{font-size:1.1rem}.wk-rec p{margin:4px 0;font-size:.88rem;line-height:1.7}
 .wk-rows{display:grid;gap:8px;margin-bottom:10px}.wk-row{display:flex;align-items:center;gap:10px}.wk-row b{width:76px;flex:none}.wk-row select{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--t-line,#2A5878);background:var(--t-surface,#0F2E44);color:inherit;padding:0 10px;font:inherit}.wk-lock{color:var(--t-muted,#9FB6C3);font-size:.85rem}
+.trn-sum{display:flex;align-items:center;gap:12px}.trn-sum>span{flex:1;display:grid;gap:2px}.trn-sum small{color:var(--muted);font-size:.82rem;line-height:1.7}.trn-sum .sm-gh{flex:none;min-height:44px;padding:0 18px}
 .st-q{margin:14px 0 2px;font-size:1.02rem}
 .fh-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 12px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--text);text-align:right}
 .fh-r.due{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.fh-r.ok{opacity:.75}
@@ -434,6 +435,7 @@ body.v-welcome .foot{display:none}
 .ad-r{display:flex;gap:10px;align-items:stretch}
 .ad-tap{flex:1;min-height:56px;border-radius:14px;border:0;background:var(--accent);color:var(--on-accent);font-weight:800;display:grid;gap:0;justify-items:center;align-content:center}
 .ad-tap span{font-size:.85rem;font-weight:600;opacity:.9}.ad-tap b{font-size:1.15rem}
+.ad-tips{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:12px 14px;margin:12px 0;display:grid;gap:4px}.ad-tips h3{margin:0 0 2px;font-size:1.02rem}.ad-tips p{margin:0;color:var(--muted);line-height:1.9}
 .ad-ln{width:100%;min-height:46px;margin:8px 0}.ad-q{font-family:"Amiri Quran","Cairo",serif!important}.ad-un{min-width:72px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--muted)}
 .ib-h{margin:16px 2px 8px;font-size:1rem;color:var(--muted)}
 .ib-row{display:flex;align-items:center;gap:12px;width:100%;text-align:right;padding:14px;margin-bottom:10px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--text);min-height:68px}
@@ -3023,11 +3025,11 @@ function renderAll(){
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   renderTabs();
   ["home","today","train","log","body","food","share","comm","set"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",ibd:"vi"};
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else renderShare();
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
@@ -3810,6 +3812,7 @@ function renderAdhk(){
       ((r[3]||r[4])?'<details class="ad-d"><summary>الفضل والمصدر</summary>'+(r[3]?'<p>'+esc(r[3])+'</p>':'')+(r[4]?'<p class="ad-s">'+esc(r[4])+'</p>':'')+'</details>':'')+
       (r[5]?'<button type="button" class="sm-gh ad-ln" data-act="qsura" data-n="'+r[5]+'">افتح السورة في المصحف</button>':'')+'<div class="ad-r"><button type="button" class="ad-tap" data-act="adtap" data-i="'+i+'" aria-label="عدّ">'+(ok?'✓':'<span>اضغط للعد</span>')+'<b>'+c+' من '+r[1]+'</b></button>'+(c>0?'<button type="button" class="ad-un" data-act="adundo" data-i="'+i+'" aria-label="تراجع">تراجع</button>':'')+'</div></article>';
   });
+  if(t==="n") h+='<section class="ad-tips"><h3>نصايح قبل النوم</h3><p>انفضوا الفراش ثلاث مرات.</p><p>النوم على الشق الأيمن سنة عن الحبيب ﷺ.</p></section>';
   h+='<p class="disc">النصوص من كتاب حصن المسلم للشيخ سعيد بن علي بن وهف القحطاني، عن قاعدة بيانات أذكار الصباح والمساء مفتوحة المصدر.</p></div>';
   $("app").innerHTML=h;
 }
@@ -5530,6 +5533,21 @@ function installCard(){
   return h+'</section>';
 }
 function stHead(ic,t){ return '<div class="fx-lh"><h2>'+t+'</h2><span class="bd-ico">'+ic+'</span></div>'; }
+function renderTrn(){
+  var h=['<div class="fx st"><div class="ad-top"><button type="button" class="sm-gh" data-act="trnback">رجوع</button><h2>تعديل التمرين</h2></div>'];
+  var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
+  h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+
+    '<h3 class="st-q">كام يوم بتتمرن في الأسبوع؟</h3><p class="sub">دوس على النظام وشوف أيام تمرينك على طول.</p>'+wkLegend()+
+    '<div class="wz-plans">'+[2,3,4,5].map(function(n){ var w=WPLAN[n], sel=(cp===n), ds=sel?DAYS:buildDays00(n);
+      return '<button type="button" class="wz-plan wk-pl" data-act="setplan" data-n="'+n+'" aria-pressed="'+sel+'"><span class="wk-hd"><b>'+n+'</b><span class="wz-pt"><strong>'+w[0]+(sel?' ✓':'')+'</strong><small>'+w[1]+'</small><em>'+w[2]+'</em></span></span>'+wkStrip(ds)+(sel?'<span class="wk-nm">'+wkNames(ds)+'</span>':'')+(n===3?'<u>الأنسب</u>':'')+'</button>'; }).join("")+'</div>'+
+    wkQuizHtml()+
+    '<h3 class="st-q">أسبوعك بيبدأ يوم إيه؟</h3><p class="sub">ده اليوم اللي بيتحسب منه تحدي الأسبوع.</p>'+
+    '<div class="wz-days">'+[5,6,0,1,2,3,4].map(function(d){ return '<button type="button" class="wz-day" data-act="setstart" data-d="'+d+'" aria-pressed="'+(cs===d)+'">'+WNAMES[d]+'</button>'; }).join("")+'</div>'+
+    wkArrange()+
+    '<p class="sub">تغيير النظام بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p></section>');
+  h.push('</div>');
+  $("app").innerHTML=h.join("");
+}
 function renderSet(){
   var p=S.profile, u=cmUser(), h=['<div class="fx st">'];
   var ph=myPhoto(), gp=(!ph && !cmAdmin() && u && u.photoURL && /^https:\/\//.test(u.photoURL))?u.photoURL:"";
@@ -5542,15 +5560,7 @@ function renderSet(){
     (u&&u.email?'<p class="sub st-em" dir="ltr">'+esc(u.email)+'</p>':'')+
     (window.__SID?'<p class="sub">رقم التعريف بتاعك: <b dir="ltr">'+window.__SID+'</b> (ابعته للمدرب لو طلبت تعديل)</p><label class="fld">رقم واتساب (اختياري، علشان المدرب يرد عليك)<input type="tel" class="tx" id="p-phone" dir="ltr" value="'+esc(p.phone||"")+'" placeholder="201xxxxxxxxx"></label>':'')+'</section>');
   var cp=S.plan||3, cs=S.weekStart===undefined?5:S.weekStart;
-  h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+
-    '<h3 class="st-q">كام يوم بتتمرن في الأسبوع؟</h3><p class="sub">دوس على النظام وشوف أيام تمرينك على طول.</p>'+wkLegend()+
-    '<div class="wz-plans">'+[2,3,4,5].map(function(n){ var w=WPLAN[n], sel=(cp===n), ds=sel?DAYS:buildDays00(n);
-      return '<button type="button" class="wz-plan wk-pl" data-act="setplan" data-n="'+n+'" aria-pressed="'+sel+'"><span class="wk-hd"><b>'+n+'</b><span class="wz-pt"><strong>'+w[0]+(sel?' ✓':'')+'</strong><small>'+w[1]+'</small><em>'+w[2]+'</em></span></span>'+wkStrip(ds)+(sel?'<span class="wk-nm">'+wkNames(ds)+'</span>':'')+(n===3?'<u>الأنسب</u>':'')+'</button>'; }).join("")+'</div>'+
-    wkQuizHtml()+
-    '<h3 class="st-q">أسبوعك بيبدأ يوم إيه؟</h3><p class="sub">ده اليوم اللي بيتحسب منه تحدي الأسبوع.</p>'+
-    '<div class="wz-days">'+[5,6,0,1,2,3,4].map(function(d){ return '<button type="button" class="wz-day" data-act="setstart" data-d="'+d+'" aria-pressed="'+(cs===d)+'">'+WNAMES[d]+'</button>'; }).join("")+'</div>'+
-    wkArrange()+
-    '<p class="sub">تغيير النظام بيغيّر جدول التمارين، وسجلاتك القديمة بتفضل محفوظة.</p></section>');
+  h.push('<section class="fx-card">'+stHead(SETI.dumb,"التمرين")+'<div class="trn-sum"><span><b>'+WPLAN[cp][0]+' في الأسبوع</b><small>'+wkNames(DAYS)+' · الأسبوع بيبدأ '+WNAMES[cs]+'</small></span><button type="button" class="sm-gh" data-act="trnopen">تعديل</button></div></section>');
   h.push(codeCard().replace('<section class="card">','<section class="fx-card">'));
   var cur=(window.__curTheme?window.__curTheme():"classic");
   var TH=[["classic","كلاسيك","#08202F","#FF7A3F"],["modern","عصري","#0F172A","#F97316"],["light","فاتح","#F1F5F9","#C2410C"],["black","أسود","#000000","#FF7A3F"],["calm","هادي","#FAF5FF","#6D28D9"]];
@@ -6072,6 +6082,8 @@ document.addEventListener("click", function(ev){
   else if(a==="adt"){ AD.t=({m:"m",e:"e",n:"n"})[b.getAttribute("data-t")]||"m"; renderAdhk(); }
   else if(a==="adback"){ view="ibd"; renderAll(); window.scrollTo(0,0); }
   else if(a==="adtap") adTap(+b.getAttribute("data-i"));
+  else if(a==="trnopen"){ view="trn"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="trnback"){ view="set"; renderAll(); window.scrollTo(0,0); }
   else if(a==="ibback"){ view="ibd"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qopen"){ QS.l=!!b.getAttribute("data-l"); QS.q=""; view="qlist"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qres"){ if(S.qbm){ QS.n=S.qbm.n; if(S.prefs.qm==="p"){ qIdx(function(){ qPages(function(ok){ if(ok) qGoPage(qPageOf(S.qbm.n,S.qbm.v)); }); }); } else { view="qsura"; renderAll(); window.scrollTo(0,0); setTimeout(function(){ var e=document.querySelector(".q-v.bm"); if(e) e.scrollIntoView({block:"center"}); },400); } } }
