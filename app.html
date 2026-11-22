@@ -510,7 +510,12 @@ body.v-welcome .foot{display:none}
 #qfsh h3{margin:6px 0 0;text-align:center}
 #qfsh .qs-pv{font-family:"Amiri Quran","Cairo",serif;font-size:var(--qfs,1.7rem);text-align:center;margin:8px 0;color:#F0BE3C;min-height:3em;display:grid;place-items:center}
 #qfsh .qs-r{display:flex;align-items:center;gap:14px;direction:rtl}#qfsh input[type=range]{flex:1;accent-color:var(--accent);height:34px}
-#kfarr{position:fixed;inset-inline:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:999;display:flex;flex-direction:column;align-items:center;pointer-events:none;color:#FF7A3F;font-weight:900;font-size:1rem;text-shadow:0 2px 8px #000}#kfarr svg{width:44px;height:44px;animation:kfbob 1s ease-in-out infinite}</style>
+#kfarr{position:fixed;inset-inline:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:999;display:flex;flex-direction:column;align-items:center;pointer-events:none;color:#FF7A3F;font-weight:900;font-size:1rem;text-shadow:0 2px 8px #000}#kfarr svg{width:44px;height:44px;animation:kfbob 1s ease-in-out infinite}
+.kfsv{width:120px!important;max-width:45%!important;height:auto!important;cursor:zoom-in;border-radius:10px}
+#kfz{position:fixed;inset:0;z-index:2000;background:rgba(3,10,16,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px;cursor:zoom-out}
+#kfz svg{width:100%!important;max-width:560px!important;height:auto!important;display:block;cursor:zoom-out}
+#kfz button{min-height:46px;padding:0 28px;border-radius:12px;border:1px solid #FF7A3F;background:transparent;color:#fff;font:inherit;font-weight:800;font-size:1rem}
+</style>
 <style>
 /* v4: تغذية + مجتمع */
 .brand h1{white-space:nowrap;font-size:1.15rem}
@@ -7219,5 +7224,13 @@ document.addEventListener("click",function(e){
   if(k==="weigh"&&!box.hidden){ var i=document.getElementById("qw"); if(i) i.focus(); }
 });
 </script>
+<script>(function(){function close(){var z=document.getElementById("kfz");if(z)z.remove()}
+document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)return;
+if(t.closest("#kfz")){close();return}
+var s=t.closest(".kfsv");if(!s)return;e.preventDefault();close();
+var z=document.createElement("div");z.id="kfz";z.setAttribute("role","dialog");z.setAttribute("aria-label","صورة مكبرة");
+var c=s.cloneNode(true);c.removeAttribute("aria-hidden");z.appendChild(c);
+var b=document.createElement("button");b.type="button";b.textContent="رجوع";z.appendChild(b);document.body.appendChild(z)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});})();</script>
 </body>
 </html>
