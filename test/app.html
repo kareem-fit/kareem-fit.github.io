@@ -2492,7 +2492,7 @@ var XLIB=[
  {id:"xbdip",g:"Bench_Dips",n:"Bench Dip",ar:"متوازي على كرسي",m:["triceps","chest","delt_f"],lo:10,hi:15,cue:"إيديك على حافة كرسي أو بنش وجسمك قدامه. انزل بثني الكوع لحد 90 درجة وارفع. كوعيك لورا مش لبرا."},
  {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["glutes","quads"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
  {id:"xmc",g:"Mountain_Climbers",n:"Mountain Climber",ar:"متسلق الجبل",m:["abs"],lo:20,hi:40,rp:"30–40 ث",cue:"وضع الضغط، قرّب ركبة بعد التانية من صدرك بسرعة وثبّت الجذع. سجّل الثواني أو عدد المرات."},
- {id:"xburp",n:"Burpee",ar:"بيربي",m:["quads"],lo:8,hi:15,cue:"انزل لوضع الضغط، اعمل ضغطة، اقفز برجليك لإيديك وانط لفوق. حركة تقيلة، خليها بإيقاع تقدر تكمله."},
+{id:"xktj",g:"Knee_Tuck_Jump",n:"Knee Tuck Jump",ar:"نطة بضم الركبة",m:["quads"],lo:8,hi:15,cue:"انط لفوق وضم ركبتيك لصدرك وانزل بنعومة. حركة سريعة، خد راحة بين المجموعات."},
  {id:"xflut",g:"Flutter_Kicks",n:"Flutter Kicks",ar:"ركل الرجلين (فلاتر)",m:["abs"],lo:20,hi:40,cue:"نايم على ضهرك ورجليك مرفوعة شوية، حرّكهم لفوق ولتحت بالتبادل وأسفل ضهرك ثابت على الأرض."},
  {id:"xairb",g:"Air_Bike",n:"Air Bike",ar:"دراجة هوائية (بطن)",m:["abs"],lo:20,hi:40,cue:"نايم وإيديك ورا راسك، قرّب كوعك من الركبة المعاكسة بالتبادل وكأنك بتركب عجلة."},
  {id:"xrope",g:"Rope_Jumping",n:"Jump Rope",ar:"نط الحبل",m:["calves"],lo:45,hi:90,rp:"45–90 ث",cue:"نط خفيف على مشط رجلك والكوعين جنبك. تمرين كارديو ممتاز ومحتاج حبل بس."},
@@ -7136,19 +7136,19 @@ var PROGS=[
   ["كامل الجسم ب",[["xbdip",3],["xpushw",3],["xlunge",3],["xmc",3],["xrcrunch",3],["xsplank",3]]],
   ["كامل الجسم ج",[["xbsq",3],["xpushc",3],["xsbridge",3],["xflut",3],["xairb",3],["xplank",3]]]]},
  {id:"fat",ic:"🔥",n:"حرق الدهون – دوائر لياقة",lv:"لياقة",pl:"جيم",d:"تكرارات عالية وراحة قصيرة عشان تحرق أكبر قدر من السعرات. بيجمع بين الأوزان والكارديو.",days:[
-  ["كامل الجسم – حرق",[["xgob",4],["dbrdl",4],["xpush",4],["xbor",4],["xmc",4],["xburp",3]]],
+  ["كامل الجسم – حرق",[["xgob",4],["dbrdl",4],["xpush",4],["xbor",4],["xmc",4],["xktj",3]]],
   ["سفلي + بطن – حرق",[["xjsq",4],["xdlg",3],["legpress",3],["xbridge",3],["xrcrunch",3],["xairb",4]]],
   ["علوي – حرق",[["xdbp",4],["wgpd",4],["dbsp",3],["xbdip",3],["xplank",3],["xmc",3]]],
-  ["هيت كامل الجسم",[["xjsq",4],["xirow",3],["xlunge",3],["xcrunch",3],["xburp",3],["xrope",3]]]]},
+  ["هيت كامل الجسم",[["xjsq",4],["xirow",3],["xlunge",3],["xcrunch",3],["xktj",3],["xrope",3]]]]},
  {id:"ul4",ic:"⚡",n:"علوي / سفلي – 4 أيام",lv:"متوسط",pl:"جيم",d:"يومين للنص العلوي ويومين للسفلي. كل عضلة بتتضرب مرتين في الأسبوع.",days:[
   ["علوي أ",[["fdbp",3],["wgpd",3],["dbsp",3],["wgsr",3],["incurl",2],["sspd",2]]],
   ["سفلي أ",[["legpress",3],["dbrdl",3],["legext",3],["legcurl",3],["calf",4],["ccrunch",3]]],
   ["علوي ب",[["incfly",3],["pullup",3],["msp",3],["tbar",3],["hammer",2],["ssoh",2]]],
   ["سفلي ب",[["hipthrust",3],["legext",3],["abduct",3],["legcurl",3],["calf",4],["pallof",3]]]]},
- {id:"ppl",ic:"🏋️",n:"Push / Pull / Legs",lv:"متوسط",pl:"جيم",d:"دفع وسحب ورجل. 3 أيام في الأسبوع بتقسيم مريح للعضلات.",days:[
-  ["Push",[["incfly",3],["cdips",2],["msp",3],["dlr",3],["sapush",2],["ssoh",2]]],
-  ["Pull",[["wgsr",3],["sapd",2],["salp",2],["crdf",2],["preacher",2],["hammer",2]]],
-  ["Legs",[["legpress",3],["legext",3],["dbrdl",2],["legcurl",2],["hipthrust",2],["calf",3],["abduct",2]]]]}
+ {id:"ppl",ic:"🏋️",n:"Push / Pull / Legs",lv:"متوسط",pl:"جيم",d:"دفع وسحب ورجل. 3 أيام في الأسبوع، كل يوم فيه تمارين العضلة الأساسية (صدر وضغط، سحب عالي وسحب أفقي، رجل كاملة).",days:[
+  ["Push",[["fdbp",3],["incfly",3],["dbsp",3],["dlr",3],["cdips",2],["sapush",2],["ssoh",2]]],
+  ["Pull",[["wgpd",3],["wgsr",3],["salp",2],["sapd",2],["crdf",3],["preacher",2],["hammer",2]]],
+  ["Legs",[["legpress",3],["legext",3],["dbrdl",3],["legcurl",2],["hipthrust",2],["calf",3],["abduct",2]]]]}
 ];
 var LB={open:null,pick:null,sel:[],rm:"",ow:"",or:"",qh:null,qon:false,qmsg:"",rpOpen:false,pm:""};
 var LBTABS=[["prog","البرامج"],["tool","أدوات"],["musc","العضلات"],["rep","تقرير"]];
