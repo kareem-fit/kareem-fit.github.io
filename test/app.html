@@ -4274,7 +4274,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+(faithOn()?lbPrayStrip():'')+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayB():'')+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
