@@ -2478,27 +2478,27 @@ BASE_DAYS.forEach(function(d){ d.ex.forEach(function(e){ LIB[e.id] = e; }); });
 var XLIB=[
  {id:"xpush",g:"Pushups",n:"Push-Up",ar:"ضغط (بوش أب)",m:["chest","delt_f","triceps"],lo:8,hi:15,cue:"إيديك أوسع من كتفك شوية وجسمك خط مستقيم من الراس للكعب. انزل لحد ما صدرك يقرب من الأرض وادفع لفوق. لو تقيل عليك اشتغل على ركبك."},
  {id:"xpushw",g:"Push-Up_Wide",n:"Wide Push-Up",ar:"ضغط واسع",m:["chest","delt_f"],lo:8,hi:15,cue:"إيديك أوسع من كتفك بوضوح. بيركّز أكتر على الصدر. انزل بتحكم وماتفتحش كوعك على الآخر."},
- {id:"xpushc",g:"Push-Ups_-_Close_Triceps_Position",n:"Close-Grip Push-Up",ar:"ضغط ضيق (ترايسبس)",m:["triceps","chest"],lo:8,hi:15,cue:"إيديك قريبين من بعض تحت صدرك وكوعيك جنب جسمك. بيشغّل الترايسبس أكتر."},
+ {id:"xpushc",g:"Push-Ups_-_Close_Triceps_Position",n:"Close-Grip Push-Up",ar:"ضغط ضيق (ترايسبس)",m:["chest","delt_f","triceps"],lo:8,hi:15,cue:"إيديك قريبين من بعض تحت صدرك وكوعيك جنب جسمك. بيشغّل الترايسبس أكتر."},
  {id:"xpushf",g:"Push-Ups_With_Feet_Elevated",n:"Feet-Elevated Push-Up",ar:"ضغط برجلين مرفوعة",m:["chest","delt_f","triceps"],lo:6,hi:12,cue:"رجليك على كرسي أو سرير وإيديك على الأرض. أصعب من الضغط العادي وبيركّز على أعلى الصدر والكتف."},
- {id:"xsuper",g:"Superman",n:"Superman",ar:"سوبرمان (أسفل الضهر)",m:["lower_back","glutes"],lo:10,hi:15,cue:"نايم على بطنك، ارفع دراعاتك ورجليك في نفس الوقت وقّف ثانيتين وانزل ببطء. ماتبالغش في تقويس رقبتك."},
- {id:"xjsq",g:"Freehand_Jump_Squat",n:"Jump Squat",ar:"سكوات بالنطّ",m:["quads","glutes","calves"],lo:12,hi:20,cue:"انزل سكوات وانط لفوق بقوة وانزل بهدوء على مشط رجلك. لو عندك ألم في الركبة، اعمل سكوات عادي."},
+ {id:"xsuper",g:"Superman",n:"Superman",ar:"سوبرمان (أسفل الضهر)",m:["glutes","hams","lower_back"],lo:10,hi:15,cue:"نايم على بطنك، ارفع دراعاتك ورجليك في نفس الوقت وقّف ثانيتين وانزل ببطء. ماتبالغش في تقويس رقبتك."},
+ {id:"xjsq",g:"Freehand_Jump_Squat",n:"Jump Squat",ar:"سكوات بالنطّ",m:["glutes","quads"],lo:12,hi:20,cue:"انزل سكوات وانط لفوق بقوة وانزل بهدوء على مشط رجلك. لو عندك ألم في الركبة، اعمل سكوات عادي."},
  {id:"xbsq",g:"Bodyweight_Squat",n:"Bodyweight Squat",ar:"سكوات بوزن الجسم",m:["quads","glutes"],lo:15,hi:25,cue:"رجليك بعرض كتفك، انزل لحد ما فخدك يوازي الأرض والضهر مستقيم، وارجع واقف."},
  {id:"xbridge",g:"Butt_Lift_Bridge",n:"Glute Bridge",ar:"رفع الحوض (جسر)",m:["glutes","hams"],lo:15,hi:25,cue:"نايم على ضهرك وركبك مثنية، ارفع حوضك لحد ما جسمك يبقى خط مستقيم، واعصر المؤخرة ثانية وانزل."},
  {id:"xsbridge",g:"Single_Leg_Glute_Bridge",n:"Single-Leg Glute Bridge",ar:"جسر برجل واحدة",m:["glutes","hams"],lo:8,hi:12,u:true,us:" لكل رجل",cue:"زي الجسر العادي بس برجل واحدة والتانية مرفوعة. حافظ على الحوض مستوي."},
  {id:"xcrunch",g:"Crunches",n:"Crunch",ar:"كرنش أرضي",m:["abs"],lo:15,hi:25,cue:"نايم على ضهرك وإيديك ورا راسك من غير ما تشد رقبتك. ارفع كتفك بشدّ البطن وانزل ببطء."},
  {id:"xrcrunch",g:"Reverse_Crunch",n:"Reverse Crunch",ar:"كرنش عكسي",m:["abs"],lo:12,hi:20,cue:"نايم على ضهرك، قرّب ركبك من صدرك وارفع الحوض شوية بشدّ أسفل البطن وانزل بتحكم."},
- {id:"xplank",g:"Plank",n:"Plank",ar:"بلانك",m:["abs","lower_back"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
+ {id:"xplank",g:"Plank",n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
  {id:"xsplank",g:"Side_Bridge",n:"Side Plank",ar:"بلانك جانبي",m:["abs"],lo:20,hi:40,rp:"20–40 ث",u:true,us:" لكل ناحية",cue:"على كوع واحد وجسمك خط مستقيم، ارفع الحوض وثبّت. سجّل الثواني في خانة التكرار."},
  {id:"xbdip",g:"Bench_Dips",n:"Bench Dip",ar:"متوازي على كرسي",m:["triceps","chest","delt_f"],lo:10,hi:15,cue:"إيديك على حافة كرسي أو بنش وجسمك قدامه. انزل بثني الكوع لحد 90 درجة وارفع. كوعيك لورا مش لبرا."},
- {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["quads","glutes","hams"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
- {id:"xmc",g:"Mountain_Climbers",n:"Mountain Climber",ar:"متسلق الجبل",m:["abs","delt_f","quads"],lo:20,hi:40,rp:"30–40 ث",cue:"وضع الضغط، قرّب ركبة بعد التانية من صدرك بسرعة وثبّت الجذع. سجّل الثواني أو عدد المرات."},
- {id:"xburp",n:"Burpee",ar:"بيربي",m:["quads","chest","abs"],lo:8,hi:15,cue:"انزل لوضع الضغط، اعمل ضغطة، اقفز برجليك لإيديك وانط لفوق. حركة تقيلة، خليها بإيقاع تقدر تكمله."},
+ {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["glutes","quads"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
+ {id:"xmc",g:"Mountain_Climbers",n:"Mountain Climber",ar:"متسلق الجبل",m:["abs"],lo:20,hi:40,rp:"30–40 ث",cue:"وضع الضغط، قرّب ركبة بعد التانية من صدرك بسرعة وثبّت الجذع. سجّل الثواني أو عدد المرات."},
+ {id:"xburp",n:"Burpee",ar:"بيربي",m:["quads"],lo:8,hi:15,cue:"انزل لوضع الضغط، اعمل ضغطة، اقفز برجليك لإيديك وانط لفوق. حركة تقيلة، خليها بإيقاع تقدر تكمله."},
  {id:"xflut",g:"Flutter_Kicks",n:"Flutter Kicks",ar:"ركل الرجلين (فلاتر)",m:["abs"],lo:20,hi:40,cue:"نايم على ضهرك ورجليك مرفوعة شوية، حرّكهم لفوق ولتحت بالتبادل وأسفل ضهرك ثابت على الأرض."},
  {id:"xairb",g:"Air_Bike",n:"Air Bike",ar:"دراجة هوائية (بطن)",m:["abs"],lo:20,hi:40,cue:"نايم وإيديك ورا راسك، قرّب كوعك من الركبة المعاكسة بالتبادل وكأنك بتركب عجلة."},
- {id:"xrope",g:"Rope_Jumping",n:"Jump Rope",ar:"نط الحبل",m:["calves","quads"],lo:45,hi:90,rp:"45–90 ث",cue:"نط خفيف على مشط رجلك والكوعين جنبك. تمرين كارديو ممتاز ومحتاج حبل بس."},
+ {id:"xrope",g:"Rope_Jumping",n:"Jump Rope",ar:"نط الحبل",m:["calves"],lo:45,hi:90,rp:"45–90 ث",cue:"نط خفيف على مشط رجلك والكوعين جنبك. تمرين كارديو ممتاز ومحتاج حبل بس."},
  {id:"xirow",g:"Inverted_Row",n:"Inverted Row",ar:"سحب أفقي تحت بار",m:["lats","upper_back","biceps"],lo:8,hi:12,cue:"تحت بار منخفض أو سميث، امسكه وجسمك مستقيم، واسحب صدرك للبار وانزل ببطء."},
  {id:"xgob",g:"Goblet_Squat",n:"Dumbbell Goblet Squat",ar:"سكوات جوبلت بدمبل",m:["quads","glutes"],lo:12,hi:15,cue:"امسك دمبل عند صدرك بإيديك الاتنين وانزل سكوات والضهر مستقيم وارجع."},
- {id:"xdlg",g:"Dumbbell_Lunges",n:"Dumbbell Lunge",ar:"لانج بالدمبل",m:["quads","glutes","hams"],lo:10,hi:12,u:true,us:" لكل رجل",cue:"دمبل في كل إيد، خطوة لقدام وانزل بتحكم وارجع. الجذع مستقيم."},
+ {id:"xdlg",g:"Dumbbell_Lunges",n:"Dumbbell Lunge",ar:"لانج بالدمبل",m:["glutes","quads"],lo:10,hi:12,u:true,us:" لكل رجل",cue:"دمبل في كل إيد، خطوة لقدام وانزل بتحكم وارجع. الجذع مستقيم."},
  {id:"xbor",g:"Bent_Over_Two-Dumbbell_Row",n:"Bent-Over Dumbbell Row",ar:"تجديف بالدمبل",m:["lats","upper_back","biceps"],lo:10,hi:12,cue:"ميّل جذعك لقدام والضهر مستقيم، اسحب الدمبلين ناحية بطنك وقرّب لوحي الكتف، وانزل ببطء."},
  {id:"xdbp",g:"Dumbbell_Bench_Press",n:"Dumbbell Bench Press",ar:"ضغط صدر بالدمبل",m:["chest","delt_f","triceps"],lo:10,hi:15,cue:"نايم على بنش، ادفع الدمبلين لفوق وانزلهم بتحكم لحد ما تحس بتمدد في الصدر."}
 ];
@@ -2906,7 +2906,7 @@ function openPairU(el){
   var us=(el.getAttribute("data-u")||"").split("|").filter(Boolean); if(!us.length) return;
   closeExModal(false); exModalFocus=el;
   var modal=document.createElement("div"); modal.id="exmodal"; modal.className="exmodal"; modal.setAttribute("role","dialog"); modal.setAttribute("aria-modal","true"); modal.setAttribute("aria-labelledby","exmodal-title"); modal.setAttribute("data-act","exmodal-close");
-  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big pair-row">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
+  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
   document.body.appendChild(modal); document.body.classList.add("exmodal-open");
   var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
 }

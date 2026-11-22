@@ -2792,7 +2792,7 @@ function openPairU(el){
   var us=(el.getAttribute("data-u")||"").split("|").filter(Boolean); if(!us.length) return;
   closeExModal(false); exModalFocus=el;
   var modal=document.createElement("div"); modal.id="exmodal"; modal.className="exmodal"; modal.setAttribute("role","dialog"); modal.setAttribute("aria-modal","true"); modal.setAttribute("aria-labelledby","exmodal-title"); modal.setAttribute("data-act","exmodal-close");
-  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big pair-row">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
+  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
   document.body.appendChild(modal); document.body.classList.add("exmodal-open");
   var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
 }
