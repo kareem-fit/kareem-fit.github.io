@@ -594,6 +594,7 @@ body.v-welcome .foot{display:none}
 #qfsh .qs-pv{font-family:"Amiri Quran","Cairo",serif;font-size:var(--qfs,1.7rem);text-align:center;margin:8px 0;color:#F0BE3C;min-height:3em;display:grid;place-items:center}
 #qfsh .qs-r{display:flex;align-items:center;gap:14px;direction:rtl}#qfsh input[type=range]{flex:1;accent-color:var(--accent);height:34px}
 #kfarr{position:fixed;inset-inline:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:999;display:flex;flex-direction:column;align-items:center;pointer-events:none;color:#FF7A3F;font-weight:900;font-size:1rem;text-shadow:0 2px 8px #000}#kfarr svg{width:44px;height:44px;animation:kfbob 1s ease-in-out infinite}
+.q-pv.pl{background:rgba(255,122,63,.2);border-radius:6px}
 .kfsv{width:120px!important;max-width:45%!important;height:auto!important;cursor:zoom-in;border-radius:10px}
 #kfz{position:fixed;inset:0;z-index:2000;background:rgba(3,10,16,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px;cursor:zoom-out}
 #kfz svg{width:100%!important;max-width:560px!important;height:auto!important;display:block;cursor:zoom-out}
@@ -4196,7 +4197,7 @@ function qVMenu(s,v){ if(!QD.idx||!QD.v[s]||!QD.v[s][v-1]) return; var t=QD.v[s]
   var nm=QD.idx[s-1][1], ar=function(x){ return x.toLocaleString("ar-EG"); }, had=S.qbm&&S.qbm.n===s&&S.qbm.v===v;
   QVM={s:s,v:v,x:"﴿"+t+"﴾\n(سورة "+nm+"، آية "+ar(v)+")"}; qVClose();
   var o=document.createElement("div"); o.id="qvm"; o.className="q-sh"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","خيارات الآية");
-  o.innerHTML='<div class="qs-b"><i class="qs-g"></i><h3>سورة '+esc(nm)+' · آية '+ar(v)+'</h3><p class="qv-t">'+esc(t)+'</p><button type="button" class="btn" data-act="qvbm">'+(had?"🔖 شيل العلامة":"🔖 علّم مكاني هنا")+'</button><button type="button" class="btn ghost" data-act="qvcp">📋 انسخ الآية</button><button type="button" class="btn ghost" data-act="qvsh">↗ شارك الآية</button><button type="button" class="sm-gh" data-act="qvx">إغلاق</button></div>';
+  o.innerHTML='<div class="qs-b"><i class="qs-g"></i><h3>سورة '+esc(nm)+' · آية '+ar(v)+'</h3><p class="qv-t">'+esc(t)+'</p><button type="button" class="btn" data-act="qvpl">🔊 استمع من هنا</button><button type="button" class="btn ghost" data-act="qvbm">'+(had?"🔖 شيل العلامة":"🔖 علّم مكاني هنا")+'</button><button type="button" class="btn ghost" data-act="qvcp">📋 انسخ الآية</button><button type="button" class="btn ghost" data-act="qvsh">↗ شارك الآية</button><button type="button" class="sm-gh" data-act="qvx">إغلاق</button></div>';
   document.body.appendChild(o); o.addEventListener("click",function(e){ if(e.target===o) o.remove(); }); }
 function qVerseHtml(s_,v_,bm){
   var t=QD.v[s_][v_-1]; if(v_===1&&s_!==1&&s_!==9) t=t.split(" ").slice(4).join(" ");
@@ -4246,12 +4247,13 @@ function qposSet(v){ try{ if(v) localStorage.setItem(QPOS_K,JSON.stringify(v)); 
 function qAudio(){
   if(AU) return AU;
   AU=new Audio(); AU.preload="none";
-  AU.addEventListener("ended",function(){ qposSet(null); var m=qRepMode(); QA.done=(QA.done||0)+1;
+  AU.addEventListener("ended",function(){ if(QA.av){ var an=QA.n, av=QA.av+1; if(QD.idx&&av<=QD.idx[an-1][2]) qPlayAy(an,av); else { QA.av=0; if(an<114) qPlay(an+1,true); else qBar(); } return; }
+    qposSet(null); var m=qRepMode(); QA.done=(QA.done||0)+1;
     if(m===4||(m>=2&&QA.done<m)){ qPlay(QA.n,true,true); return; }
     if(m>=1){ QA.done=0; qBar(); return; }
     if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
   AU.addEventListener("play",qBar); AU.addEventListener("pause",qBar);
-  AU.addEventListener("timeupdate",function(){ if(QA.n&&AU.currentTime>3&&Date.now()-QPT2>4000){ QPT2=Date.now(); qposSet({n:QA.n,rc:QA.rc,t:Math.floor(AU.currentTime)}); } if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
+  AU.addEventListener("timeupdate",function(){ if(QA.n&&!QA.av&&AU.currentTime>3&&Date.now()-QPT2>4000){ QPT2=Date.now(); qposSet({n:QA.n,rc:QA.rc,t:Math.floor(AU.currentTime)}); } if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
   try{ if("mediaSession" in navigator){ var ms=navigator.mediaSession;
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
@@ -4259,12 +4261,25 @@ function qAudio(){
   AU.addEventListener("error",function(){ toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
   return AU;
 }
+function qGl(s,v){ var g=v; for(var i=0;i<s-1;i++) g+=QD.idx[i][2]; return g; }
+function qAyUrl(s,v){ var r=RECITER;
+  if(r.id==="ar.alafasy") return "https://cdn.islamic.network/quran/audio/128/ar.alafasy/"+qGl(s,v)+".mp3";
+  return "https://everyayah.com/data/"+(r.id==="maher"?"Maher_AlMuaiqly_64kbps":"Minshawy_Murattal_128kbps")+"/"+("00"+s).slice(-3)+("00"+v).slice(-3)+".mp3"; }
+function qAyHi(){ var o=document.querySelectorAll(".q-pv.pl"); for(var i=0;i<o.length;i++) o[i].classList.remove("pl");
+  if(!QA.av) return; var e=document.querySelector('.q-pv[data-s="'+QA.n+'"][data-v="'+QA.av+'"]'); if(e){ e.classList.add("pl"); try{ e.scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} } }
+function qPlayAy(s,v){
+  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.rc=RECITER.id; QA.tk++;
+  if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; }
+  a.src=qAyUrl(s,v); try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){}
+  var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); });
+  try{ if("mediaSession" in navigator){ navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+QD.idx[s-1][1]+" · آية "+v,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){}
+  qBar(); qAyHi(); }
 function qPlay(n,force,rep){
   rcInit(); var a=qAudio(); if(!rep && (force||QA.n!==n)) QA.done=0;
   if(!force && QA.n===n && QA.rc===RECITER.id && !a.paused){ a.pause(); return; }
   function go(){ try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){} var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); }); try{ if("mediaSession" in navigator){ var nm=QD.idx?QD.idx[n-1][1]:""; navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+nm,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){} qBar(); }
   if(QA.n!==n || force || QA.rc!==RECITER.id){
-    QA.n=n; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
+    QA.n=n; QA.av=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
     var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
     function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
       if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }
@@ -6345,6 +6360,7 @@ document.addEventListener("click", function(ev){
   else if(a==="qstop"){ if(AU){ AU.pause(); } QA.n=0; QA.open=false; qBar(); if(view==="qsura") renderQsura(); }
   else if(a==="qbm"){ qVMenu(+b.getAttribute("data-s")||QS.n,+b.getAttribute("data-v")); }
   else if(a==="qvbm"&&QVM){ var qv=QVM.v, qs=QVM.s; var had=S.qbm&&S.qbm.n===qs&&S.qbm.v===qv; if(had) S.qbm=null; else S.qbm={n:qs,v:qv}; persist(); qVClose(); var ys=window.scrollY; if(view==="qpage") renderQpage(); else renderQsura(); window.scrollTo(0,ys); toast(had?"شلت العلامة":"علّمت آية "+qv.toLocaleString("ar-EG")); }
+  else if(a==="qvpl"&&QVM){ var ps=QVM.s, pv=QVM.v; qVClose(); qPlayAy(ps,pv); }
   else if(a==="qvcp"&&QVM){ qVClose(); qCopy(QVM.x); }
   else if(a==="qvsh"&&QVM){ var tx=QVM.x; qVClose(); if(navigator.share) navigator.share({text:tx}).catch(function(){}); else qCopy(tx); }
   else if(a==="qvx") qVClose();
