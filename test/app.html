@@ -3916,12 +3916,12 @@ function adDay(tk){ if(!S.adhk) S.adhk={}; if(!S.adhk[tk]) S.adhk[tk]={m:{},e:{}
 function adProg(tk,t){
   var L=adList(t), m=((S.adhk&&S.adhk[tk])||{})[t]||{}, done=0;
   L.forEach(function(i){ if((m[i]||0)>=ADHK[i][1]) done++; });
-  return {done:done,total:L.length};
+  return {done:done,total:L.length,half:done*2>=L.length&&done>0,full:done>=L.length};
 }
 function adNow(){ return new Date().getHours()<15?"m":"e"; }
 function hxAdhk(tk){
   var cur=adNow();
-  function btn(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return '<button type="button" class="ad-b'+(t===cur?' on':'')+(ok?' ok':'')+'" data-act="adopen" data-t="'+t+'"><span class="ad-i">'+ic+'</span><b>'+l+'</b><small>'+(ok?'تقبّل الله ✓':p.done+' من '+p.total)+'</small></button>'; }
+  function btn(t,l,ic){ var p=adProg(tk,t), ok=p.half; return '<button type="button" class="ad-b'+(t===cur?' on':'')+(ok?' ok':'')+'" data-act="adopen" data-t="'+t+'"><span class="ad-i">'+ic+'</span><b>'+l+'</b><small>'+(p.full?'تقبّل الله ✓':(ok?'✓ '+p.done+' من '+p.total+' · كمّل الباقي':p.done+' من '+p.total))+'</small></button>'; }
   return '<section class="hx-had ad-home" aria-label="الأذكار"><div class="hx-hb"><h2>الأذكار</h2><div class="ad-bs">'+btn("m","أذكار الصباح","☀️")+btn("e","أذكار المساء","🌙")+'</div></div></section>';
 }
 function dkey(d){ return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
@@ -3947,7 +3947,7 @@ function hxFaith(tk){
   var cur=adNow(), qd=!!(S.qday&&S.qday[tk]), wn=wirdN(), wd=wirdDone(), st=fStreak();
   if(wn) qd=wd>=wn;
   function row(ic,l,ok,sub,on,act){ return '<button type="button" class="fh-r'+(ok?' ok':'')+(on&&!ok?' due':'')+'" '+act+'><span class="fh-i">'+ic+'</span><span class="fh-t"><b>'+l+'</b><small>'+sub+'</small></span><span class="fh-s">'+(ok?'✓':'لسه')+'</span></button>'; }
-  function ad(t,l,ic){ var p=adProg(tk,t), ok=p.done>=p.total; return row(ic,l,ok,ok?'تقبّل الله منك':(p.done?p.done+' من '+p.total:'ابدأ دلوقتي'),t===cur,'data-act="adopen" data-t="'+t+'"'); }
+  function ad(t,l,ic){ var p=adProg(tk,t), ok=p.half; return row(ic,l,ok,p.full?'تقبّل الله منك':(ok?'✓ '+p.done+' من '+p.total+' · كمّل الباقي':(p.done?p.done+' من '+p.total:'ابدأ دلوقتي')),t===cur,'data-act="adopen" data-t="'+t+'"'); }
   return '<section class="hx-faith" aria-label="الأذكار والقرآن"><h2>عبادتك النهارده'+(st>0?' <span class="fh-st">🔥 '+st.toLocaleString("ar-EG")+(st===1?' يوم':st===2?' يومين':st<=10?' أيام':' يوم')+' ورا بعض</span><button type="button" class="fh-sh" data-act="fshare" aria-label="شارك إنجازك">شارك</button>':'')+'</h2>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+row("📖",wn?"ورد القرآن":"القرآن",qd,wn?(qd?"خلصت وردك ("+wn.toLocaleString("ar-EG")+" صفحة)":"قريت "+wd.toLocaleString("ar-EG")+" من "+wn.toLocaleString("ar-EG")+" صفحة"):(qd?"قريت النهارده":"افتح المصحف واقرا ولو صفحة"),false,'data-act="view" data-v="ibd"')+'</section>';
 }
 function renderAdhk(){
@@ -3973,7 +3973,7 @@ function adTap(i){
   var keys=Object.keys(S.adhk).sort(); while(keys.length>14){ delete S.adhk[keys.shift()]; }
   persist();
   var before=adProg(tk,t).done, y=window.scrollY; renderAdhk(); window.scrollTo(0,y);
-  if(m[i]>=r[1]){ var p=adProg(tk,t); if(p.done>=p.total){ toast("تقبّل الله منك"); fMark(); } }
+  if(m[i]>=r[1]){ var p=adProg(tk,t); if(p.full){ toast("تقبّل الله منك"); fMark(); } else if(p.half&&before*2<p.total){ toast("عدّيت النص ✓ كمّل الباقي لو تقدر"); fMark(); } }
 }
 
 /* ===== القرآن والعبادات ===== */
@@ -4044,7 +4044,7 @@ function qNorm(t){ return String(t||"").replace(/[ً-ٰٟۖ-ۭـ]/g,"").replace(
 function ibRow(ico,t,sub,act,extra){ return '<button type="button" class="ib-row" data-act="'+act+'"'+(extra||"")+'><span class="ib-ic">'+ico+'</span><span class="ib-tx"><b>'+t+'</b><small>'+sub+'</small></span><span class="ib-ch">‹</span></button>'; }
 function renderIbd(){
   rcInit(); var tk=todayKey();
-  function ad(t,l,ic){ var p=adProg(tk,t); return ibRow(ic,l,p.done>=p.total?"تقبّل الله ✓":p.done+" من "+p.total,"adopen",' data-t="'+t+'"'); }
+  function ad(t,l,ic){ var p=adProg(tk,t); return ibRow(ic,l,p.full?"تقبّل الله ✓":(p.half?"✓ ":"")+p.done+" من "+p.total,"adopen",' data-t="'+t+'"'); }
   var bm=S.qbm&&QD.idx?S.qbm:null;
   var h='<div class="fx ib"><div class="bd-h"><span class="fx-ti" style="color:#4FCB8A;background:rgba(79,203,138,.14)">📖</span><div><h2>القرآن والعبادات</h2><p>أذكارك وقرآنك في مكان واحد، من غير إعلانات</p></div></div>'+lbPrayB()+lbQibB()+
    '<h3 class="ib-h">الأذكار</h3>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+ad("n","أذكار النوم","😴")+
