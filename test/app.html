@@ -3136,12 +3136,12 @@ function renderAll(){
   if(view!=="train") justSaved=null;
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   renderTabs();
-  ["home","today","train","log","body","food","share","comm","set","lab"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb"};
+  ["home","today","train","log","body","food","share","comm","set","lab","qib"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else renderShare();
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
@@ -7247,7 +7247,7 @@ function lbNext(tm,now){
 }
 function lbLeft(m){ var h=Math.floor(m/60), mi=m%60; return h>0?(h+" ساعة و"+mi+" دقيقة"):(mi+" دقيقة"); }
 function lbFmt2(h){ var f=lbFmt(h).split(" "); return f; }
-function lbRerender(){ if(view==="ibd") renderIbd(); else if(view==="lab") renderLab(); }
+function lbRerender(){ if(view==="ibd") renderIbd(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); }
 function lbPrayInner(){
   var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), nx=lbNext(tm,now);
   var five=[["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]];
@@ -7277,13 +7277,21 @@ function lbDial(q){
   var kaaba='<g transform="rotate('+q.toFixed(1)+' 110 110)"><g transform="rotate('+(-q).toFixed(1)+' 110 22)"><rect x="98" y="10" width="24" height="24" rx="3" class="lb-kb"/><rect x="98" y="16" width="24" height="4" class="lb-kg"/><rect x="106" y="22" width="6" height="12" rx="1" class="lb-kd"/></g></g>';
   return '<g id="lb-dial" style="transform-origin:110px 110px">'+t+lt+kaaba+'</g>';
 }
-function lbQibB(){
+function lbQibCard(){
   var L=lbLoc(), q=lbQibla(L.lat,L.lng);
   return '<section class="card lb-qb"><h2>اتجاه القبلة</h2><p class="sub">من «'+esc(L.n)+'»: <b dir="ltr">'+Math.round(q)+'°</b> من الشمال ناحية الشرق.</p>'+
     '<div class="lb-comp" id="lb-comp" data-q="'+q.toFixed(2)+'"><svg viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" class="lb-cr"/>'+lbDial(q)+'<path d="M110 2 L120 22 L100 22 Z" class="lb-mk"/></svg></div>'+
     '<p class="lb-qm" id="lb-qm">'+(LB.qon?esc(LB.qmsg):'شغّل البوصلة، ولف موبايلك لحد ما 🕋 يبقى فوق عند السهم.')+'</p>'+
     '<div class="rowbtns"><button type="button" class="btn" data-lb="qon">'+(LB.qon?'البوصلة شغّالة':'شغّل البوصلة')+'</button></div>'+
     '<p class="sub">البوصلة بتعتمد على حساسات الموبايل. ابعد عن المعادن والمغناطيس، ولو مش ثابتة حرّك الموبايل على شكل 8.</p></section>';
+}
+
+function lbQibB(){
+  var L=lbLoc(), q=lbQibla(L.lat,L.lng);
+  return '<button type="button" class="ib-row" data-lb="qopen"><span class="ib-ic">🧭</span><span class="ib-tx"><b>اتجاه القبلة</b><small>'+Math.round(q)+'° من الشمال · بوصلة</small></span><span class="ib-ch">‹</span></button>';
+}
+function renderQib(){
+  $("app").innerHTML='<div class="fx ib"><div class="ad-top"><button type="button" class="sm-gh" data-lb="qback">رجوع</button><h2>اتجاه القبلة</h2></div>'+lbQibCard()+'</div>';
 }
 function lbQibPaint(){
   var c=$("lb-comp"), d=$("lb-dial"); if(!c||!d) return;
@@ -7424,6 +7432,8 @@ document.addEventListener("click",function(ev){
     navigator.geolocation.getCurrentPosition(function(pos){ S.prefs.loc={n:"موقعي",lat:Math.round(pos.coords.latitude*1e4)/1e4,lng:Math.round(pos.coords.longitude*1e4)/1e4}; persist(); LB.pm="اتحدد موقعك."; lbRerender(); },function(){ LB.pm="مقدرتش أحدد موقعك. اختار مدينتك من القايمة."; var m2=$("lb-pm"); if(m2) m2.textContent=LB.pm; },{timeout:10000,maximumAge:600000});
   }
   else if(a==="qon"){ lbQibStart(); }
+  else if(a==="qopen"){ view="qib"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="qback"){ lbQibStop(); view="ibd"; renderAll(); window.scrollTo(0,0); }
   else if(a==="rep"){ lbRepOpen(); }
   else if(a==="repx"){ lbRepClose(); }
   else if(a==="print"){ window.print(); }
