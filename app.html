@@ -2788,6 +2788,14 @@ function openAnatomyAll(key,names,trigger){
   document.body.appendChild(modal); document.body.classList.add("exmodal-open");
   var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
 }
+function openPairU(el){
+  var us=(el.getAttribute("data-u")||"").split("|").filter(Boolean); if(!us.length) return;
+  closeExModal(false); exModalFocus=el;
+  var modal=document.createElement("div"); modal.id="exmodal"; modal.className="exmodal"; modal.setAttribute("role","dialog"); modal.setAttribute("aria-modal","true"); modal.setAttribute("aria-labelledby","exmodal-title"); modal.setAttribute("data-act","exmodal-close");
+  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big pair-row">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
+  document.body.appendChild(modal); document.body.classList.add("exmodal-open");
+  var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
+}
 function closeExModal(restore){
   var modal=document.getElementById("exmodal"); if(modal) modal.remove(); document.body.classList.remove("exmodal-open");
   if(restore!==false && exModalFocus && document.contains(exModalFocus)) exModalFocus.focus(); exModalFocus=null;
@@ -2798,6 +2806,7 @@ function closeExModal(restore){
 document.addEventListener("click",function(ev){
   var t=ev.target; if(!t || !t.closest) return;
   var b=t.closest('[data-act="pair"]'); if(b){ openPair(b.getAttribute("data-ex"),b); return; }
+  var bu=t.closest('[data-act="pairu"]'); if(bu){ openPairU(bu); return; }
   b=t.closest('[data-act="anatomy-all"]'); if(b){ openAnatomyAll(b.getAttribute("data-k"),b.getAttribute("data-t"),b); return; }
   if(t.closest("button.exmodal-close")){ closeExModal(true); return; }
   if(t.id==="exmodal"){ closeExModal(true); }
@@ -6847,7 +6856,7 @@ function mineDays(){
   return out;
 }
 function ytHref(e){ return (e.url && /^https?:\/\//.test(e.url)) ? e.url : "https://www.youtube.com/results?search_query="+encodeURIComponent(e.q||e.n); }
-function peImg(e){ if(e.imgs && e.imgs.length){ return '<div class="pair cx-pair">'+e.imgs.slice(0,2).map(function(u){ return '<span class="pair-i"><img src="'+u+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display=\'none\'"></span>'; }).join("")+'</div>'; }
+function peImg(e){ if(e.imgs && e.imgs.length){ return '<div class="pair cx-pair" role="button" tabindex="0" data-act="pairu" data-u="'+e.imgs.slice(0,2).join("|")+'" aria-label="كبّر صور التمرين">'+e.imgs.slice(0,2).map(function(u){ return '<span class="pair-i"><img src="'+u+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display=\'none\'"></span>'; }).join("")+'</div>'; }
   return (e.img && /^data:image\/(jpeg|png|webp);base64,/.test(e.img)) ? '<figure class="fig"><img class="pe-img" src="'+e.img+'" alt="" loading="lazy"></figure>' : ''; }
 function peCard(){
   if(!S.canMine) return '';

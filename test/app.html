@@ -95,6 +95,12 @@
 .lb-qb .lb-comp,.lb-comp{display:block;flex:none;width:250px;min-width:200px;max-width:80%;margin:6px auto}
 .lb-qb .rowbtns{display:flex;gap:8px}.lb-qb .rowbtns .btn{flex:1;min-height:46px;font-family:inherit}
 .lb-comp svg{width:100%!important;height:auto!important;max-width:none!important;display:block}
+
+.lb-gh{margin:6px 2px 0;font-size:1rem}
+.lb-k4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.lb-kp{display:flex;flex-direction:column;gap:2px;text-align:start;min-height:64px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.lb-kp small{color:var(--muted);font-size:.75rem;line-height:1.4}
+.lb-kp[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 </style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
@@ -2896,6 +2902,14 @@ function openAnatomyAll(key,names,trigger){
   document.body.appendChild(modal); document.body.classList.add("exmodal-open");
   var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
 }
+function openPairU(el){
+  var us=(el.getAttribute("data-u")||"").split("|").filter(Boolean); if(!us.length) return;
+  closeExModal(false); exModalFocus=el;
+  var modal=document.createElement("div"); modal.id="exmodal"; modal.className="exmodal"; modal.setAttribute("role","dialog"); modal.setAttribute("aria-modal","true"); modal.setAttribute("aria-labelledby","exmodal-title"); modal.setAttribute("data-act","exmodal-close");
+  modal.innerHTML='<div class="exmodal-box"><button type="button" class="exmodal-close" data-act="exmodal-close" aria-label="إغلاق">×</button><h2 id="exmodal-title">صور التمرين</h2><div class="pair-big pair-row">'+us.map(function(u,i){ return '<figure><img src="'+u+'" alt="'+(i?"وضعية النهاية":"وضعية البداية")+'" referrerpolicy="no-referrer"></figure>'; }).join("")+'</div></div>';
+  document.body.appendChild(modal); document.body.classList.add("exmodal-open");
+  var close=modal.querySelector(".exmodal-close"); if(close) close.focus();
+}
 function closeExModal(restore){
   var modal=document.getElementById("exmodal"); if(modal) modal.remove(); document.body.classList.remove("exmodal-open");
   if(restore!==false && exModalFocus && document.contains(exModalFocus)) exModalFocus.focus(); exModalFocus=null;
@@ -2906,6 +2920,7 @@ function closeExModal(restore){
 document.addEventListener("click",function(ev){
   var t=ev.target; if(!t || !t.closest) return;
   var b=t.closest('[data-act="pair"]'); if(b){ openPair(b.getAttribute("data-ex"),b); return; }
+  var bu=t.closest('[data-act="pairu"]'); if(bu){ openPairU(bu); return; }
   b=t.closest('[data-act="anatomy-all"]'); if(b){ openAnatomyAll(b.getAttribute("data-k"),b.getAttribute("data-t"),b); return; }
   if(t.closest("button.exmodal-close")){ closeExModal(true); return; }
   if(t.id==="exmodal"){ closeExModal(true); }
@@ -6956,7 +6971,7 @@ function mineDays(){
   return out;
 }
 function ytHref(e){ return (e.url && /^https?:\/\//.test(e.url)) ? e.url : "https://www.youtube.com/results?search_query="+encodeURIComponent(e.q||e.n); }
-function peImg(e){ if(e.imgs && e.imgs.length){ return '<div class="pair cx-pair">'+e.imgs.slice(0,2).map(function(u){ return '<span class="pair-i"><img src="'+u+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display=\'none\'"></span>'; }).join("")+'</div>'; }
+function peImg(e){ if(e.imgs && e.imgs.length){ return '<div class="pair cx-pair" role="button" tabindex="0" data-act="pairu" data-u="'+e.imgs.slice(0,2).join("|")+'" aria-label="كبّر صور التمرين">'+e.imgs.slice(0,2).map(function(u){ return '<span class="pair-i"><img src="'+u+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display=\'none\'"></span>'; }).join("")+'</div>'; }
   return (e.img && /^data:image\/(jpeg|png|webp);base64,/.test(e.img)) ? '<figure class="fig"><img class="pe-img" src="'+e.img+'" alt="" loading="lazy"></figure>' : ''; }
 function peCard(){
   if(!S.canMine) return '';
@@ -7125,10 +7140,6 @@ var PROGS=[
   ["سفلي + بطن – حرق",[["xjsq",4],["xdlg",3],["legpress",3],["xbridge",3],["xrcrunch",3],["xairb",4]]],
   ["علوي – حرق",[["xdbp",4],["wgpd",4],["dbsp",3],["xbdip",3],["xplank",3],["xmc",3]]],
   ["هيت كامل الجسم",[["xjsq",4],["xirow",3],["xlunge",3],["xcrunch",3],["xburp",3],["xrope",3]]]]},
- {id:"fb3",ic:"💪",n:"Full Body – 3 أيام",lv:"مبتدئ",pl:"جيم",d:"جسم كامل 3 مرات في الأسبوع. أنسب بداية للجيم، والتمارين نفسها بتاعة نظام كريم.",days:[
-  ["فول بودي A",[["fdbp",3],["wgpd",2],["legpress",2],["dbsp",2],["incurl",2],["sspd",2],["calf",2]]],
-  ["فول بودي B",[["pullup",2],["cdips",2],["legcurl",2],["dlr",2],["wgsr",2],["hammer",2],["ssoh",2],["birddog",2]]],
-  ["فول بودي C",[["pecdeck",2],["salp",2],["legext",3],["hipthrust",2],["msp",2],["preacher",2],["sapush",2],["pallof",2]]]]},
  {id:"ul4",ic:"⚡",n:"علوي / سفلي – 4 أيام",lv:"متوسط",pl:"جيم",d:"يومين للنص العلوي ويومين للسفلي. كل عضلة بتتضرب مرتين في الأسبوع.",days:[
   ["علوي أ",[["fdbp",3],["wgpd",3],["dbsp",3],["wgsr",3],["incurl",2],["sspd",2]]],
   ["سفلي أ",[["legpress",3],["dbrdl",3],["legext",3],["legcurl",3],["calf",4],["ccrunch",3]]],
@@ -7186,7 +7197,9 @@ function lbProgTab(){
     h+='<section class="card lb-act"><h2>برنامجك الحالي: نظام كريم ('+(S.plan||3)+' أيام)</h2><p class="sub">اختار برنامج جاهز من تحت لو عايز تجرب حاجة تانية.</p></section>';
   }
   if(LB.pick) h+=lbPickCard();
-  h+=PROGS.map(lbProgCard).join("");
+  var ks=!(S.mine&&S.mine.days), cpn=S.plan||3;
+  h+='<h3 class="lb-gh">برامج كريم (الثابتة)</h3><div class="lb-k4">'+[2,3,4,5].map(function(n){ var w=WPLAN[n], on=ks&&cpn===n; return '<button type="button" class="lb-kp" data-lb="kplan" data-n="'+n+'" aria-pressed="'+on+'"><b>'+n+' أيام'+(on?' ✓':'')+'</b><small>'+w[1]+'</small></button>'; }).join("")+'</div>';
+  h+='<h3 class="lb-gh">برامج جاهزة تانية</h3>'+PROGS.map(lbProgCard).join("");
   return h;
 }
 
@@ -7430,6 +7443,7 @@ document.addEventListener("click",function(ev){
   else if(a==="pickx"){ LB.pick=null; renderLab(); }
   else if(a==="dow"){ var d=+b.getAttribute("data-d"), i=LB.sel.indexOf(d), p2=lbProg(LB.pick); if(i>=0) LB.sel.splice(i,1); else if(LB.sel.length<p2.days.length) LB.sel.push(d); else toast("اخترت "+p2.days.length+" أيام بالفعل"); renderLab(); }
   else if(a==="go"){ lbStart(); }
+  else if(a==="kplan"){ var np=+b.getAttribute("data-n"); S.plan=np; S.mine=null; LB.pick=null; initDay(); rebuildMap(); persist(); renderAll(); toast("اتثبّت نظام كريم: "+WPLAN[np][0]+" في الأسبوع"); }
   else if(a==="reset"){ if(LB.rm!=="1"){ LB.rm="1"; renderLab(); return; } LB.rm=""; S.mine=null; initDay(); rebuildMap(); persist(); renderAll(); toast("رجع برنامج كريم"); }
   else if(a==="geo"){
     if(!navigator.geolocation){ LB.pm="المتصفح مش بيدعم تحديد الموقع. اختار مدينتك من القايمة."; var m0=$("lb-pm"); if(m0) m0.textContent=LB.pm; return; }
