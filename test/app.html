@@ -7132,14 +7132,9 @@ document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"){ if($("p
 /* ================= KFIT-LAB: برامج جاهزة + أدوات (1RM، مواقيت، قبلة) + تطور العضلات + تقرير ================= */
 var PROGS=[
  {id:"home",ic:"🏠",n:"تمرين البيت – وزن الجسم",lv:"مبتدئ",pl:"منزلي",d:"من غير أي أدوات تقريبًا. مناسب لو مش لاقي جيم أو لسه بتبدأ.",days:[
-  ["كامل الجسم أ",[["xpush",3],["xsuper",3],["xjsq",3],["xbridge",3],["xcrunch",3],["xplank",3]]],
+  ["كامل الجسم أ",[["xpush",3],["xirow",3],["xsuper",3],["xjsq",3],["xbridge",3],["xcrunch",3],["xplank",3]]],
   ["كامل الجسم ب",[["xbdip",3],["xpushw",3],["xlunge",3],["xmc",3],["xrcrunch",3],["xsplank",3]]],
-  ["كامل الجسم ج",[["xbsq",3],["xpushc",3],["xsbridge",3],["xflut",3],["xairb",3],["xplank",3]]]]},
- {id:"fat",ic:"🔥",n:"حرق الدهون – دوائر لياقة",lv:"لياقة",pl:"جيم",d:"تكرارات عالية وراحة قصيرة عشان تحرق أكبر قدر من السعرات. بيجمع بين الأوزان والكارديو.",days:[
-  ["كامل الجسم – حرق",[["xgob",4],["dbrdl",4],["xpush",4],["xbor",4],["xmc",4],["xktj",3]]],
-  ["سفلي + بطن – حرق",[["xjsq",4],["xdlg",3],["legpress",3],["xbridge",3],["xrcrunch",3],["xairb",4]]],
-  ["علوي – حرق",[["xdbp",4],["wgpd",4],["dbsp",3],["xbdip",3],["xplank",3],["xmc",3]]],
-  ["هيت كامل الجسم",[["xjsq",4],["xirow",3],["xlunge",3],["xcrunch",3],["xktj",3],["xrope",3]]]]},
+  ["كامل الجسم ج",[["xbsq",3],["xpushc",3],["xsbridge",3],["xirow",3],["xflut",3],["xairb",3],["xplank",3]]]]},
  {id:"ul4",ic:"⚡",n:"علوي / سفلي – 4 أيام",lv:"متوسط",pl:"جيم",d:"يومين للنص العلوي ويومين للسفلي. كل عضلة بتتضرب مرتين في الأسبوع.",days:[
   ["علوي أ",[["fdbp",3],["wgpd",3],["dbsp",3],["wgsr",3],["incurl",2],["sspd",2]]],
   ["سفلي أ",[["legpress",3],["dbrdl",3],["legext",3],["legcurl",3],["calf",4],["ccrunch",3]]],
@@ -7422,7 +7417,7 @@ function renderLab(){
   if(t!=="tool" && LB.qon) lbQibStop();
 }
 function lbHomeCard(){
-  return '<section class="card lb-home"><h2>برامج وأدوات</h2><p class="sub">برامج جاهزة (بيت · جيم · حرق دهون)، حاسبة 1RM، مواقيت الصلاة والقبلة، تطور العضلات، وتقرير PDF.</p><button type="button" class="btn" data-act="view" data-v="lab">افتح</button></section>';
+  return '<section class="card lb-home"><h2>برامج وأدوات</h2><p class="sub">برامج جاهزة (بيت · علوي/سفلي · Push/Pull/Legs)، حاسبة 1RM، مواقيت الصلاة والقبلة، تطور العضلات، وتقرير PDF.</p><button type="button" class="btn" data-act="view" data-v="lab">افتح</button></section>';
 }
 function lbStart(){
   var p=lbProg(LB.pick); if(!p||LB.sel.length!==p.days.length) return;
