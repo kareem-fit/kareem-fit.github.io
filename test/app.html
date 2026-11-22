@@ -71,6 +71,30 @@
  #lb-rp .rp-bar{display:none!important}
  #lb-rp .rp-p{padding:0!important;max-width:none!important}
 }
+/* prayer (design B) + compass */
+.lb-pr h2 small{color:var(--muted);font-weight:600;font-size:.8rem}
+.lb-nx{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;margin-bottom:10px}.lb-nx b{color:var(--accent)}
+.lb-c5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lb-c5 div{display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 2px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-size:.78rem}
+.lb-c5 div b{font-size:1rem;font-family:var(--f-mono,monospace)}.lb-c5 div i{font-style:normal;font-size:.7rem;color:var(--muted)}
+.lb-c5 div.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:800}.lb-c5 div.on i{color:inherit}
+.lb-sr{text-align:center;color:var(--muted);font-size:.85rem;margin:8px 0}
+.lb-loc{margin:6px 0}.lb-loc summary{cursor:pointer;color:var(--accent);font-weight:700;min-height:40px;display:flex;align-items:center}
+.lb-qb .lb-comp{width:250px;max-width:78%}
+.lb-tk{stroke:var(--muted);stroke-width:1.5}.lb-tk.b{stroke:var(--ink);stroke-width:2.5}
+.lb-cl{fill:var(--muted);font-size:13px;font-weight:800}.lb-cl.n{fill:#FF7A63;font-size:15px}
+.lb-kb{fill:#111}.lb-kg{fill:#D9B24A}.lb-kd{fill:#D9B24A}
+.lb-mk{fill:var(--accent)}
+.lb-comp.ok .lb-mk{fill:#3DDC97}
+#lb-dial{transition:transform .12s linear}
+.lb-qm{text-align:center;font-weight:700;min-height:1.6em;margin:6px 0}
+.lb-comp.ok~.lb-qm{color:#3DDC97}
+.lb-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:48px;padding:10px 14px;margin-bottom:10px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.lb-strip b{color:var(--accent)}.lb-sg{color:var(--muted);font-size:.8rem;white-space:nowrap}
+.lb-pr,.lb-qb{display:block}
+.lb-qb .lb-comp,.lb-comp{display:block;flex:none;width:250px;min-width:200px;max-width:80%;margin:6px auto}
+.lb-qb .rowbtns{display:flex;gap:8px}.lb-qb .rowbtns .btn{flex:1;min-height:46px;font-family:inherit}
+.lb-comp svg{width:100%!important;height:auto!important;max-width:none!important;display:block}
 </style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
@@ -4000,7 +4024,7 @@ function renderIbd(){
   rcInit(); var tk=todayKey();
   function ad(t,l,ic){ var p=adProg(tk,t); return ibRow(ic,l,p.done>=p.total?"تقبّل الله ✓":p.done+" من "+p.total,"adopen",' data-t="'+t+'"'); }
   var bm=S.qbm&&QD.idx?S.qbm:null;
-  var h='<div class="fx ib"><div class="bd-h"><span class="fx-ti" style="color:#4FCB8A;background:rgba(79,203,138,.14)">📖</span><div><h2>القرآن والعبادات</h2><p>أذكارك وقرآنك في مكان واحد، من غير إعلانات</p></div></div>'+
+  var h='<div class="fx ib"><div class="bd-h"><span class="fx-ti" style="color:#4FCB8A;background:rgba(79,203,138,.14)">📖</span><div><h2>القرآن والعبادات</h2><p>أذكارك وقرآنك في مكان واحد، من غير إعلانات</p></div></div>'+lbPrayB()+lbQibB()+
    '<h3 class="ib-h">الأذكار</h3>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+ad("n","أذكار النوم","😴")+
    '<h3 class="ib-h">القرآن الكريم</h3>'+
    (S.qbm?ibRow("🔖","كمّل من آخر مكان","سورة "+(QD.idx?QD.idx[S.qbm.n-1][1]:S.qbm.n)+" · آية "+S.qbm.v.toLocaleString("ar-EG"),"qres"):"")+
@@ -4250,7 +4274,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+(faithOn()?lbPrayStrip():'')+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -7222,14 +7246,22 @@ function lbNext(tm,now){
   return {k:"fajr",n:"الفجر",mins:Math.round((tm.fajr+24-cur)*60)};
 }
 function lbLeft(m){ var h=Math.floor(m/60), mi=m%60; return h>0?(h+" ساعة و"+mi+" دقيقة"):(mi+" دقيقة"); }
-function lbPrayCard(){
+function lbFmt2(h){ var f=lbFmt(h).split(" "); return f; }
+function lbRerender(){ if(view==="ibd") renderIbd(); else if(view==="lab") renderLab(); }
+function lbPrayInner(){
   var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), nx=lbNext(tm,now);
+  var five=[["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]];
+  return '<div class="lb-nx" id="lb-next">الصلاة الجاية: <b>'+nx.n+'</b> بعد '+lbLeft(nx.mins)+'</div>'+
+    '<div class="lb-c5">'+five.map(function(x){ var f=lbFmt2(tm[x[0]]); return '<div'+(x[0]===nx.k?' class="on"':'')+'><span>'+x[1]+'</span><b dir="ltr">'+f[0]+'</b><i>'+f[1]+'</i></div>'; }).join("")+'</div>'+
+    '<div class="lb-sr">الشروق '+lbFmt(tm.sunrise)+'</div>';
+}
+function lbPrayB(){
+  var L=lbLoc();
   var opts=LBCITY.map(function(c){ return '<option value="'+c[1]+','+c[2]+'|'+c[0]+'"'+(c[0]===L.n?' selected':'')+'>'+c[0]+'</option>'; }).join("");
   if(!LBCITY.some(function(c){ return c[0]===L.n; })) opts='<option value="'+L.lat+','+L.lng+'|'+esc(L.n)+'" selected>'+esc(L.n)+'</option>'+opts;
-  return '<section class="card"><h2>مواقيت الصلاة</h2><p class="sub">بتتحسب على موبايلك من غير نت، بطريقة الهيئة المصرية العامة للمساحة. ممكن تختلف دقيقة أو اتنين عن تقويم مسجدك.</p>'+
-    '<div class="lb-next" id="lb-next">الصلاة الجاية: <b>'+nx.n+'</b> بعد '+lbLeft(nx.mins)+'</div>'+
-    '<ul class="lb-pt">'+LBPN.map(function(x){ return '<li'+(x[0]===nx.k?' class="on"':'')+'><span>'+x[1]+'</span><b dir="ltr">'+lbFmt(tm[x[0]])+'</b></li>'; }).join("")+'</ul>'+
-    '<div class="flds"><label class="fld">المدينة<select id="lb-city">'+opts+'</select></label><div class="fld"><span>أو</span><button type="button" class="btn ghost lb-geo" data-lb="geo">استخدم موقعي</button></div></div><p class="sub" id="lb-pm">'+esc(LB.pm)+'</p></section>';
+  return '<section class="card lb-pr"><div class="lb-prh"><h2>مواقيت الصلاة <small>· '+esc(L.n)+'</small></h2></div><div id="lb-pray">'+lbPrayInner()+'</div>'+
+    '<details class="lb-loc"><summary>غيّر المدينة أو الموقع</summary><div class="flds"><label class="fld">المدينة<select id="lb-city">'+opts+'</select></label><div class="fld"><span>أو</span><button type="button" class="btn ghost lb-geo" data-lb="geo">استخدم موقعي</button></div></div><p class="sub" id="lb-pm">'+esc(LB.pm)+'</p></details>'+
+    '<p class="sub">بتتحسب على موبايلك من غير نت وبتتجدد لوحدها كل يوم، بطريقة الهيئة المصرية العامة للمساحة. ممكن تختلف دقيقة عن تقويم مسجدك.</p></section>';
 }
 
 /* ---- Qibla ---- */
@@ -7238,25 +7270,33 @@ function lbQibla(lat,lng){
   var y=Math.sin(dl)*Math.cos(p2), x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
   return (Math.atan2(y,x)/R+360)%360;
 }
-function lbQibCard(){
+function lbDial(q){
+  var t="", i, a, r=Math.PI/180;
+  for(i=0;i<360;i+=10){ var big=i%90===0, l=big?14:(i%30===0?9:5), x1=110+Math.sin(i*r)*92, y1=110-Math.cos(i*r)*92, x2=110+Math.sin(i*r)*(92-l), y2=110-Math.cos(i*r)*(92-l); t+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" class="lb-tk'+(big?' b':'')+'"/>'; }
+  var lt=[["N",0],["E",90],["S",180],["W",270]].map(function(x){ var xx=110+Math.sin(x[1]*r)*68, yy=110-Math.cos(x[1]*r)*68; return '<text x="'+xx.toFixed(1)+'" y="'+(yy+5).toFixed(1)+'" text-anchor="middle" class="lb-cl'+(x[0]==="N"?' n':'')+'">'+x[0]+'</text>'; }).join("");
+  var kaaba='<g transform="rotate('+q.toFixed(1)+' 110 110)"><g transform="rotate('+(-q).toFixed(1)+' 110 22)"><rect x="98" y="10" width="24" height="24" rx="3" class="lb-kb"/><rect x="98" y="16" width="24" height="4" class="lb-kg"/><rect x="106" y="22" width="6" height="12" rx="1" class="lb-kd"/></g></g>';
+  return '<g id="lb-dial" style="transform-origin:110px 110px">'+t+lt+kaaba+'</g>';
+}
+function lbQibB(){
   var L=lbLoc(), q=lbQibla(L.lat,L.lng);
-  return '<section class="card"><h2>اتجاه القبلة</h2><p class="sub">من «'+esc(L.n)+'»: القبلة على <b dir="ltr">'+Math.round(q)+'°</b> من الشمال ناحية الشرق.</p>'+
-    '<div class="lb-comp" id="lb-comp" data-q="'+q.toFixed(2)+'"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" class="lb-cr"/><text x="100" y="26" text-anchor="middle" class="lb-cn">N</text><g id="lb-arrow" style="transform-origin:100px 100px;transform:rotate('+q.toFixed(1)+'deg)"><path d="M100 22 L116 100 L100 88 L84 100 Z" class="lb-ca"/><circle cx="100" cy="100" r="6" class="lb-cd"/></g></svg></div>'+
-    '<p class="sub" id="lb-qm">'+(LB.qon?esc(LB.qmsg):'السهم بيوريك اتجاه القبلة بالنسبة للشمال. شغّل البوصلة عشان يتحرك مع موبايلك.')+'</p>'+
+  return '<section class="card lb-qb"><h2>اتجاه القبلة</h2><p class="sub">من «'+esc(L.n)+'»: <b dir="ltr">'+Math.round(q)+'°</b> من الشمال ناحية الشرق.</p>'+
+    '<div class="lb-comp" id="lb-comp" data-q="'+q.toFixed(2)+'"><svg viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" class="lb-cr"/>'+lbDial(q)+'<path d="M110 2 L120 22 L100 22 Z" class="lb-mk"/></svg></div>'+
+    '<p class="lb-qm" id="lb-qm">'+(LB.qon?esc(LB.qmsg):'شغّل البوصلة، ولف موبايلك لحد ما 🕋 يبقى فوق عند السهم.')+'</p>'+
     '<div class="rowbtns"><button type="button" class="btn" data-lb="qon">'+(LB.qon?'البوصلة شغّالة':'شغّل البوصلة')+'</button></div>'+
-    '<p class="sub">البوصلة بتعتمد على حساسات الموبايل. ابعد عن المعادن والمغناطيس، ولو السهم مش ثابت حرّك الموبايل على شكل 8 لمعايرته.</p></section>';
+    '<p class="sub">البوصلة بتعتمد على حساسات الموبايل. ابعد عن المعادن والمغناطيس، ولو مش ثابتة حرّك الموبايل على شكل 8.</p></section>';
 }
 function lbQibPaint(){
-  var c=$("lb-comp"), a=$("lb-arrow"); if(!c||!a) return;
+  var c=$("lb-comp"), d=$("lb-dial"); if(!c||!d) return;
   var q=parseFloat(c.getAttribute("data-q")), h=LB.qh;
-  if(h==null){ a.style.transform="rotate("+q.toFixed(1)+"deg)"; return; }
-  var rot=(q-h+360)%360; a.style.transform="rotate("+rot.toFixed(1)+"deg)";
-  var diff=Math.min(rot,360-rot), m=$("lb-qm");
-  LB.qmsg=diff<6?"✓ انت دلوقتي في اتجاه القبلة.":"لف الموبايل لحد ما السهم يبقى لفوق.";
+  if(h==null){ d.style.transform="rotate(0deg)"; return; }
+  d.style.transform="rotate("+(-h).toFixed(1)+"deg)";
+  var diff=Math.abs(((q-h+540)%360)-180);
+  var m=$("lb-qm"); LB.qmsg=diff<6?"✓ انت دلوقتي في اتجاه القبلة.":"لف الموبايل لحد ما 🕋 يبقى فوق عند السهم.";
   if(m) m.textContent=LB.qmsg;
   c.classList.toggle("ok",diff<6);
 }
 function lbQibEv(e){
+  if(!$("lb-comp")){ lbQibStop(); return; }
   var h=null;
   if(typeof e.webkitCompassHeading==="number" && !isNaN(e.webkitCompassHeading)) h=e.webkitCompassHeading;
   else if((e.absolute||e.type==="deviceorientationabsolute") && e.alpha!=null) h=(360-e.alpha)%360;
@@ -7265,16 +7305,21 @@ function lbQibEv(e){
 }
 function lbQibStop(){ window.removeEventListener("deviceorientationabsolute",lbQibEv,true); window.removeEventListener("deviceorientation",lbQibEv,true); LB.qon=false; LB.qh=null; }
 function lbQibStart(){
-  var go=function(){ lbQibStop(); window.addEventListener("deviceorientationabsolute",lbQibEv,true); window.addEventListener("deviceorientation",lbQibEv,true); LB.qon=true; LB.qmsg="لف الموبايل لحد ما السهم يبقى لفوق."; if(view==="lab") renderLab(); };
+  var go=function(){ lbQibStop(); window.addEventListener("deviceorientationabsolute",lbQibEv,true); window.addEventListener("deviceorientation",lbQibEv,true); LB.qon=true; LB.qmsg="لف الموبايل لحد ما 🕋 يبقى فوق عند السهم."; lbRerender(); };
+  var msg=function(t){ var m=$("lb-qm"); if(m) m.textContent=t; };
   try{
     if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission==="function"){
-      DeviceOrientationEvent.requestPermission().then(function(r){ if(r==="granted") go(); else { LB.qmsg="مفيش إذن للحساسات. اتحكم فيه من إعدادات المتصفح."; LB.qon=false; var m=$("lb-qm"); if(m) m.textContent=LB.qmsg; } },function(){ var m=$("lb-qm"); if(m) m.textContent="الجهاز مش بيدعم البوصلة."; });
+      DeviceOrientationEvent.requestPermission().then(function(r){ if(r==="granted") go(); else { LB.qon=false; msg("مفيش إذن للحساسات. اتحكم فيه من إعدادات المتصفح."); } },function(){ msg("الجهاز مش بيدعم البوصلة."); });
     } else if(window.DeviceOrientationEvent) go();
-    else { var m=$("lb-qm"); if(m) m.textContent="الجهاز مش بيدعم البوصلة. استخدم الدرجة المكتوبة فوق."; }
-  }catch(e){ var m2=$("lb-qm"); if(m2) m2.textContent="الجهاز مش بيدعم البوصلة."; }
+    else msg("الجهاز مش بيدعم البوصلة. استخدم الدرجة المكتوبة فوق.");
+  }catch(e){ msg("الجهاز مش بيدعم البوصلة."); }
 }
 
-function lbToolTab(){ return lbOrmCard()+lbPrayCard()+lbQibCard(); }
+function lbToolTab(){ return lbOrmCard(); }
+function lbPrayStrip(){
+  var L=lbLoc(), now=new Date(), nx=lbNext(lbPray(now,L.lat,L.lng),now);
+  return '<button type="button" class="lb-strip" data-act="view" data-v="ibd" aria-label="مواقيت الصلاة"><span>🕌 <b id="lb-snx">'+nx.n+'</b> بعد <b id="lb-sin">'+lbLeft(nx.mins)+'</b></span><span class="lb-sg">المواقيت والقبلة ‹</span></button>';
+}
 
 /* ---- muscle progress ---- */
 function lbWeeks(n){ var ws=weekStartKey(todayKey()), out=[]; for(var i=n-1;i>=0;i--) out.push(addD(ws,-7*i)); return out; }
@@ -7376,7 +7421,7 @@ document.addEventListener("click",function(ev){
   else if(a==="geo"){
     if(!navigator.geolocation){ LB.pm="المتصفح مش بيدعم تحديد الموقع. اختار مدينتك من القايمة."; var m0=$("lb-pm"); if(m0) m0.textContent=LB.pm; return; }
     LB.pm="بدوّر على موقعك…"; var m1=$("lb-pm"); if(m1) m1.textContent=LB.pm;
-    navigator.geolocation.getCurrentPosition(function(pos){ S.prefs.loc={n:"موقعي",lat:Math.round(pos.coords.latitude*1e4)/1e4,lng:Math.round(pos.coords.longitude*1e4)/1e4}; persist(); LB.pm="اتحدد موقعك."; if(view==="lab") renderLab(); },function(){ LB.pm="مقدرتش أحدد موقعك. اختار مدينتك من القايمة."; var m2=$("lb-pm"); if(m2) m2.textContent=LB.pm; },{timeout:10000,maximumAge:600000});
+    navigator.geolocation.getCurrentPosition(function(pos){ S.prefs.loc={n:"موقعي",lat:Math.round(pos.coords.latitude*1e4)/1e4,lng:Math.round(pos.coords.longitude*1e4)/1e4}; persist(); LB.pm="اتحدد موقعك."; lbRerender(); },function(){ LB.pm="مقدرتش أحدد موقعك. اختار مدينتك من القايمة."; var m2=$("lb-pm"); if(m2) m2.textContent=LB.pm; },{timeout:10000,maximumAge:600000});
   }
   else if(a==="qon"){ lbQibStart(); }
   else if(a==="rep"){ lbRepOpen(); }
@@ -7389,13 +7434,14 @@ document.addEventListener("input",function(ev){
 });
 document.addEventListener("change",function(ev){
   var t=ev.target; if(!t) return;
-  if(t.id==="lb-city"){ var v=t.value.split("|"), ll=v[0].split(","); S.prefs.loc={n:v[1],lat:+ll[0],lng:+ll[1]}; persist(); LB.pm=""; renderLab(); }
+  if(t.id==="lb-city"){ var v=t.value.split("|"), ll=v[0].split(","); S.prefs.loc={n:v[1],lat:+ll[0],lng:+ll[1]}; persist(); LB.pm=""; lbRerender(); }
   else if(t.id==="lb-orsel"){ var bb=t.value?lbBest(t.value):null; if(bb){ LB.ow=String(bb.w); LB.or=String(bb.r); renderLab(); } }
 });
 document.addEventListener("keydown",function(ev){ if(ev.key==="Escape" && $("lb-rp")) lbRepClose(); });
 setInterval(function(){
-  if(view!=="lab"||lbTab()!=="tool") return; var n=$("lb-next"); if(!n) return;
-  var L=lbLoc(), now=new Date(), nx=lbNext(lbPray(now,L.lat,L.lng),now); n.innerHTML='الصلاة الجاية: <b>'+nx.n+'</b> بعد '+lbLeft(nx.mins);
+  var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), nx=lbNext(tm,now);
+  var box=$("lb-pray"); if(box && !(document.querySelector("#lb-pray")&&document.querySelector(".lb-loc[open]"))) box.innerHTML=lbPrayInner();
+  var a=$("lb-snx"), b=$("lb-sin"); if(a) a.textContent=nx.n; if(b) b.textContent=lbLeft(nx.mins);
 },30000);
 
 function lbSince(){
