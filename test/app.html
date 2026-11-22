@@ -594,7 +594,7 @@ body.v-welcome .foot{display:none}
 #qfsh .qs-pv{font-family:"Amiri Quran","Cairo",serif;font-size:var(--qfs,1.7rem);text-align:center;margin:8px 0;color:#F0BE3C;min-height:3em;display:grid;place-items:center}
 #qfsh .qs-r{display:flex;align-items:center;gap:14px;direction:rtl}#qfsh input[type=range]{flex:1;accent-color:var(--accent);height:34px}
 #kfarr{position:fixed;inset-inline:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:999;display:flex;flex-direction:column;align-items:center;pointer-events:none;color:#FF7A3F;font-weight:900;font-size:1rem;text-shadow:0 2px 8px #000}#kfarr svg{width:44px;height:44px;animation:kfbob 1s ease-in-out infinite}
-.q-pv.pl{background:rgba(255,122,63,.2);border-radius:6px}
+.q-pv.pl,.q-w.pl,.q-v.pl{background:rgba(255,122,63,.22);border-radius:6px}
 .kfsv{width:120px!important;max-width:45%!important;height:auto!important;cursor:zoom-in;border-radius:10px}
 #kfz{position:fixed;inset:0;z-index:2000;background:rgba(3,10,16,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px;cursor:zoom-out}
 #kfz svg{width:100%!important;max-width:560px!important;height:auto!important;display:block;cursor:zoom-out}
@@ -4228,7 +4228,7 @@ function renderQpage(){
     body+='<div class="q-fn"><span>'+pg.toLocaleString("ar-EG")+'</span></div></div><div class="q-pn"><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg+1)+'"'+(pg>=604?' disabled':'')+'>الصفحة اللي بعدها ›</button><span>'+pg.toLocaleString("ar-EG")+' / '+(604).toLocaleString("ar-EG")+'</span><button type="button" class="sm-gh" data-act="qpg" data-p="'+(pg-1)+'"'+(pg<=1?' disabled':'')+'>‹ الصفحة اللي قبلها</button></div>'+
       '<div class="q-go"><input type="number" id="qpgi" min="1" max="604" inputmode="numeric" placeholder="روح لصفحة…" aria-label="رقم الصفحة"><button type="button" class="btn" data-act="qpgo">اذهب</button></div>'+
       '<p class="disc">اسحب يمين أو شمال لتقليب الصفحات. دوس على أي آية عشان تعلّم مكانك أو تنسخها أو تشاركها. ترقيم الصفحات حسب مصحف المدينة (١٥ سطر).</p>';
-    $("app").innerHTML=shell(body,ttl,sub); if(ml) qFitLines();
+    $("app").innerHTML=shell(body,ttl,sub); if(ml) qFitLines(); qAyHi();
   });
 }
 function qGoPage(pg){ QS.pg=Math.max(1,Math.min(604,+pg||1)); view="qpage"; renderAll(); window.scrollTo(0,0); }
@@ -4247,7 +4247,7 @@ function qposSet(v){ try{ if(v) localStorage.setItem(QPOS_K,JSON.stringify(v)); 
 function qAudio(){
   if(AU) return AU;
   AU=new Audio(); AU.preload="none";
-  AU.addEventListener("ended",function(){ if(QA.av){ var an=QA.n, av=QA.av+1; if(QD.idx&&av<=QD.idx[an-1][2]) qPlayAy(an,av); else { QA.av=0; if(an<114) qPlay(an+1,true); else qBar(); } return; }
+  AU.addEventListener("ended",function(){ if(QA.av){ var an=QA.n, av=QA.av+1; if(QD.idx&&av<=QD.idx[an-1][2]) qPlayAy(an,av,view==="qpage"&&QS.pg===qPgOf(an,av-1)); else { QA.av=0; if(an<114) qPlay(an+1,true); else qBar(); } return; }
     qposSet(null); var m=qRepMode(); QA.done=(QA.done||0)+1;
     if(m===4||(m>=2&&QA.done<m)){ qPlay(QA.n,true,true); return; }
     if(m>=1){ QA.done=0; qBar(); return; }
@@ -4265,15 +4265,25 @@ function qGl(s,v){ var g=v; for(var i=0;i<s-1;i++) g+=QD.idx[i][2]; return g; }
 function qAyUrl(s,v){ var r=RECITER;
   if(r.id==="ar.alafasy") return "https://cdn.islamic.network/quran/audio/128/ar.alafasy/"+qGl(s,v)+".mp3";
   return "https://everyayah.com/data/"+(r.id==="maher"?"Maher_AlMuaiqly_64kbps":"Minshawy_Murattal_128kbps")+"/"+("00"+s).slice(-3)+("00"+v).slice(-3)+".mp3"; }
-function qAyHi(){ var o=document.querySelectorAll(".q-pv.pl"); for(var i=0;i<o.length;i++) o[i].classList.remove("pl");
-  if(!QA.av) return; var e=document.querySelector('.q-pv[data-s="'+QA.n+'"][data-v="'+QA.av+'"]'); if(e){ e.classList.add("pl"); try{ e.scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} } }
-function qPlayAy(s,v){
+function qPgOf(s_,v_){ if(!QP.p) return 0; var r=1; for(var i=0;i<QP.p.length;i++){ var x=QP.p[i]; if(x[0]<s_||(x[0]===s_&&x[1]<=v_)) r=i+1; else break; } return r; }
+function qAyHi(){ var o=document.querySelectorAll(".pl"); for(var i=0;i<o.length;i++) o[i].classList.remove("pl");
+  if(!QA.av) return; var es=document.querySelectorAll('.q-pv[data-s="'+QA.n+'"][data-v="'+QA.av+'"],.q-w[data-s="'+QA.n+'"][data-v="'+QA.av+'"]'+((view==="qsura"&&QS.n===QA.n)?',.q-v[data-v="'+QA.av+'"]':''));
+  for(var j=0;j<es.length;j++) es[j].classList.add("pl");
+  if(es[0]){ try{ var r=es[0].getBoundingClientRect(); if(r.top<130||r.bottom>window.innerHeight-130) es[0].scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} } }
+function qAyPre(s_,v_){ if(!QD.idx) return; QA.pre=QA.pre||{};
+  for(var k=1;k<=2;k++){ var ns=s_, nv=v_+k; if(nv>QD.idx[ns-1][2]){ nv-=QD.idx[ns-1][2]; ns++; } if(ns>114) break;
+    (function(u){ if(QA.pre[u]) return; QA.pre[u]="p"; try{ fetch(u).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){ QA.pre[u]=URL.createObjectURL(bl); }).catch(function(){ QA.pre[u]="x"; }); }catch(e){ QA.pre[u]="x"; } })(qAyUrl(ns,nv)); } }
+function qPlayAy(s,v,fol){
   if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.rc=RECITER.id; QA.tk++;
   if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; }
-  a.src=qAyUrl(s,v); try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){}
+  var u=qAyUrl(s,v), pb=QA.pre&&QA.pre[u]; if(QA.ab){ try{ URL.revokeObjectURL(QA.ab); }catch(e){} QA.ab=""; }
+  if(pb&&pb.indexOf("blob:")===0){ QA.ab=pb; a.src=pb; delete QA.pre[u]; } else a.src=u;
+  try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){}
   var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); });
   try{ if("mediaSession" in navigator){ navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+QD.idx[s-1][1]+" · آية "+v,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){}
-  qBar(); qAyHi(); }
+  qBar(); qAyPre(s,v);
+  if(fol&&view==="qpage"){ var pg=qPgOf(s,v); if(pg&&pg!==QS.pg){ QS.pg=pg; renderQpage(); window.scrollTo(0,0); return; } }
+  qAyHi(); }
 function qPlay(n,force,rep){
   rcInit(); var a=qAudio(); if(!rep && (force||QA.n!==n)) QA.done=0;
   if(!force && QA.n===n && QA.rc===RECITER.id && !a.paused){ a.pause(); return; }
