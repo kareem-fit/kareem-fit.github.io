@@ -101,6 +101,15 @@
 .lb-kp{display:flex;flex-direction:column;gap:2px;text-align:start;min-height:64px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
 .lb-kp small{color:var(--muted);font-size:.75rem;line-height:1.4}
 .lb-kp[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+/* KFIT-FEAT */
+.ft{display:flex;flex-direction:column;gap:12px}.ft-top{display:flex}.ft-h{margin:0;font-size:1.5rem}.ft-p{margin:0;color:var(--muted);line-height:1.8}
+.ft-g{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.ft-g h3{margin:0 0 4px;font-size:1.1rem;display:flex;align-items:center;gap:8px}.ft-g h3 span{font-size:1.4rem}
+.ft-i{display:flex;flex-direction:column;gap:3px;position:relative;text-align:start;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font:inherit;width:100%}
+button.ft-i{cursor:pointer;padding-inline-end:32px}.ft-i b{font-size:1rem}.ft-i span{color:var(--muted);font-size:.86rem;line-height:1.7}
+.ft-i i{position:absolute;inset-inline-end:12px;top:50%;transform:translateY(-50%);font-style:normal;font-size:1.4rem;color:var(--accent)}
+.ft-hl{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"a b c" "a d c";align-items:center;column-gap:12px;width:100%;margin:12px 0;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.ft-hl span{grid-area:a;font-size:1.6rem}.ft-hl b{grid-area:b}.ft-hl small{grid-area:d;color:var(--muted)}.ft-hl i{grid-area:c;font-style:normal;font-size:1.5rem;color:var(--accent)}
 </style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
@@ -3158,12 +3167,12 @@ function renderAll(){
   if(view!=="train") justSaved=null;
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   renderTabs();
-  ["home","today","train","log","body","food","share","comm","set","lab","qib"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi"};
+  ["home","today","train","log","body","food","share","comm","set","lab","qib","feat"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi",feat:"vh"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else if(view==="feat") renderFeat(); else renderShare();
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
@@ -4320,7 +4329,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -7502,6 +7511,50 @@ function lbSince(){
   if(!parts.length) return "";
   return '<p class="sub">من أول قياس ('+sd(f0.date)+'): '+parts.join(" · ")+' سم</p>';
 }
+
+var FEAT=[
+ {g:"التمرين",ic:"🏋️",items:[
+  ["اليوم","تمرين النهارده قدامك: سجّل الوزن والتكرارات لكل مجموعة، وعدّاد راحة بيعدّ معاك ومعاه ذكر قصير.","today"],
+  ["التمرين","برنامجك الأسبوعي من يومين لـ٥ أيام. لكل تمرين صور الحركة (دوس عليها تتكبّر) وفيديو يوتيوب وزرار «بدّل التمرين».","train"],
+  ["بعد التمرين","كارت يقولك عملت كام مجموعة وحجم التمرين والعضلات اللي اشتغلت، وبيعلّم لك أي رقم قياسي جديد.","log"],
+  ["السجل","كل تمارينك القديمة متسجّلة، وتقدر تشوف إنت زوّدت قد إيه من مرة للتانية.","log"]]},
+ {g:"جسمك وأكلك",ic:"📏",items:[
+  ["الجسم","وزنك وقياساتك بالسنتيمتر وصور قبل وبعد مع مقارنة، وكمان «من أول قياس» عشان تشوف التغيير الكلي.","body"],
+  ["الأكل","سجّل وجبات يومك وعدّل عليها في أي وقت.","food"],
+  ["الملخص","ملخص أسبوعك وإنجازاتك، وتقدر تعمله كصورة تشاركها، وفيه نسخة احتياطية لبياناتك.","share"]]},
+ {g:"برامج وأدوات",ic:"🧰",items:[
+  ["برامج جاهزة","برامج كريم الثابتة، وعلوي/سفلي، وPush/Pull/Legs، وتمرين البيت بوزن الجسم. اختار واحد وأيامك تتغيّر على طول.","lab"],
+  ["حاسبة 1RM","تعرف أقصى وزن تقدر ترفعه مرة واحدة من وزن وتكرارات تمرينك.","lab"],
+  ["تقدّم العضلات","كل عضلة اتحسّنت قد إيه في الشهور اللي فاتت.","lab"],
+  ["تقرير PDF","تقرير كامل بتقدّمك تطبعه أو تحفظه PDF وتديه لمدربك.","lab"]]},
+ {g:"القرآن والعبادات",ic:"🕌",items:[
+  ["المصحف","صفحات المصحف أو آية بآية، وتكبّر الخط وتصغّره، وتعلّم مكانك، وتنسخ الآية وتشاركها.","ibd"],
+  ["الاستماع","ثلاث قرّاء. دوس على أي آية واختار «استمع من هنا» والصوت يكمّل بيها لآخر السورة والآية بتتلوّن والصفحة بتتقلّب.","ibd"],
+  ["ختمتي والورد","ورد يومي بعدد الصفحات اللي تختاره، ومتابعة ختمتك لحد ما تخلّص.","ibd"],
+  ["الأذكار","أذكار الصباح والمساء والنوم بعدّاد لكل ذكر. تتعلّم ✓ أول ما تخلّص نصها.","ibd"],
+  ["مواقيت الصلاة","بتتحسب على موبايلك من غير نت وبتتجدد كل يوم، والرئيسية فيها الصلاة الجاية.","ibd"],
+  ["اتجاه القبلة","بوصلة بتوريك اتجاه القبلة من مكانك.","ibd"]]},
+ {g:"مجتمع وحساب",ic:"👥",items:[
+  ["مجتمع الأبطال","شارك إنجازك وشجّع غيرك. المنشورات بتتراجع من المدرب قبل ما تظهر.","comm"],
+  ["الإعدادات وحسابك","اسمك وصورتك ورقم واتساب لو عايز المدرب يرد عليك، وتسجيل الدخول بجوجل عشان بياناتك تتحفظ وترجعلك لو غيرت موبايلك.","set"]]},
+ {g:"عن التطبيق",ic:"📱",items:[
+  ["على موبايلك","ثبّته على الشاشة الرئيسية فيفتح زي أي تطبيق، وبيشتغل كمان من غير نت.",""],
+  ["من غير إعلانات","التطبيق مجاني وما فيهوش إعلانات.",""]]}
+];
+function renderFeat(){
+  var h='<div class="fx ft"><div class="ft-top"><button type="button" class="sm-gh" data-act="view" data-v="home">رجوع</button></div>'+
+   '<h2 class="ft-h">كل اللي في التطبيق</h2><p class="ft-p">دفتر كريم سامي دفتر تمرين وعبادة في مكان واحد. اللي تحت كل حاجة بيعملها التطبيق، ودوس على أي واحدة تفتحها.</p>';
+  FEAT.forEach(function(g){
+    h+='<section class="ft-g"><h3><span>'+g.ic+'</span>'+esc(g.g)+'</h3>';
+    g.items.forEach(function(it){
+      var go=it[2]?' data-act="view" data-v="'+it[2]+'"':'';
+      h+=(it[2]?'<button type="button" class="ft-i"'+go+'>':'<div class="ft-i">')+'<b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span>'+(it[2]?'<i aria-hidden="true">‹</i></button>':'</div>');
+    });
+    h+='</section>';
+  });
+  $("app").innerHTML=h+'</div>';
+}
+function featLink(){ return '<button type="button" class="ft-hl" data-act="view" data-v="feat"><span>✨</span><b>كل مميزات التطبيق</b><small>تعرّف على كل اللي بيعمله</small><i aria-hidden="true">‹</i></button>'; }
 
 renderAll();
 initCloud();
