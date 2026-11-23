@@ -5848,24 +5848,29 @@ function pushSync(){
   PUSHK.forEach(function(k){ o[k[0]]=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); });
   KS.fs.collection("push").doc(u.uid).set(o,{merge:true}).catch(function(){});
 }
+var PUSHERR="";
+function pushFail(st,e){ PUSHERR="مرحلة: "+st+" | "+((e&&(e.code||e.name))||"")+" "+String((e&&e.message)||e||"").slice(0,90); toast("معرفتش أفعّل الإشعارات، شوف السبب في الكارت"); renderAll(); }
 function pushEnable(){
+  PUSHERR="";
   if(!("Notification" in window)||!("serviceWorker" in navigator)){ toast("المتصفح ده مش بيدعم الإشعارات. على الأيفون ضيف التطبيق للشاشة الرئيسية الأول"); return; }
   if(!cmUser()){ toast("سجّل دخول بجوجل الأول"); return; }
-  Notification.requestPermission().then(function(pm){
+  var ask=(Notification.permission==="granted")?Promise.resolve("granted"):Notification.requestPermission();
+  ask.then(function(pm){
     if(pm!=="granted"){ toast(pm==="denied"?"الإشعارات متقفلة للموقع ده، شوف الخطوات تحت":"لازم توافق على الطلب علشان الإشعارات تشتغل"); renderAll(); return; }
-    return pushLoad().then(function(){ return navigator.serviceWorker.ready; }).then(function(reg){
-      return firebase.messaging().getToken({serviceWorkerRegistration:reg}).then(function(tok){
-        if(!tok) throw new Error("tok");
+    return pushLoad().catch(function(e){ pushFail("تحميل مكتبة الإشعارات",e); throw 0; }).then(function(){ return navigator.serviceWorker.ready; }).then(function(reg){
+      return firebase.messaging().getToken({serviceWorkerRegistration:reg}).catch(function(e){ pushFail("التسجيل مع Firebase",e); throw 0; }).then(function(tok){
+        if(!tok){ pushFail("التسجيل مع Firebase","token فاضي"); return; }
         var p=pushPrefs(); p.on=true; p.tok=tok; persist(); pushSync(); renderAll();
         reg.showNotification("دفتر تمرين",{body:"الإشعارات اشتغلت ✓",icon:"icon-192.png"});
       });
     });
-  }).catch(function(){ toast("معرفتش أفعّل الإشعارات، جرّب تاني"); });
+  }).catch(function(e){ if(e!==0) pushFail("طلب الإذن",e); });
 }
 function pushCard(){
   var p=pushPrefs(), t=function(k,n){ var on=(k==="h")?(p.h===true):(p[k]!==false); return '<button type="button" class="sm-gh wide" data-act="pushk" data-k="'+k+'" role="switch" aria-checked="'+on+'"><span>'+(on?'شغّال ✓':'مقفول')+'</span>'+n+'</button>'; };
   var den=("Notification" in window)&&Notification.permission==="denied";
   var help=den?'<p class="sub" style="color:#ff8a8a">الإشعارات متقفلة للتطبيق ده في الموبايل. افتح <b>كروم</b> ← النقط التلاتة ← <b>الإعدادات</b> ← <b>إعدادات المواقع</b> ← <b>الإشعارات</b> ← دوّر على <b dir="ltr">kareem-fit.github.io</b> وخليه <b>سماح</b>. بعدها ارجع هنا وادوس الزرار تاني.</p>':'';
+  if(PUSHERR) help+='<p class="sub" dir="auto" style="color:#ffb86b">'+esc(PUSHERR)+'</p>';
   if(!p.on) return '<section class="fx-card">'+stHead(SETI.palette,"الإشعارات")+help+'<p class="sub">تفكير بالأذكار والتمرين، وتشجيع لما تحتاجه، وتنبيه بالرقم القياسي واشتراك الجيم. تقدر تقفل أي نوع.</p><button type="button" class="btn" data-act="pushon">فعّل الإشعارات</button></section>';
   return '<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+PUSHK.map(function(k){ return t(k[0],k[1]); }).join("")+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
 }
