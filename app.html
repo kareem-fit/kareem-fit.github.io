@@ -18,6 +18,87 @@
 .d3-hd .d3-rc{margin-top:4px;min-height:30px;padding:0 10px;font-size:.8rem}
 .ik .rowbtns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.ik .rowbtns .btn{flex:1;min-width:150px}.ik-w{background:rgba(255,122,63,.14);border:1.5px solid #FF7A3F;border-radius:12px;padding:10px 12px;line-height:1.7;font-size:.93rem}.ik-m{min-height:1.2em;color:#FF9A6A}.ik-d{margin-top:10px;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:4px 12px}.ik-d summary{cursor:pointer;font-weight:800;padding:12px 0;min-height:44px}.ik-d ol{margin:0 0 8px;padding-inline-start:22px;line-height:1.9;font-size:.97rem}.ik-d li{margin-bottom:8px}
 .mvadd{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.mvadd .asel{flex:1 1 200px;min-height:44px;border-radius:12px;border:1.5px solid var(--t-line,#2a4458);background:var(--t-surface,#0E2C40);color:inherit;font:inherit;padding:0 10px}.mvadd .btn{min-height:44px;flex:0 0 auto}.mi.new .inm{color:#FFB36A}
+
+/* KFIT-LAB */
+.lb{display:flex;flex-direction:column;gap:12px}
+.lb .seg2.four{grid-template-columns:repeat(4,1fr)}
+.lb .seg2 button{font-size:.9rem;font-family:inherit}
+.lb-ph{display:flex;align-items:center;gap:12px}.lb-ph h2{margin:0}
+.lb-ic{font-size:2rem;width:52px;height:52px;border-radius:14px;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.lb-chs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.lb-ch{display:inline-block;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:.75rem;color:var(--muted);font-weight:700}
+.lb-ch.g{color:#3DDC97;border-color:rgba(61,220,151,.45)}.lb-ch.b{color:#6FB4FF;border-color:rgba(111,180,255,.45)}.lb-ch.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.lb-day{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px;padding-top:8px;border-top:1px solid var(--line)}.lb-day small{color:var(--muted)}
+.lb-exs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.lb-ex{display:flex;align-items:center;gap:10px;padding:6px 0}
+.lb-th{width:52px;height:52px;flex:none;border-radius:10px;background:#fff;overflow:hidden;display:grid;place-items:center}.lb-th img{width:100%;height:100%;object-fit:cover}
+.lb-en{display:flex;flex-direction:column;min-width:0;flex:1}.lb-en b{font-size:.95rem}.lb-en small{color:var(--muted);font-size:.72rem;text-align:start}
+.lb-ex em{font-style:normal;font-weight:800;color:#3DDC97;font-size:.85rem;white-space:nowrap}
+.lb .rowbtns{display:flex;gap:8px;flex-wrap:wrap}.lb .rowbtns .btn{flex:1;min-width:130px;min-height:46px;font-family:inherit}
+.lb .btn[disabled]{opacity:.45}
+.lb-dcs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lb-dc{min-height:46px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700}
+.lb-dc[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.lb-big{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}.lb-big span{display:block;font-size:.82rem;color:var(--muted)}.lb-big b{font-size:1.9rem;font-family:var(--f-mono,monospace)}
+.lb-tb{width:100%;border-collapse:collapse;font-size:.88rem}.lb-tb th,.lb-tb td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--line)}.lb-tb th{color:var(--muted);font-weight:700}
+.lb-next{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}.lb-next b{color:var(--accent)}
+.lb-pt{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.lb-pt li{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.lb-pt li.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.lb-pt li b{font-family:var(--f-mono,monospace)}
+.lb select{font:inherit}.lb .fld select{height:44px;width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 8px}
+.lb-geo{min-height:44px;width:100%}
+.lb-comp{width:220px;max-width:70%;margin:0 auto}.lb-comp svg{width:100%;height:auto;display:block}
+.lb-cr{fill:var(--bg);stroke:var(--line);stroke-width:3}.lb-cn{fill:var(--muted);font-size:16px;font-weight:800}.lb-ca{fill:var(--accent)}.lb-cd{fill:var(--ink)}
+#lb-arrow{transition:transform .15s linear}.lb-comp.ok .lb-cr{stroke:#3DDC97;stroke-width:5}.lb-comp.ok .lb-ca{fill:#3DDC97}
+.lb-mh{display:flex;align-items:center;gap:12px}.lb-mh h2{margin:0}.lb-mt{width:56px;height:56px;border-radius:10px;background:#fff;overflow:hidden;flex:none;display:grid;place-items:center}.lb-mt img{width:100%;height:100%;object-fit:contain}
+.lb-bars{display:flex;align-items:flex-end;gap:8px;height:64px}.lb-bars i{flex:1;background:linear-gradient(180deg,var(--accent),rgba(255,122,63,.35));border-radius:6px 6px 2px 2px;position:relative;min-height:8px}.lb-bars i b{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:.72rem;font-style:normal;color:var(--muted)}
+.lb-bars{padding-top:20px;box-sizing:content-box}
+.lb-up{color:#3DDC97;font-weight:800}.lb-dn{color:#FF7A63;font-weight:800}
+#lb-rp{position:fixed;inset:0;z-index:80;background:#e9ecef;overflow:auto;padding:12px;color:#111;display:flex;flex-direction:column;gap:10px}
+#lb-rp .rp-bar{display:flex;gap:8px;position:sticky;top:0;z-index:1}#lb-rp .rp-bar .btn{flex:1;min-height:46px;font-family:inherit}
+#lb-rp .rp-p{background:#fff;color:#111;border-radius:8px;padding:18px;max-width:760px;width:100%;margin:0 auto;font-size:.92rem;line-height:1.7;box-sizing:border-box}
+#lb-rp h1{font-size:1.3rem;margin:0}#lb-rp h2{font-size:1.05rem;margin:16px 0 6px;border-bottom:2px solid #FF7A3F;padding-bottom:3px;color:#111}
+#lb-rp .rp-h p{margin:2px 0 8px;color:#555}
+#lb-rp .rp-k{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}#lb-rp .rp-k div{border:1px solid #ddd;border-radius:8px;text-align:center;padding:8px}#lb-rp .rp-k b{display:block;font-size:1.3rem}#lb-rp .rp-k span{font-size:.75rem;color:#555}
+#lb-rp table{width:100%;border-collapse:collapse;font-size:.85rem}#lb-rp th,#lb-rp td{border:1px solid #ddd;padding:5px 7px;text-align:center}#lb-rp th{background:#f3f4f6}
+#lb-rp .rp-s{border:1px solid #e3e3e3;border-radius:8px;padding:8px 10px;margin:6px 0;font-size:.83rem;break-inside:avoid}
+#lb-rp .rp-f{margin-top:18px;font-size:.75rem;color:#777;text-align:center}
+@media print{
+ body>*:not(#lb-rp){display:none!important}
+ html,body{background:#fff!important}
+ #lb-rp{position:static!important;background:#fff!important;padding:0!important;overflow:visible!important;display:block!important}
+ #lb-rp .rp-bar{display:none!important}
+ #lb-rp .rp-p{padding:0!important;max-width:none!important}
+}
+/* prayer (design B) + compass */
+.lb-pr h2 small{color:var(--muted);font-weight:600;font-size:.8rem}
+.lb-nx{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;margin-bottom:10px}.lb-nx b{color:var(--accent)}
+.lb-c5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lb-c5 div{display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 2px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-size:.78rem}
+.lb-c5 div b{font-size:1rem;font-family:var(--f-mono,monospace)}.lb-c5 div i{font-style:normal;font-size:.7rem;color:var(--muted)}
+.lb-c5 div.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:800}.lb-c5 div.on i{color:inherit}
+.lb-sr{text-align:center;color:var(--muted);font-size:.85rem;margin:8px 0}
+.lb-loc{margin:6px 0}.lb-loc summary{cursor:pointer;color:var(--accent);font-weight:700;min-height:40px;display:flex;align-items:center}
+.lb-qb .lb-comp{width:250px;max-width:78%}
+.lb-tk{stroke:var(--muted);stroke-width:1.5}.lb-tk.b{stroke:var(--ink);stroke-width:2.5}
+.lb-cl{fill:var(--muted);font-size:13px;font-weight:800}.lb-cl.n{fill:#FF7A63;font-size:15px}
+.lb-kb{fill:#111}.lb-kg{fill:#D9B24A}.lb-kd{fill:#D9B24A}
+.lb-mk{fill:var(--accent)}
+.lb-comp.ok .lb-mk{fill:#3DDC97}
+#lb-dial{transition:transform .12s linear}
+.lb-qm{text-align:center;font-weight:700;min-height:1.6em;margin:6px 0}
+.lb-comp.ok~.lb-qm{color:#3DDC97}
+.lb-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:48px;padding:10px 14px;margin-bottom:10px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.lb-strip b{color:var(--accent)}.lb-sg{color:var(--muted);font-size:.8rem;white-space:nowrap}
+.lb-pr,.lb-qb{display:block}
+.lb-qb .lb-comp,.lb-comp{display:block;flex:none;width:250px;min-width:200px;max-width:80%;margin:6px auto}
+.lb-qb .rowbtns{display:flex;gap:8px}.lb-qb .rowbtns .btn{flex:1;min-height:46px;font-family:inherit}
+.lb-comp svg{width:100%!important;height:auto!important;max-width:none!important;display:block}
+
+.lb-gh{margin:6px 2px 0;font-size:1rem}
+.lb-k4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.lb-kp{display:flex;flex-direction:column;gap:2px;text-align:start;min-height:64px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.lb-kp small{color:var(--muted);font-size:.75rem;line-height:1.4}
+.lb-kp[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 </style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
@@ -1698,6 +1779,7 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
       <button type="button" data-act="view" data-v="share" id="vs">الملخص</button>
       <button type="button" data-act="view" data-v="comm" id="vc">المجتمع</button>
       <button type="button" data-act="view" data-v="ibd" id="vi">القرآن والعبادات</button>
+      <button type="button" data-act="view" data-v="lab" id="vlb">برامج وأدوات</button>
       <button type="button" data-act="view" data-v="set" id="vx">الإعدادات</button>
     </nav>
   </header>
@@ -2392,6 +2474,36 @@ function restFor(e){ return S.prefs.restUser ? S.prefs.rest : (e&&e.rest ? e.res
 
 var BASE_DAYS = DAYS, LIB = {}, DAYMAP = {}, TARGET = 4;
 BASE_DAYS.forEach(function(d){ d.ex.forEach(function(e){ LIB[e.id] = e; }); });
+/* KFIT-LAB: extra exercises (bodyweight + a few gym) used by the ready-made programs. Pictures come from assets/lib (g = image folder) */
+var XLIB=[
+ {id:"xpush",g:"Pushups",n:"Push-Up",ar:"ضغط (بوش أب)",m:["chest","delt_f","triceps"],lo:8,hi:15,cue:"إيديك أوسع من كتفك شوية وجسمك خط مستقيم من الراس للكعب. انزل لحد ما صدرك يقرب من الأرض وادفع لفوق. لو تقيل عليك اشتغل على ركبك."},
+ {id:"xpushw",g:"Push-Up_Wide",n:"Wide Push-Up",ar:"ضغط واسع",m:["chest","delt_f"],lo:8,hi:15,cue:"إيديك أوسع من كتفك بوضوح. بيركّز أكتر على الصدر. انزل بتحكم وماتفتحش كوعك على الآخر."},
+ {id:"xpushc",g:"Push-Ups_-_Close_Triceps_Position",n:"Close-Grip Push-Up",ar:"ضغط ضيق (ترايسبس)",m:["chest","delt_f","triceps"],lo:8,hi:15,cue:"إيديك قريبين من بعض تحت صدرك وكوعيك جنب جسمك. بيشغّل الترايسبس أكتر."},
+ {id:"xpushf",g:"Push-Ups_With_Feet_Elevated",n:"Feet-Elevated Push-Up",ar:"ضغط برجلين مرفوعة",m:["chest","delt_f","triceps"],lo:6,hi:12,cue:"رجليك على كرسي أو سرير وإيديك على الأرض. أصعب من الضغط العادي وبيركّز على أعلى الصدر والكتف."},
+ {id:"xsuper",g:"Superman",n:"Superman",ar:"سوبرمان (أسفل الضهر)",m:["glutes","hams","lower_back"],lo:10,hi:15,cue:"نايم على بطنك، ارفع دراعاتك ورجليك في نفس الوقت وقّف ثانيتين وانزل ببطء. ماتبالغش في تقويس رقبتك."},
+ {id:"xjsq",g:"Freehand_Jump_Squat",n:"Jump Squat",ar:"سكوات بالنطّ",m:["glutes","quads"],lo:12,hi:20,cue:"انزل سكوات وانط لفوق بقوة وانزل بهدوء على مشط رجلك. لو عندك ألم في الركبة، اعمل سكوات عادي."},
+ {id:"xbsq",g:"Bodyweight_Squat",n:"Bodyweight Squat",ar:"سكوات بوزن الجسم",m:["quads","glutes"],lo:15,hi:25,cue:"رجليك بعرض كتفك، انزل لحد ما فخدك يوازي الأرض والضهر مستقيم، وارجع واقف."},
+ {id:"xbridge",g:"Butt_Lift_Bridge",n:"Glute Bridge",ar:"رفع الحوض (جسر)",m:["glutes","hams"],lo:15,hi:25,cue:"نايم على ضهرك وركبك مثنية، ارفع حوضك لحد ما جسمك يبقى خط مستقيم، واعصر المؤخرة ثانية وانزل."},
+ {id:"xsbridge",g:"Single_Leg_Glute_Bridge",n:"Single-Leg Glute Bridge",ar:"جسر برجل واحدة",m:["glutes","hams"],lo:8,hi:12,u:true,us:" لكل رجل",cue:"زي الجسر العادي بس برجل واحدة والتانية مرفوعة. حافظ على الحوض مستوي."},
+ {id:"xcrunch",g:"Crunches",n:"Crunch",ar:"كرنش أرضي",m:["abs"],lo:15,hi:25,cue:"نايم على ضهرك وإيديك ورا راسك من غير ما تشد رقبتك. ارفع كتفك بشدّ البطن وانزل ببطء."},
+ {id:"xrcrunch",g:"Reverse_Crunch",n:"Reverse Crunch",ar:"كرنش عكسي",m:["abs"],lo:12,hi:20,cue:"نايم على ضهرك، قرّب ركبك من صدرك وارفع الحوض شوية بشدّ أسفل البطن وانزل بتحكم."},
+ {id:"xplank",g:"Plank",n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
+ {id:"xsplank",g:"Side_Bridge",n:"Side Plank",ar:"بلانك جانبي",m:["abs"],lo:20,hi:40,rp:"20–40 ث",u:true,us:" لكل ناحية",cue:"على كوع واحد وجسمك خط مستقيم، ارفع الحوض وثبّت. سجّل الثواني في خانة التكرار."},
+ {id:"xbdip",g:"Bench_Dips",n:"Bench Dip",ar:"متوازي على كرسي",m:["triceps","chest","delt_f"],lo:10,hi:15,cue:"إيديك على حافة كرسي أو بنش وجسمك قدامه. انزل بثني الكوع لحد 90 درجة وارفع. كوعيك لورا مش لبرا."},
+ {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["glutes","quads"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
+ {id:"xmc",g:"Mountain_Climbers",n:"Mountain Climber",ar:"متسلق الجبل",m:["abs"],lo:20,hi:40,rp:"30–40 ث",cue:"وضع الضغط، قرّب ركبة بعد التانية من صدرك بسرعة وثبّت الجذع. سجّل الثواني أو عدد المرات."},
+{id:"xktj",g:"Knee_Tuck_Jump",n:"Knee Tuck Jump",ar:"نطة بضم الركبة",m:["quads"],lo:8,hi:15,cue:"انط لفوق وضم ركبتيك لصدرك وانزل بنعومة. حركة سريعة، خد راحة بين المجموعات."},
+ {id:"xflut",g:"Flutter_Kicks",n:"Flutter Kicks",ar:"ركل الرجلين (فلاتر)",m:["abs"],lo:20,hi:40,cue:"نايم على ضهرك ورجليك مرفوعة شوية، حرّكهم لفوق ولتحت بالتبادل وأسفل ضهرك ثابت على الأرض."},
+ {id:"xairb",g:"Air_Bike",n:"Air Bike",ar:"دراجة هوائية (بطن)",m:["abs"],lo:20,hi:40,cue:"نايم وإيديك ورا راسك، قرّب كوعك من الركبة المعاكسة بالتبادل وكأنك بتركب عجلة."},
+ {id:"xrope",g:"Rope_Jumping",n:"Jump Rope",ar:"نط الحبل",m:["calves"],lo:45,hi:90,rp:"45–90 ث",cue:"نط خفيف على مشط رجلك والكوعين جنبك. تمرين كارديو ممتاز ومحتاج حبل بس."},
+ {id:"xirow",g:"Inverted_Row",n:"Inverted Row",ar:"سحب أفقي تحت بار",m:["lats","upper_back","biceps"],lo:8,hi:12,cue:"تحت بار منخفض أو سميث، امسكه وجسمك مستقيم، واسحب صدرك للبار وانزل ببطء."},
+ {id:"xgob",g:"Goblet_Squat",n:"Dumbbell Goblet Squat",ar:"سكوات جوبلت بدمبل",m:["quads","glutes"],lo:12,hi:15,cue:"امسك دمبل عند صدرك بإيديك الاتنين وانزل سكوات والضهر مستقيم وارجع."},
+ {id:"xdlg",g:"Dumbbell_Lunges",n:"Dumbbell Lunge",ar:"لانج بالدمبل",m:["glutes","quads"],lo:10,hi:12,u:true,us:" لكل رجل",cue:"دمبل في كل إيد، خطوة لقدام وانزل بتحكم وارجع. الجذع مستقيم."},
+ {id:"xbor",g:"Bent_Over_Two-Dumbbell_Row",n:"Bent-Over Dumbbell Row",ar:"تجديف بالدمبل",m:["lats","upper_back","biceps"],lo:10,hi:12,cue:"ميّل جذعك لقدام والضهر مستقيم، اسحب الدمبلين ناحية بطنك وقرّب لوحي الكتف، وانزل ببطء."},
+ {id:"xdbp",g:"Dumbbell_Bench_Press",n:"Dumbbell Bench Press",ar:"ضغط صدر بالدمبل",m:["chest","delt_f","triceps"],lo:10,hi:15,cue:"نايم على بنش، ادفع الدمبلين لفوق وانزلهم بتحكم لحد ما تحس بتمدد في الصدر."}
+];
+XLIB.forEach(function(x){ var e=Object.assign({s:3,rt:"60–90 ث",rest:75,q:x.n+" form"},x); delete e.g; delete e.ar; if(x.g){ var b="assets/lib/"+x.g; e.imgs=[b+"-0.webp",b+"-1.webp"]; } LIB[e.id]=e; AR[e.id]=x.ar; });
+
 var WS=6, WNAMES={0:"الأحد",1:"الإثنين",2:"الثلاثاء",3:"الأربعاء",4:"الخميس",5:"الجمعة",6:"السبت"}, WDS=[];
 function setWDS(st){ WS=st; WDS=[0,1,2,3,4,5,6].map(function(i){ var dw=(st+i)%7; return [WNAMES[dw],dw]; }); }
 setWDS(6);
@@ -2974,8 +3086,8 @@ function perfCard(day){
 }
 
 function doneCard(){
-  var tk=todayKey(), sets=0, vol=0, prs=[], day=DAYS[dayIdx];
-  S.sessions.forEach(function(x){ if(x.date===tk && x.day===day.id){ Object.keys(x.sets||{}).forEach(function(e){ x.sets[e].forEach(function(z){ sets++; vol+=(z.w||0)*(z.r||0); }); }); prs=x.pr||[]; } });
+  var tk=todayKey(), sets=0, vol=0, prs=[], day=DAYS[dayIdx], exn=0, mus=[];
+  S.sessions.forEach(function(x){ if(x.date===tk && x.day===day.id){ Object.keys(x.sets||{}).forEach(function(e){ exn++; ((LIB[e]&&LIB[e].m)||[]).forEach(function(k){ if(mus.indexOf(k)<0) mus.push(k); }); x.sets[e].forEach(function(z){ sets++; vol+=(z.w||0)*(z.r||0); }); }); prs=x.pr||[]; } });
   var nm=(S.profile.name||"").trim(), n=nm?" يا "+esc(nm):"";
   var H=["عاش"+n+"! خلّصت التمرين زي الوحوش.","تمرين جامد"+n+". كده انت أقوى من امبارح.","كمّلت لحد الآخر"+n+". ده اللي بيفرق.","شغل نضيف"+n+". الراحة والأكل دلوقتي والعضل هيرد الجميل.","مفيش تراجع"+n+". خطوة كمان وفي الطريق الصح."];
   var hype=(qpick(["d"],tk,day.id.length)||H[(pk(tk).getDate()+day.id.length)%H.length]), conf="";
@@ -2983,6 +3095,7 @@ function doneCard(){
   return '<section class="cele"><div class="confetti" aria-hidden="true">'+conf+'</div><h2>الحمد لله، خلصت تمرين النهارده</h2><p class="hype">'+hype+'</p>'+
     (day.rest?'':'<div class="kpis"><div class="kpi"><b>'+sets+'</b><span>مجموعة</span></div><div class="kpi"><b>'+Math.round(vol).toLocaleString("en-US")+'</b><span>كجم حجم تدريب</span></div><div class="kpi"><b>'+prs.length+'</b><span>رقم قياسي</span></div></div>')+
     (prs.length?'<p class="sub">رقم قياسي جديد في: <b>'+prs.map(function(i){ return AR[i]||i; }).join("، ")+'</b></p>':'')+
+    (!day.rest&&mus.length?'<p class="sub">'+exn+' تمارين · العضلات اللي اشتغلت: <b>'+mus.map(function(k){ return MN[k]; }).join("، ")+'</b></p>':'')+
     '<div class="rowbtns"><button type="button" class="btn" data-act="tosummary">شوف ملخصك وشاركه</button><button type="button" class="btn ghost" data-act="dismiss">إغلاق</button></div></section>';
 }
 function intentCard(){
@@ -3043,12 +3156,12 @@ function renderAll(){
   if(view!=="train") justSaved=null;
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   renderTabs();
-  ["home","today","train","log","body","food","share","comm","set"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi"};
+  ["home","today","train","log","body","food","share","comm","set","lab","qib"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else renderShare();
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
@@ -3931,7 +4044,7 @@ function renderIbd(){
   rcInit(); var tk=todayKey();
   function ad(t,l,ic){ var p=adProg(tk,t); return ibRow(ic,l,p.full?"تقبّل الله ✓":(p.half?"✓ ":"")+p.done+" من "+p.total,"adopen",' data-t="'+t+'"'); }
   var bm=S.qbm&&QD.idx?S.qbm:null;
-  var h='<div class="fx ib"><div class="bd-h"><span class="fx-ti" style="color:#4FCB8A;background:rgba(79,203,138,.14)">📖</span><div><h2>القرآن والعبادات</h2><p>أذكارك وقرآنك في مكان واحد، من غير إعلانات</p></div></div>'+
+  var h='<div class="fx ib"><div class="bd-h"><span class="fx-ti" style="color:#4FCB8A;background:rgba(79,203,138,.14)">📖</span><div><h2>القرآن والعبادات</h2><p>أذكارك وقرآنك في مكان واحد، من غير إعلانات</p></div></div>'+lbPrayB()+lbQibB()+
    '<h3 class="ib-h">الأذكار</h3>'+ad("m","أذكار الصباح","☀️")+ad("e","أذكار المساء","🌙")+ad("n","أذكار النوم","😴")+
    '<h3 class="ib-h">القرآن الكريم</h3>'+
    (S.qbm?ibRow("🔖","كمّل من آخر مكان","سورة "+(QD.idx?QD.idx[S.qbm.n-1][1]:S.qbm.n)+" · آية "+S.qbm.v.toLocaleString("ar-EG"),"qres"):"")+
@@ -4205,7 +4318,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -4305,7 +4418,7 @@ function bdMeas(){
       var v=last[m[0]]; if(v==null) return '<div class="bd-m"><small>'+m[1]+'</small><b>–</b></div>';
       var d=(prev&&prev[m[0]]!=null)?r1(v-prev[m[0]]):null;
       return '<div class="bd-m"><small>'+m[1]+'</small><b dir="ltr">'+v+'</b>'+(d!==null?'<em dir="ltr" class="'+(d>0?'up':(d<0?'dn':''))+'">'+(d>0?"+":"")+d+'</em>':'')+'</div>';
-    }).join("")+'</div><p class="sub">لو الوسط زاد والباقي ثابت، ده غالبًا دهون.</p></section>';
+    }).join("")+'</div>'+lbSince()+'<p class="sub">لو الوسط زاد والباقي ثابت، ده غالبًا دهون.</p></section>';
     var rows=S.meas.slice(-6).reverse();
     h+='<details class="fx-card bd-hist"><summary>سجل القياسات ('+S.meas.length+')</summary>'+rows.map(function(r){
       return '<div class="bd-row"><span>'+fmtDate(r.date)+'</span><span class="bd-vals" dir="ltr">'+BDM.map(function(m){ return r[m[0]]!=null?r[m[0]]:"–"; }).join(" · ")+'</span><button type="button" class="fx-ib" data-act="mdel" data-d="'+r.date+'" aria-label="حذف">'+FXI.del+'</button></div>';
@@ -7040,6 +7153,354 @@ document.addEventListener("click",function(ev){
 });
 document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"){ if($("pe-rp")) peRepClose(); else if(PEs) peClose(); } });
 
+
+/* ================= KFIT-LAB: برامج جاهزة + أدوات (1RM، مواقيت، قبلة) + تطور العضلات + تقرير ================= */
+var PROGS=[
+ {id:"home",ic:"🏠",n:"تمرين البيت – وزن الجسم",lv:"مبتدئ",pl:"منزلي",d:"من غير أي أدوات تقريبًا. مناسب لو مش لاقي جيم أو لسه بتبدأ.",days:[
+  ["كامل الجسم أ",[["xpush",3],["xirow",3],["xsuper",3],["xjsq",3],["xbridge",3],["xcrunch",3],["xplank",3]]],
+  ["كامل الجسم ب",[["xbdip",3],["xpushw",3],["xlunge",3],["xmc",3],["xrcrunch",3],["xsplank",3]]],
+  ["كامل الجسم ج",[["xbsq",3],["xpushc",3],["xsbridge",3],["xirow",3],["xflut",3],["xairb",3],["xplank",3]]]]},
+ {id:"ul4",ic:"⚡",n:"علوي / سفلي – 4 أيام",lv:"متوسط",pl:"جيم",d:"يومين للنص العلوي ويومين للسفلي. كل عضلة بتتضرب مرتين في الأسبوع.",days:[
+  ["علوي أ",[["fdbp",3],["wgpd",3],["dbsp",3],["wgsr",3],["incurl",2],["sspd",2]]],
+  ["سفلي أ",[["legpress",3],["dbrdl",3],["legext",3],["legcurl",3],["calf",4],["ccrunch",3]]],
+  ["علوي ب",[["incfly",3],["pullup",3],["msp",3],["tbar",3],["hammer",2],["ssoh",2]]],
+  ["سفلي ب",[["hipthrust",3],["legext",3],["abduct",3],["legcurl",3],["calf",4],["pallof",3]]]]},
+ {id:"ppl",ic:"🏋️",n:"Push / Pull / Legs",lv:"متوسط",pl:"جيم",d:"دفع وسحب ورجل. 3 أيام في الأسبوع، كل يوم فيه تمارين العضلة الأساسية (صدر وضغط، سحب عالي وسحب أفقي، رجل كاملة).",days:[
+  ["Push",[["fdbp",3],["incfly",3],["dbsp",3],["dlr",3],["cdips",2],["sapush",2],["ssoh",2]]],
+  ["Pull",[["wgpd",3],["wgsr",3],["salp",2],["sapd",2],["crdf",3],["preacher",2],["hammer",2]]],
+  ["Legs",[["legpress",3],["legext",3],["dbrdl",3],["legcurl",2],["hipthrust",2],["calf",3],["abduct",2]]]]}
+];
+var LB={open:null,pick:null,sel:[],rm:"",ow:"",or:"",qh:null,qon:false,qmsg:"",rpOpen:false,pm:""};
+var LBTABS=[["prog","البرامج"],["tool","أدوات"],["musc","العضلات"],["rep","تقرير"]];
+function lbTab(){ var t=S.prefs.lb; return LBTABS.some(function(x){ return x[0]===t; })?t:"prog"; }
+function lbProg(id){ return PROGS.filter(function(p){ return p.id===id; })[0]; }
+function lbThumb(id){
+  var e=LIB[id]; if(!e) return "";
+  if(typeof EXPHOTO!=="undefined" && EXPHOTO[id]) return "assets/ex/"+id+"-0.webp";
+  return (e.imgs&&e.imgs[0])||"";
+}
+function lbReps(e){ return e.rp||(e.lo+"–"+e.hi); }
+function lbDefDays(n){ return ({2:[6,2],3:[6,1,3],4:[6,0,2,4],5:[6,0,1,3,4]})[n]||[6,1,3]; }
+function lbProgCard(p){
+  var open=LB.open===p.id, ne=0; p.days.forEach(function(d){ ne+=d[1].length; });
+  var cur=S.mine&&S.mine.prog===p.id;
+  var h='<section class="card lb-pc"><div class="lb-ph"><span class="lb-ic" aria-hidden="true">'+p.ic+'</span><div><h2>'+esc(p.n)+'</h2><div class="lb-chs"><span class="lb-ch">'+p.lv+'</span><span class="lb-ch">'+p.pl+'</span>'+(cur?'<span class="lb-ch on">شغّال دلوقتي</span>':'')+'</div></div></div>'+
+    '<p class="sub">'+esc(p.d)+'</p><div class="lb-chs"><span class="lb-ch g">'+p.days.length+' أيام في الأسبوع</span><span class="lb-ch b">'+ne+' تمرين</span></div>';
+  if(open){
+    p.days.forEach(function(d,i){
+      h+='<div class="lb-day"><b>'+esc(d[0])+'</b><small>'+d[1].length+' تمارين</small></div><ul class="lb-exs">'+d[1].map(function(x){
+        var e=LIB[x[0]]; if(!e) return ""; var th=lbThumb(x[0]);
+        return '<li class="lb-ex"><span class="lb-th">'+(th?'<img src="'+th+'" alt="" loading="lazy" onerror="this.parentNode.style.visibility=\'hidden\'">':'')+'</span><span class="lb-en"><b>'+esc(AR[x[0]]||e.n)+'</b><small dir="ltr">'+esc(e.n)+'</small></span><em dir="ltr">'+x[1]+'×'+lbReps(e)+'</em></li>';
+      }).join("")+'</ul>';
+    });
+  }
+  h+='<div class="rowbtns"><button type="button" class="btn ghost" data-lb="open" data-id="'+p.id+'">'+(open?'اقفل التفاصيل':'شوف التفاصيل')+'</button><button type="button" class="btn" data-lb="pick" data-id="'+p.id+'">ابدأ البرنامج</button></div></section>';
+  return h;
+}
+function lbPickCard(){
+  var p=lbProg(LB.pick); if(!p) return "";
+  var n=p.days.length, names=WDS.map(function(w){ return w; });
+  var chips=WDS.map(function(w){ var on=LB.sel.indexOf(w[1])>=0; return '<button type="button" class="lb-dc" data-lb="dow" data-d="'+w[1]+'" aria-pressed="'+on+'">'+w[0]+'</button>'; }).join("");
+  var ok=LB.sel.length===n;
+  return '<section class="card lb-pk"><h2>اختار أيام تدريبك</h2><p class="sub">«'+esc(p.n)+'» فيه '+n+' أيام تمرين. اختار '+n+' أيام من الأسبوع، والباقي راحة.'+(S.mine&&S.mine.days?' <b>تنبيه:</b> برنامجك الحالي هيتبدّل.':' جدولك الحالي هيتبدّل، وتقدر ترجع لبرنامج كريم في أي وقت.')+'</p>'+
+    '<div class="lb-dcs">'+chips+'</div><p class="sub" id="lb-pkn">اخترت '+LB.sel.length+' من '+n+'</p>'+
+    '<div class="rowbtns"><button type="button" class="btn" data-lb="go" '+(ok?'':'disabled')+'>ثبّت البرنامج</button><button type="button" class="btn ghost" data-lb="pickx">إلغاء</button></div></section>';
+}
+function lbProgTab(){
+  var h="";
+  if(S.mine && S.mine.prog){
+    var cp=lbProg(S.mine.prog);
+    h+='<section class="card lb-act"><h2>برنامجك الحالي: '+esc(cp?cp.n:"برنامج جاهز")+'</h2><p class="sub">ظاهر في تاب «التمرين». تقدر تغيّره بأي برنامج تاني من تحت، أو ترجع لنظام كريم.</p><div class="rowbtns"><button type="button" class="btn ghost'+(LB.rm==="1"?' danger':'')+'" data-lb="reset">'+(LB.rm==="1"?'تأكيد الرجوع لبرنامج كريم؟':'ارجع لبرنامج كريم')+'</button></div></section>';
+  } else if(S.mine && S.mine.days){
+    h+='<section class="card lb-act"><h2>عندك برنامج خاص</h2><p class="sub">ده البرنامج اللي بنيته بنفسك. لو بدأت برنامج جاهز هيتبدّل مكانه.</p></section>';
+  } else {
+    h+='<section class="card lb-act"><h2>برنامجك الحالي: نظام كريم ('+(S.plan||3)+' أيام)</h2><p class="sub">اختار برنامج جاهز من تحت لو عايز تجرب حاجة تانية.</p></section>';
+  }
+  if(LB.pick) h+=lbPickCard();
+  var ks=!(S.mine&&S.mine.days), cpn=S.plan||3;
+  h+='<h3 class="lb-gh">برامج كريم (الثابتة)</h3><div class="lb-k4">'+[2,3,4,5].map(function(n){ var w=WPLAN[n], on=ks&&cpn===n; return '<button type="button" class="lb-kp" data-lb="kplan" data-n="'+n+'" aria-pressed="'+on+'"><b>'+n+' أيام'+(on?' ✓':'')+'</b><small>'+w[1]+'</small></button>'; }).join("")+'</div>';
+  h+='<h3 class="lb-gh">برامج جاهزة تانية</h3>'+PROGS.map(lbProgCard).join("");
+  return h;
+}
+
+/* ---- 1RM ---- */
+function lbE1(w,r){ if(!(w>0)||!(r>0)) return 0; if(r===1) return w; return w*(1+r/30); }
+function lbBrz(w,r){ if(!(w>0)||!(r>0)||r>10) return 0; return w*36/(37-r); }
+function lbRound(x){ return Math.round(x/2.5)*2.5; }
+function lbOrmOut(){
+  var w=parseFloat(String(LB.ow).replace(",",".")), r=parseInt(LB.or,10);
+  if(!(w>0)||!(r>0)) return '<p class="sub">دخّل الوزن وعدد التكرارات وهتشوف أقصى وزن تقدر ترفعه مرة واحدة.</p>';
+  if(r>20) return '<p class="sub">الحساب بيبقى دقيق لحد 10–12 تكرار. دخّل عدد تكرارات أقل من 20.</p>';
+  var e=lbE1(w,r), b=lbBrz(w,r), m=b?(e+b)/2:e;
+  var rows=[[95,2],[90,4],[85,6],[80,8],[75,10],[70,12],[65,15],[60,20]].map(function(x){ return '<tr><td dir="ltr">'+x[0]+'%</td><td dir="ltr"><b>'+lbRound(m*x[0]/100)+'</b> kg</td><td dir="ltr">≈ '+x[1]+'</td></tr>'; }).join("");
+  return '<div class="lb-big"><span>أقصى وزن تقديري (1RM)</span><b dir="ltr">'+Math.round(m*10)/10+' kg</b></div>'+
+    '<table class="lb-tb"><thead><tr><th>النسبة</th><th>الوزن</th><th>تكرارات تقريبية</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<p class="sub">ده تقدير مش قياس حقيقي. جرّب الأوزان بحذر ومعاك حد يأمّن عليك لو هتحاول ترفع الرقم الحقيقي.</p>';
+}
+function lbBest(id){
+  var best=null;
+  S.sessions.forEach(function(s){ if(s.sets&&s.sets[id]) s.sets[id].forEach(function(x){ var e=lbE1(x.w,x.r); if(x.w>0&&x.r>0&&x.r<=12&&(!best||e>best.e)) best={w:x.w,r:x.r,e:e}; }); });
+  return best;
+}
+function lbOrmCard(){
+  var ids=[]; Object.keys(LIB).forEach(function(k){ if(LIB[k].lo && lbBest(k)) ids.push(k); });
+  var sel=ids.length?'<label class="fld">من تمارينك المسجّلة<select id="lb-orsel"><option value="">اختار تمرين…</option>'+ids.map(function(k){ return '<option value="'+k+'">'+esc(peName(k))+'</option>'; }).join("")+'</select></label>':'';
+  return '<section class="card"><h2>حاسبة الـ 1RM</h2><p class="sub">أقصى وزن تقدر ترفعه مرة واحدة، من وزن وتكرارات عملتها.</p>'+sel+
+    '<div class="flds"><label class="fld">الوزن (kg)<input type="text" inputmode="decimal" id="lb-ow" value="'+esc(LB.ow)+'" placeholder="مثلًا 60"></label><label class="fld">التكرارات<input type="text" inputmode="numeric" id="lb-or" value="'+esc(LB.or)+'" placeholder="مثلًا 8"></label></div><div id="lb-orm">'+lbOrmOut()+'</div></section>';
+}
+
+/* ---- prayer times (Egyptian General Authority of Survey: Fajr 19.5, Isha 17.5, Asr standard) ---- */
+var LBCITY=[["القاهرة",30.0444,31.2357],["الجيزة",30.0131,31.2089],["الإسكندرية",31.2001,29.9187],["بورسعيد",31.2653,32.3019],["السويس",29.9668,32.5498],["الإسماعيلية",30.5965,32.2715],["دمياط",31.4165,31.8133],["المنصورة",31.0364,31.3807],["الزقازيق",30.5877,31.502],["طنطا",30.7865,31.0004],["شبين الكوم",30.5972,30.9876],["كفر الشيخ",31.1107,30.9388],["دمنهور",31.0409,30.4717],["الفيوم",29.3084,30.8428],["بني سويف",29.0661,31.0994],["المنيا",28.1099,30.7503],["أسيوط",27.1783,31.1859],["سوهاج",26.5591,31.6948],["قنا",26.1551,32.716],["الأقصر",25.6872,32.6396],["أسوان",24.0889,32.8998],["الغردقة",27.2579,33.8116],["شرم الشيخ",27.9158,34.33],["مرسى مطروح",31.3543,27.2373],["العريش",31.1316,33.7984]];
+function lbLoc(){ var l=S.prefs.loc; if(l && typeof l.lat==="number" && typeof l.lng==="number") return l; return {n:"القاهرة",lat:LBCITY[0][1],lng:LBCITY[0][2]}; }
+function lbPray(date,lat,lng){
+  var R=Math.PI/180, sin=function(x){ return Math.sin(x*R); }, cos=function(x){ return Math.cos(x*R); }, tan=function(x){ return Math.tan(x*R); };
+  var asin=function(x){ return Math.asin(x)/R; }, acos=function(x){ return Math.acos(x)/R; }, atan2=function(y,x){ return Math.atan2(y,x)/R; }, acot=function(x){ return Math.atan(1/x)/R; };
+  var fix=function(a,b){ a=a-b*Math.floor(a/b); return a<0?a+b:a; };
+  var y=date.getFullYear(), m=date.getMonth()+1, d=date.getDate(), tz=-date.getTimezoneOffset()/60;
+  var yy=y, mm=m; if(mm<=2){ yy-=1; mm+=12; }
+  var A=Math.floor(yy/100), B=2-A+Math.floor(A/4);
+  var jd=Math.floor(365.25*(yy+4716))+Math.floor(30.6001*(mm+1))+d+B-1524.5-lng/(15*24);
+  function sunPos(j){
+    var D=j-2451545.0, g=fix(357.529+0.98560028*D,360), q=fix(280.459+0.98564736*D,360), L=fix(q+1.915*sin(g)+0.020*sin(2*g),360), e=23.439-0.00000036*D;
+    var RA=fix(atan2(cos(e)*sin(L),cos(L))/15,24);
+    return {decl:asin(sin(e)*sin(L)),eqt:q/15-RA};
+  }
+  function noon(t){ return fix(12-sunPos(jd+t).eqt,24); }
+  function at(angle,t,ccw){ var dc=sunPos(jd+t).decl, v=(-sin(angle)-sin(dc)*sin(lat))/(cos(dc)*cos(lat)); if(v>1||v<-1) return NaN; var T=acos(v)/15; return noon(t)+(ccw?-T:T); }
+  function asr(t){ var dc=sunPos(jd+t).decl, ang=-acot(1+tan(Math.abs(lat-dc))); return at(ang,t,false); }
+  var out={fajr:at(19.5,5/24,true),sunrise:at(0.833,6/24,true),dhuhr:noon(13/24),asr:asr(15/24),maghrib:at(0.833,18/24,false),isha:at(17.5,18/24,false)};
+  Object.keys(out).forEach(function(k){ out[k]=fix(out[k]+tz-lng/15,24); });
+  return out;
+}
+function lbFmt(h){
+  if(isNaN(h)) return "—";
+  var t=Math.round(h*60), hh=Math.floor(t/60)%24, mi=t%60, ap=hh>=12?"م":"ص", h12=hh%12; if(h12===0) h12=12;
+  return h12+":"+("0"+mi).slice(-2)+" "+ap;
+}
+var LBPN=[["fajr","الفجر"],["sunrise","الشروق"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]];
+function lbNext(tm,now){
+  var cur=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600, list=LBPN.filter(function(x){ return x[0]!=="sunrise"; });
+  for(var i=0;i<list.length;i++){ if(tm[list[i][0]]>cur) return {k:list[i][0],n:list[i][1],mins:Math.round((tm[list[i][0]]-cur)*60)}; }
+  return {k:"fajr",n:"الفجر",mins:Math.round((tm.fajr+24-cur)*60)};
+}
+function lbLeft(m){ var h=Math.floor(m/60), mi=m%60; return h>0?(h+" ساعة و"+mi+" دقيقة"):(mi+" دقيقة"); }
+function lbFmt2(h){ var f=lbFmt(h).split(" "); return f; }
+function lbRerender(){ if(view==="ibd") renderIbd(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); }
+function lbPrayInner(){
+  var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), nx=lbNext(tm,now);
+  var five=[["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]];
+  return '<div class="lb-nx" id="lb-next">الصلاة الجاية: <b>'+nx.n+'</b> بعد '+lbLeft(nx.mins)+'</div>'+
+    '<div class="lb-c5">'+five.map(function(x){ var f=lbFmt2(tm[x[0]]); return '<div'+(x[0]===nx.k?' class="on"':'')+'><span>'+x[1]+'</span><b dir="ltr">'+f[0]+'</b><i>'+f[1]+'</i></div>'; }).join("")+'</div>'+
+    '<div class="lb-sr">الشروق '+lbFmt(tm.sunrise)+'</div>';
+}
+function lbPrayB(){
+  var L=lbLoc();
+  var opts=LBCITY.map(function(c){ return '<option value="'+c[1]+','+c[2]+'|'+c[0]+'"'+(c[0]===L.n?' selected':'')+'>'+c[0]+'</option>'; }).join("");
+  if(!LBCITY.some(function(c){ return c[0]===L.n; })) opts='<option value="'+L.lat+','+L.lng+'|'+esc(L.n)+'" selected>'+esc(L.n)+'</option>'+opts;
+  return '<section class="card lb-pr"><div class="lb-prh"><h2>مواقيت الصلاة <small>· '+esc(L.n)+'</small></h2></div><div id="lb-pray">'+lbPrayInner()+'</div>'+
+    '<details class="lb-loc"><summary>غيّر المدينة أو الموقع</summary><div class="flds"><label class="fld">المدينة<select id="lb-city">'+opts+'</select></label><div class="fld"><span>أو</span><button type="button" class="btn ghost lb-geo" data-lb="geo">استخدم موقعي</button></div></div><p class="sub" id="lb-pm">'+esc(LB.pm)+'</p></details>'+
+    '<p class="sub">بتتحسب على موبايلك من غير نت وبتتجدد لوحدها كل يوم، بطريقة الهيئة المصرية العامة للمساحة. ممكن تختلف دقيقة عن تقويم مسجدك.</p></section>';
+}
+
+/* ---- Qibla ---- */
+function lbQibla(lat,lng){
+  var R=Math.PI/180, p1=lat*R, p2=21.4225241*R, dl=(39.8261818-lng)*R;
+  var y=Math.sin(dl)*Math.cos(p2), x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
+  return (Math.atan2(y,x)/R+360)%360;
+}
+function lbDial(q){
+  var t="", i, a, r=Math.PI/180;
+  for(i=0;i<360;i+=10){ var big=i%90===0, l=big?14:(i%30===0?9:5), x1=110+Math.sin(i*r)*92, y1=110-Math.cos(i*r)*92, x2=110+Math.sin(i*r)*(92-l), y2=110-Math.cos(i*r)*(92-l); t+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" class="lb-tk'+(big?' b':'')+'"/>'; }
+  var lt=[["N",0],["E",90],["S",180],["W",270]].map(function(x){ var xx=110+Math.sin(x[1]*r)*68, yy=110-Math.cos(x[1]*r)*68; return '<text x="'+xx.toFixed(1)+'" y="'+(yy+5).toFixed(1)+'" text-anchor="middle" class="lb-cl'+(x[0]==="N"?' n':'')+'">'+x[0]+'</text>'; }).join("");
+  var kaaba='<g transform="rotate('+q.toFixed(1)+' 110 110)"><g transform="rotate('+(-q).toFixed(1)+' 110 22)"><rect x="98" y="10" width="24" height="24" rx="3" class="lb-kb"/><rect x="98" y="16" width="24" height="4" class="lb-kg"/><rect x="106" y="22" width="6" height="12" rx="1" class="lb-kd"/></g></g>';
+  return '<g id="lb-dial" style="transform-origin:110px 110px">'+t+lt+kaaba+'</g>';
+}
+function lbQibCard(){
+  var L=lbLoc(), q=lbQibla(L.lat,L.lng);
+  return '<section class="card lb-qb"><h2>اتجاه القبلة</h2><p class="sub">من «'+esc(L.n)+'»: <b dir="ltr">'+Math.round(q)+'°</b> من الشمال ناحية الشرق.</p>'+
+    '<div class="lb-comp" id="lb-comp" data-q="'+q.toFixed(2)+'"><svg viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" class="lb-cr"/>'+lbDial(q)+'<path d="M110 2 L120 22 L100 22 Z" class="lb-mk"/></svg></div>'+
+    '<p class="lb-qm" id="lb-qm">'+(LB.qon?esc(LB.qmsg):'شغّل البوصلة، ولف موبايلك لحد ما 🕋 يبقى فوق عند السهم.')+'</p>'+
+    '<div class="rowbtns"><button type="button" class="btn" data-lb="qon">'+(LB.qon?'البوصلة شغّالة':'شغّل البوصلة')+'</button></div>'+
+    '<p class="sub">البوصلة بتعتمد على حساسات الموبايل. ابعد عن المعادن والمغناطيس، ولو مش ثابتة حرّك الموبايل على شكل 8.</p></section>';
+}
+
+function lbQibB(){
+  var L=lbLoc(), q=lbQibla(L.lat,L.lng);
+  return '<button type="button" class="ib-row" data-lb="qopen"><span class="ib-ic">🧭</span><span class="ib-tx"><b>اتجاه القبلة</b><small>'+Math.round(q)+'° من الشمال · بوصلة</small></span><span class="ib-ch">‹</span></button>';
+}
+function renderQib(){
+  $("app").innerHTML='<div class="fx ib"><div class="ad-top"><button type="button" class="sm-gh" data-lb="qback">رجوع</button><h2>اتجاه القبلة</h2></div>'+lbQibCard()+'</div>';
+}
+function lbQibPaint(){
+  var c=$("lb-comp"), d=$("lb-dial"); if(!c||!d) return;
+  var q=parseFloat(c.getAttribute("data-q")), h=LB.qh;
+  if(h==null){ d.style.transform="rotate(0deg)"; return; }
+  d.style.transform="rotate("+(-h).toFixed(1)+"deg)";
+  var diff=Math.abs(((q-h+540)%360)-180);
+  var m=$("lb-qm"); LB.qmsg=diff<6?"✓ انت دلوقتي في اتجاه القبلة.":"لف الموبايل لحد ما 🕋 يبقى فوق عند السهم.";
+  if(m) m.textContent=LB.qmsg;
+  c.classList.toggle("ok",diff<6);
+}
+function lbQibEv(e){
+  if(!$("lb-comp")){ lbQibStop(); return; }
+  var h=null;
+  if(typeof e.webkitCompassHeading==="number" && !isNaN(e.webkitCompassHeading)) h=e.webkitCompassHeading;
+  else if((e.absolute||e.type==="deviceorientationabsolute") && e.alpha!=null) h=(360-e.alpha)%360;
+  if(h==null) return;
+  LB.qh=h; lbQibPaint();
+}
+function lbQibStop(){ window.removeEventListener("deviceorientationabsolute",lbQibEv,true); window.removeEventListener("deviceorientation",lbQibEv,true); LB.qon=false; LB.qh=null; }
+function lbQibStart(){
+  var go=function(){ lbQibStop(); window.addEventListener("deviceorientationabsolute",lbQibEv,true); window.addEventListener("deviceorientation",lbQibEv,true); LB.qon=true; LB.qmsg="لف الموبايل لحد ما 🕋 يبقى فوق عند السهم."; lbRerender(); };
+  var msg=function(t){ var m=$("lb-qm"); if(m) m.textContent=t; };
+  try{
+    if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission==="function"){
+      DeviceOrientationEvent.requestPermission().then(function(r){ if(r==="granted") go(); else { LB.qon=false; msg("مفيش إذن للحساسات. اتحكم فيه من إعدادات المتصفح."); } },function(){ msg("الجهاز مش بيدعم البوصلة."); });
+    } else if(window.DeviceOrientationEvent) go();
+    else msg("الجهاز مش بيدعم البوصلة. استخدم الدرجة المكتوبة فوق.");
+  }catch(e){ msg("الجهاز مش بيدعم البوصلة."); }
+}
+
+function lbToolTab(){ return lbOrmCard(); }
+function lbPrayStrip(){
+  var L=lbLoc(), now=new Date(), nx=lbNext(lbPray(now,L.lat,L.lng),now);
+  return '<button type="button" class="lb-strip" data-act="view" data-v="ibd" aria-label="مواقيت الصلاة"><span>🕌 <b id="lb-snx">'+nx.n+'</b> بعد <b id="lb-sin">'+lbLeft(nx.mins)+'</b></span><span class="lb-sg">المواقيت والقبلة ‹</span></button>';
+}
+
+/* ---- muscle progress ---- */
+function lbWeeks(n){ var ws=weekStartKey(todayKey()), out=[]; for(var i=n-1;i>=0;i--) out.push(addD(ws,-7*i)); return out; }
+function lbMuscle(){
+  var wk=lbWeeks(4), M={};
+  S.sessions.forEach(function(s){
+    if(!s.sets) return; var w=weekStartKey(s.date), wi=wk.indexOf(w);
+    Object.keys(s.sets).forEach(function(id){
+      var e=LIB[id]; if(!e||!e.m) return; var n=s.sets[id].length;
+      e.m.forEach(function(k){ var o=M[k]=M[k]||{k:k,w:[0,0,0,0],tot:0,ex:{}}; if(wi>=0) o.w[wi]+=n; o.tot+=n; (o.ex[id]=o.ex[id]||[]).push(s); });
+    });
+  });
+  return Object.keys(M).map(function(k){ return M[k]; }).sort(function(a,b){ return (b.w[3]*100+b.tot)-(a.w[3]*100+a.tot); });
+}
+function lbGain(o){
+  var best=null;
+  Object.keys(o.ex).forEach(function(id){
+    var pts=[]; o.ex[id].slice().sort(function(a,b){ return a.date<b.date?-1:1; }).forEach(function(s){ var mx=0; (s.sets[id]||[]).forEach(function(x){ if(x.w>mx) mx=x.w; }); if(mx>0) pts.push(mx); });
+    if(pts.length>=2){ var g=pts[pts.length-1]-pts[0]; if(!best||Math.abs(g)>Math.abs(best.g)) best={id:id,a:pts[0],b:pts[pts.length-1],g:g}; }
+  });
+  return best;
+}
+function lbMuscTab(){
+  var L=lbMuscle(); if(!L.length) return '<section class="card"><h2>تطور العضلات</h2><div class="empty">سجّل كام تمرين وهتشوف هنا كل عضلة اشتغلت قد إيه وأوزانها بتتحسن إزاي.</div></section>';
+  var wk=lbWeeks(4), lbls=wk.map(function(k){ return sd(k); });
+  return '<section class="card"><h2>تطور العضلات</h2><p class="sub">عدد المجموعات الأسبوعية لكل عضلة في آخر 4 أسابيع (الأخير = الأسبوع الحالي).</p></section>'+L.map(function(o){
+    var mx=Math.max.apply(null,o.w.concat([1])), g=lbGain(o), thumb="assets/anatomy/combo/"+o.k+".webp";
+    var bars=o.w.map(function(v,i){ return '<i style="height:'+Math.max(8,Math.round(v/mx*100))+'%" title="'+lbls[i]+'"><b>'+v+'</b></i>'; }).join("");
+    return '<section class="card lb-mu"><div class="lb-mh"><span class="lb-mt"><img src="'+thumb+'" alt="" loading="lazy" onerror="this.parentNode.style.display=\'none\'"></span><div><h2>'+MN[o.k]+'</h2><p class="sub">الأسبوع ده: <b>'+o.w[3]+'</b> مجموعة · الإجمالي: <b>'+o.tot+'</b></p></div></div><div class="lb-bars" aria-label="مجموعات آخر 4 أسابيع">'+bars+'</div>'+
+      (g?'<p class="sub">أكتر تقدم: <b>'+esc(peName(g.id))+'</b> <span dir="ltr">'+g.a+' → '+g.b+' kg</span> '+(g.g>0?'<span class="lb-up">▲ '+r1(g.g)+'</span>':(g.g<0?'<span class="lb-dn">▼ '+r1(-g.g)+'</span>':'<span>ثابت</span>'))+'</p>':'<p class="sub">سجّل التمرين ده بأوزان مرتين وهتشوف التقدم.</p>')+'</section>';
+  }).join("");
+}
+
+/* ---- report (print / save as PDF) ---- */
+function lbReportHtml(){
+  var P=S.profile||{}, nm=(P.name||"").trim()||"متدرب", tk=todayKey(), GL={gain:"زيادة وزن",cut:"تنشيف"}, goal=GL[P.goal]||"تثبيت";
+  var ses=S.sessions.filter(function(s){ return s.sets && Object.keys(s.sets).length; }), first=ses.length?ses[ses.length-1].date:null;
+  var wks=first?Math.max(1,Math.round(diffD(tk,first)/7)):0, last28=ses.filter(function(s){ return diffD(tk,s.date)<28; }).length;
+  var h='<div class="rp-h"><h1>تقرير تمرين — '+esc(nm)+'</h1><p>'+fmtDate(tk)+' · الهدف: '+goal+'</p></div>';
+  h+='<div class="rp-k"><div><b>'+ses.length+'</b><span>جلسة تمرين</span></div><div><b>'+last28+'</b><span>آخر 4 أسابيع</span></div><div><b>'+(wks?r1(ses.length/wks):0)+'</b><span>جلسة/أسبوع</span></div></div>';
+  var wk=Object.keys(S.weights||{}).sort();
+  if(wk.length){ var a=wk[0], b=wk[wk.length-1], d=r1(S.weights[b]-S.weights[a]); h+='<h2>الوزن</h2><p>من '+S.weights[a]+' كجم ('+fmtDate(a)+') إلى '+S.weights[b]+' كجم ('+fmtDate(b)+') · التغيّر: <b dir="ltr">'+(d>0?"+":"")+d+' كجم</b></p>'; }
+  var ms=S.meas||[];
+  if(ms.length){
+    var f0=ms[0], l0=ms[ms.length-1];
+    h+='<h2>القياسات (سم)</h2><table><thead><tr><th>القياس</th><th>أول قياس</th><th>آخر قياس</th><th>الفرق</th></tr></thead><tbody>'+BDM.map(function(m){ var a1=f0[m[0]], b1=l0[m[0]]; if(a1==null&&b1==null) return ""; var d1=(a1!=null&&b1!=null&&ms.length>1)?r1(b1-a1):null; return '<tr><td>'+m[1]+'</td><td dir="ltr">'+(a1==null?"–":a1)+'</td><td dir="ltr">'+(b1==null?"–":b1)+'</td><td dir="ltr">'+(d1===null?"–":(d1>0?"+":"")+d1)+'</td></tr>'; }).join("")+'</tbody></table>';
+  }
+  var lifts=[]; Object.keys(LIB).forEach(function(k){ if(LIB[k].lo){ var bb=lbBest(k); if(bb) lifts.push({id:k,b:bb}); } });
+  lifts.sort(function(x,y){ return y.b.e-x.b.e; });
+  if(lifts.length) h+='<h2>أقوى الأوزان</h2><table><thead><tr><th>التمرين</th><th>أفضل مجموعة</th><th>1RM تقديري</th></tr></thead><tbody>'+lifts.slice(0,8).map(function(x){ return '<tr><td>'+esc(peName(x.id))+'</td><td dir="ltr">'+x.b.w+' kg × '+x.b.r+'</td><td dir="ltr">'+Math.round(x.b.e)+' kg</td></tr>'; }).join("")+'</tbody></table>';
+  var mu=lbMuscle();
+  if(mu.length) h+='<h2>مجموعات العضلات الأسبوعية</h2><table><thead><tr><th>العضلة</th><th>الأسبوع الحالي</th><th>متوسط 4 أسابيع</th></tr></thead><tbody>'+mu.map(function(o){ return '<tr><td>'+MN[o.k]+'</td><td dir="ltr">'+o.w[3]+'</td><td dir="ltr">'+r1((o.w[0]+o.w[1]+o.w[2]+o.w[3])/4)+'</td></tr>'; }).join("")+'</tbody></table>';
+  if(ses.length) h+='<h2>آخر الجلسات</h2>'+ses.slice(0,6).map(function(s){ var day=dayOf(s.day), nmd=day?day.name:s.day; return '<div class="rp-s"><b>'+esc(nmd)+' — '+fmtDate(s.date)+'</b><div>'+Object.keys(s.sets).map(function(id){ return esc(peName(id))+': <span dir="ltr">'+s.sets[id].map(function(x){ return (x.w||0)+'×'+(x.r||0); }).join(" · ")+'</span>'; }).join("<br>")+'</div></div>'; }).join("");
+  h+='<p class="rp-f">تقرير من تطبيق Kareem Fit · للمتابعة وليس بديلًا عن استشارة الطبيب.</p>';
+  return h;
+}
+function lbRepTab(){
+  return '<section class="card"><h2>تقرير PDF</h2><p class="sub">ملخص فيه وزنك وقياساتك وأقوى أوزانك وعضلاتك وآخر جلساتك. تقدر تبعته لمدرب أو دكتور. اضغط «جهّز التقرير» وبعدها «اطبع / احفظ PDF» واختار «حفظ كـ PDF».</p><div class="rowbtns"><button type="button" class="btn" data-lb="rep">جهّز التقرير</button></div></section>';
+}
+function lbRepOpen(){
+  lbRepClose();
+  var o=document.createElement("div"); o.id="lb-rp"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true");
+  o.innerHTML='<div class="rp-bar"><button type="button" class="btn" data-lb="print">اطبع / احفظ PDF</button><button type="button" class="btn ghost" data-lb="repx">إغلاق</button></div><div class="rp-p" id="lb-rpp">'+lbReportHtml()+'</div>';
+  document.body.appendChild(o); document.body.style.overflow="hidden";
+}
+function lbRepClose(){ var o=$("lb-rp"); if(o) o.remove(); document.body.style.overflow=""; }
+
+/* ---- view ---- */
+function renderLab(){
+  var t=lbTab();
+  var tabs='<div class="seg2 four" role="tablist">'+LBTABS.map(function(x){ return '<button type="button" data-lb="tab" data-v="'+x[0]+'" aria-pressed="'+(x[0]===t)+'">'+x[1]+'</button>'; }).join("")+'</div>';
+  var body=t==="tool"?lbToolTab():(t==="musc"?lbMuscTab():(t==="rep"?lbRepTab():lbProgTab()));
+  $("app").innerHTML='<div class="lb">'+tabs+body+'</div>';
+  if(t!=="tool" && LB.qon) lbQibStop();
+}
+function lbHomeCard(){
+  return '<section class="card lb-home"><h2>برامج وأدوات</h2><p class="sub">برامج جاهزة (بيت · علوي/سفلي · Push/Pull/Legs)، حاسبة 1RM، مواقيت الصلاة والقبلة، تطور العضلات، وتقرير PDF.</p><button type="button" class="btn" data-act="view" data-v="lab">افتح</button></section>';
+}
+function lbStart(){
+  var p=lbProg(LB.pick); if(!p||LB.sel.length!==p.days.length) return;
+  var days=[], k=0;
+  for(var i=0;i<7;i++){
+    if(LB.sel.indexOf(WDS[i][1])>=0 && k<p.days.length){ var D=p.days[k++]; days.push({rest:false,name:D[0],ex:D[1].map(function(x){ return {id:x[0],s:x[1]}; })}); }
+    else days.push({rest:true});
+  }
+  S.mine={days:days,lib:{},prog:p.id}; LB.pick=null; LB.open=null;
+  initDay(); rebuildMap(); persist(); view="train"; renderAll(); window.scrollTo(0,0); toast("اتثبّت برنامج «"+p.n+"»");
+}
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest&&ev.target.closest("[data-lb]"); if(!b) return;
+  var a=b.getAttribute("data-lb");
+  if(a==="tab"){ S.prefs.lb=b.getAttribute("data-v"); persist(); renderLab(); window.scrollTo(0,0); }
+  else if(a==="open"){ var id=b.getAttribute("data-id"); LB.open=(LB.open===id?null:id); renderLab(); }
+  else if(a==="pick"){ var p=lbProg(b.getAttribute("data-id")); LB.pick=p.id; LB.sel=lbDefDays(p.days.length).slice(); LB.rm=""; renderLab(); var el=document.querySelector(".lb-pk"); if(el) el.scrollIntoView({block:"start"}); }
+  else if(a==="pickx"){ LB.pick=null; renderLab(); }
+  else if(a==="dow"){ var d=+b.getAttribute("data-d"), i=LB.sel.indexOf(d), p2=lbProg(LB.pick); if(i>=0) LB.sel.splice(i,1); else if(LB.sel.length<p2.days.length) LB.sel.push(d); else toast("اخترت "+p2.days.length+" أيام بالفعل"); renderLab(); }
+  else if(a==="go"){ lbStart(); }
+  else if(a==="kplan"){ var np=+b.getAttribute("data-n"); S.plan=np; S.mine=null; LB.pick=null; initDay(); rebuildMap(); persist(); renderAll(); toast("اتثبّت نظام كريم: "+WPLAN[np][0]+" في الأسبوع"); }
+  else if(a==="reset"){ if(LB.rm!=="1"){ LB.rm="1"; renderLab(); return; } LB.rm=""; S.mine=null; initDay(); rebuildMap(); persist(); renderAll(); toast("رجع برنامج كريم"); }
+  else if(a==="geo"){
+    if(!navigator.geolocation){ LB.pm="المتصفح مش بيدعم تحديد الموقع. اختار مدينتك من القايمة."; var m0=$("lb-pm"); if(m0) m0.textContent=LB.pm; return; }
+    LB.pm="بدوّر على موقعك…"; var m1=$("lb-pm"); if(m1) m1.textContent=LB.pm;
+    navigator.geolocation.getCurrentPosition(function(pos){ S.prefs.loc={n:"موقعي",lat:Math.round(pos.coords.latitude*1e4)/1e4,lng:Math.round(pos.coords.longitude*1e4)/1e4}; persist(); LB.pm="اتحدد موقعك."; lbRerender(); },function(){ LB.pm="مقدرتش أحدد موقعك. اختار مدينتك من القايمة."; var m2=$("lb-pm"); if(m2) m2.textContent=LB.pm; },{timeout:10000,maximumAge:600000});
+  }
+  else if(a==="qon"){ lbQibStart(); }
+  else if(a==="qopen"){ view="qib"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="qback"){ lbQibStop(); view="ibd"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="rep"){ lbRepOpen(); }
+  else if(a==="repx"){ lbRepClose(); }
+  else if(a==="print"){ window.print(); }
+});
+document.addEventListener("input",function(ev){
+  var t=ev.target; if(!t) return;
+  if(t.id==="lb-ow"||t.id==="lb-or"){ if(t.id==="lb-ow") LB.ow=t.value; else LB.or=t.value; var o=$("lb-orm"); if(o) o.innerHTML=lbOrmOut(); }
+});
+document.addEventListener("change",function(ev){
+  var t=ev.target; if(!t) return;
+  if(t.id==="lb-city"){ var v=t.value.split("|"), ll=v[0].split(","); S.prefs.loc={n:v[1],lat:+ll[0],lng:+ll[1]}; persist(); LB.pm=""; lbRerender(); }
+  else if(t.id==="lb-orsel"){ var bb=t.value?lbBest(t.value):null; if(bb){ LB.ow=String(bb.w); LB.or=String(bb.r); renderLab(); } }
+});
+document.addEventListener("keydown",function(ev){ if(ev.key==="Escape" && $("lb-rp")) lbRepClose(); });
+setInterval(function(){
+  var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), nx=lbNext(tm,now);
+  var box=$("lb-pray"); if(box && !(document.querySelector("#lb-pray")&&document.querySelector(".lb-loc[open]"))) box.innerHTML=lbPrayInner();
+  var a=$("lb-snx"), b=$("lb-sin"); if(a) a.textContent=nx.n; if(b) b.textContent=lbLeft(nx.mins);
+},30000);
+
+function lbSince(){
+  var ms=S.meas||[]; if(ms.length<2) return "";
+  var f0=ms[0], l0=ms[ms.length-1], parts=[];
+  BDM.forEach(function(m){ var a=f0[m[0]], b=l0[m[0]]; if(a!=null&&b!=null){ var d=r1(b-a); parts.push(m[1]+' <b dir="ltr">'+(d>0?"+":"")+d+'</b>'); } });
+  if(!parts.length) return "";
+  return '<p class="sub">من أول قياس ('+sd(f0.date)+'): '+parts.join(" · ")+' سم</p>';
+}
+
 renderAll();
 initCloud();
 })();
@@ -7206,10 +7667,11 @@ if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch
     body:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 3 8-9"/><path d="M15 6h5v5"/></svg>',
     set:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6"/></svg>',
     ibd:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M12 7v4M10 9h4"/></svg>',
-    share:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.3 10.8l7.4-3.6M8.3 13.2l7.4 3.6"/></svg>'
+    share:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.3 10.8l7.4-3.6M8.3 13.2l7.4 3.6"/></svg>',
+    lab:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8v8M7 6v12M17 6v12M20 8v8M7 12h10"/></svg>'
   };
   var main=[["home","vh","الرئيسية"],["today","vo","اليوم"],["train","vt","التمرين"],["food","vf","الأكل"]];
-  var more=[["comm","vc","المجتمع"],["ibd","vi","القرآن والعبادات"],["log","vl","السجل"],["body","vb","الجسم"],["share","vs","الملخص"],["set","vx","الإعدادات"]];
+  var more=[["comm","vc","المجتمع"],["ibd","vi","القرآن والعبادات"],["log","vl","السجل"],["body","vb","الجسم"],["lab","vlb","برامج وأدوات"],["share","vs","الملخص"],["set","vx","الإعدادات"]];
   var themes=[["classic","كلاسيك","#08202F"],["modern","عصري","#0F172A"],["light","فاتح","#F1F5F9"],["black","أسود","#000000"],["calm","هادي","#FAF5FF"]];
   var nav=document.getElementById("v3nav"), sh=document.getElementById("v3sheet"), box=sh.firstElementChild;
   nav.innerHTML=main.map(function(m){return '<button type="button" data-v3="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join("")+'<button type="button" data-v3="more">'+I.more+'<span>المزيد</span></button>';
@@ -7234,7 +7696,7 @@ if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch
   document.addEventListener("focusin",function(e){ if(isText(e.target)) nav.classList.add("kb"); });
   document.addEventListener("focusout",function(){ setTimeout(function(){ if(!isText(document.activeElement)) nav.classList.remove("kb"); },50); });
   function sync(){
-    var cur=""; ["vh","vo","vt","vl","vb","vf","vs","vc","vi","vx"].forEach(function(id){ var b=document.getElementById(id); if(b && b.getAttribute("aria-pressed")==="true") cur=id; });
+    var cur=""; ["vh","vo","vt","vl","vb","vf","vs","vc","vi","vlb","vx"].forEach(function(id){ var b=document.getElementById(id); if(b && b.getAttribute("aria-pressed")==="true") cur=id; });
     var inMore=more.some(function(m){return m[1]===cur;});
     Array.prototype.forEach.call(nav.querySelectorAll("button"),function(b){ var v=b.getAttribute("data-v3"); var on=v==="more"?inMore:v===cur; if(on) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
     Array.prototype.forEach.call(box.querySelectorAll(".it"),function(b){ if(b.getAttribute("data-v3s")===cur) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
