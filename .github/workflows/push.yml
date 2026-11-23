@@ -1,0 +1,17 @@
+name: push-notifications
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: cd push && npm install firebase-admin@12 --no-audit --no-fund
+      - run: node push/send.js
+        env:
+          FCM_KEY: ${{ secrets.FCM_KEY }}
