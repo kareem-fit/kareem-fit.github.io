@@ -5837,7 +5837,7 @@ function renderTrn(){
 /* ===== الإشعارات ===== */
 function pushPrefs(){ if(!S.prefs.push) S.prefs.push={on:false,m:true,e:true,w:true,q:true}; return S.prefs.push; }
 function pushLoad(){ return new Promise(function(res,rej){ if(window.firebase&&firebase.messaging) return res(); var sc=document.createElement("script"); sc.src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"; sc.onload=function(){res();}; sc.onerror=function(){rej(new Error("load"));}; document.head.appendChild(sc); }); }
-var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تذكير التمرين بعد العصر"],["r","تذكير تاني بالليل + حماية السلسلة"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["g","قرب انتهاء اشتراك الجيم"],["h","تحفيز كل ساعتين (اختياري)"]];
+var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
 function pushSync(){
   var p=pushPrefs(), u=cmUser(); if(!p.on||!p.tok||!u||!KS.fs) return;
   var rest=[]; for(var d=0;d<7;d++){ var it=null; for(var i=0;i<DAYS.length;i++){ if(DAYS[i].dow===d) it=DAYS[i]; } rest.push(!it||!!it.rest); }
@@ -5867,12 +5867,16 @@ function pushEnable(){
   }).catch(function(e){ if(e!==0) pushFail("طلب الإذن",e); });
 }
 function pushCard(){
-  var p=pushPrefs(), t=function(k,n){ var on=(k==="h")?(p.h===true):(p[k]!==false); return '<button type="button" class="sm-gh wide" data-act="pushk" data-k="'+k+'" role="switch" aria-checked="'+on+'"><span>'+(on?'شغّال ✓':'مقفول')+'</span>'+n+'</button>'; };
+  var p=pushPrefs(), css='<style>.pch{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.pch button{font:inherit;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid rgba(128,128,128,.45);background:transparent;color:inherit;opacity:.65;cursor:pointer}.pch button[aria-pressed=true]{opacity:1;border-color:#FF7A3F;background:rgba(255,122,63,.16)}.psol{margin:8px 0;font-size:13px;line-height:1.9}.psol summary{cursor:pointer;font-weight:700}.psol b{font-weight:700}</style>';
   var den=("Notification" in window)&&Notification.permission==="denied";
-  var help=den?'<p class="sub" style="color:#ff8a8a">الإشعارات متقفلة للتطبيق ده في الموبايل. افتح <b>كروم</b> ← النقط التلاتة ← <b>الإعدادات</b> ← <b>إعدادات المواقع</b> ← <b>الإشعارات</b> ← دوّر على <b dir="ltr">kareem-fit.github.io</b> وخليه <b>سماح</b>. بعدها ارجع هنا وادوس الزرار تاني.</p>':'';
-  if(PUSHERR) help+='<p class="sub" dir="auto" style="color:#ffb86b">'+esc(PUSHERR)+'</p>';
-  if(!p.on) return '<section class="fx-card">'+stHead(SETI.palette,"الإشعارات")+help+'<p class="sub">تفكير بالأذكار والتمرين، وتشجيع لما تحتاجه، وتنبيه بالرقم القياسي واشتراك الجيم. تقدر تقفل أي نوع.</p><button type="button" class="btn" data-act="pushon">فعّل الإشعارات</button></section>';
-  return '<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+PUSHK.map(function(k){ return t(k[0],k[1]); }).join("")+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
+  var sol='<details class="psol"'+((den||PUSHERR)?' open':'')+'><summary>الإشعارات مش شغّالة؟ حلول</summary>'+
+   (PUSHERR?'<p dir="auto" style="color:#ffb86b">'+esc(PUSHERR)+'</p>':'')+
+   '<p><b>أندرويد:</b></p><ol><li>افتح التطبيق من الأيقونة واقفل أي وضع توفير بطارية.</li><li>إعدادات الموبايل ← التطبيقات ← <b>Kareem Fit</b> ← الإشعارات ← شغّلها.</li><li>كروم ← النقط التلاتة ← الإعدادات ← إعدادات المواقع ← الإشعارات ← <span dir="ltr">kareem-fit.github.io</span> ← سماح (أو إعادة ضبط الأذونات).</li><li>اقفل التطبيق من التطبيقات الأخيرة وافتحه تاني وجرّب.</li><li>لو فضل: امسح التطبيق من الشاشة الرئيسية وضيفه تاني من كروم.</li></ol>'+
+   '<p><b>أيفون (iOS 16.4 أو أحدث):</b></p><ol><li>لازم تفتح من سفاري ← مشاركة ← <b>إضافة إلى الشاشة الرئيسية</b>.</li><li>افتح التطبيق من الأيقونة الجديدة (مش من سفاري) وادوس تفعيل.</li><li>لو رفضت: إعدادات الأيفون ← الإشعارات ← Kareem-Fit ← السماح.</li></ol>'+
+   '<p><b>لو فيه سبب برتقالي فوق:</b> اتأكد إن النت شغّال وما فيش حاجب إعلانات أو DNS خاص بيمنع جوجل، وبعدين جرّب تاني.</p></details>';
+  if(!p.on) return css+'<section class="fx-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">تذكير بالأذكار والتمرين، وتشجيع، وتنبيه بالرقم القياسي واشتراك الجيم. تقدر تقفل أي نوع.</p><button type="button" class="btn" data-act="pushon">فعّل الإشعارات</button>'+sol+'</section>';
+  var n=PUSHK.filter(function(k){ return k[0]==="h"?p.h===true:p[k[0]]!==false; }).length;
+  return css+'<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">شغّالة ✓ ('+n+' من '+PUSHK.length+') · دوس على النوع علشان تقفله أو تفتحه</p><div class="pch">'+PUSHK.map(function(k){ var on=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); return '<button type="button" data-act="pushk" data-k="'+k[0]+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+k[1]+'</button>'; }).join("")+'</div>'+sol+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
 }
 function pushOff(){ var p=pushPrefs(), u=cmUser(); p.on=false; p.tok=""; persist(); if(u&&KS.fs) KS.fs.collection("push").doc(u.uid).set({tok:"",upd:Date.now()},{merge:true}).catch(function(){}); renderAll(); }
 setInterval(pushSync,60000); document.addEventListener("visibilitychange",function(){ if(!document.hidden) pushSync(); });
