@@ -1,20 +1,32 @@
 // يشتغل على GitHub Actions كل ٣٠ دقيقة ويبعت الإشعارات اللي وقتها جه.
-const KINDS=[
- {k:"m",h:7,  title:"☀️ أذكار الصباح",  body:n=>"ما تنساش أذكار الصباح"+n+"، دقيقتين وتخلّصها."},
- {k:"q",h:12.5,title:"💬 رسالة اليوم",   body:(n,day)=>QUOTES[day%QUOTES.length]},
- {k:"w",h:16.5,title:"🏋️ هتنزل الجيم إمتى؟",body:n=>"تمرين النهارده مستنيك"+n+". ابدأ قبل ما اليوم يخلص 💪"},
- {k:"e",h:18.5,title:"🌙 أذكار المساء",  body:n=>"أذكار المساء"+n+"، ما تنساهاش."}
-];
 const QUOTES=["لو عرفت تعملها مرة، تقدر تعملها ألف مرة.", "الأعذار مبتبنيش عضلات.. بس أول خطوة بتبني.", "لو أنا قدرت أعدي الصعب وأوصل، إنت كمان تقدر.", "أنا بدأت لوحدي وإنت معاك الدفتر ده، يلا نكسر الدنيا.", "كل بطل بتشوفه دلوقتي بدأ بيوم واحد وتمرين واحد، الدور عليك.", "يوم واحد بس. النهارده. وبعدين نشوف.", "الإحماء هو أول انتصار، ابدأ بيه.", "ابدأ ولو بتمرين واحد.. دايمًا بتكمل أكتر مما فكرت.", "ماتستناش الحافز.. ابدأ والحافز هيلحقك.", "لو خايف تبدأ، ابدأ وإنت خايف.", "ابدأ بالصغير، الكبير بييجي لوحده.", "مفيش حد بيبدأ جاهز، الكل بيبدأ وبيتعلم.", "الشنطة جاهزة؟ يبقى نص الطريق خلص.", "خمس دقايق إحماء بس، وبعدها شوف هتكمل ولا لأ.", "مش محتاج خطة مثالية، محتاج أول مجموعة.", "النهارده تمرين عادي، والعادي ده اللي بيصنع الأبطال.", "أصعب جزء هو أول أسبوع، وبعده الطريق بيتمهّد.", "ابدأ بالمجموعة الأولى وسيب الباقي للحماس اللي هييجي.", "مش لازم يومك يبقى فاضي عشان تهتم بنفسك.. ابدأ بالوقت اللي تقدر عليه.", "بلاش تفاوض نفسك طول اليوم.. اختار معادك، ولما ييجي ابدأ.", "بدل ما تستنى مزاجك يتظبط، اعمل حاجة صغيرة تظبط بيها يومك.", "مش كل حاجة محتاجة حماس.. ساعات محتاجة قرار صغير وتنفيذه.", "خلي هدفك النهارده إنك تخلص اللي اتفقت عليه مع نفسك، حتى لو كان بسيط."];
+const DAYMS=86400000;
+const diff=(a,b)=>Math.round((Date.parse(a+"T00:00:00Z")-Date.parse(b+"T00:00:00Z"))/DAYMS);
+// كل نوع: k=المفتاح، t=ساعة البداية (بالدقايق)، len=مدة الشباك، ok=شرط إضافي، key=مفتاح منع التكرار، body
+const KINDS=[
+ {k:"m",t:420, title:"☀️ أذكار الصباح", body:c=>"ما تنساش أذكار الصباح"+c.nm+"، دقيقتين وتخلّصها."},
+ {k:"a",t:600, title:"👋 وحشتنا", ok:c=>c.d.last&&diff(c.date,c.d.last)>=3&&!(c.sent.a&&diff(c.date,c.sent.a)<3), body:c=>"بقالك "+diff(c.date,c.d.last)+" أيام بعيد"+c.nm+". ارجع بتمرين خفيف النهارده 💪"},
+ {k:"g",t:600, title:"🏟️ اشتراك الجيم", ok:c=>{ if(!c.d.gym) return false; const l=diff(c.d.gym,c.date); c.gl=l; return l===3||l===1||l===0; }, body:c=>c.gl===0?"اشتراك الجيم بيخلص النهارده، جدّده.":"اشتراك الجيم فاضل عليه "+(c.gl===1?"يوم واحد":"٣ أيام")+"."},
+ {k:"q",t:750, title:"💬 رسالة اليوم", body:c=>QUOTES[c.day%QUOTES.length]},
+ {k:"w",t:990, title:"🏋️ تمرين النهارده", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>"تمرين النهارده مستنيك"+c.nm+". ابدأ قبل ما اليوم يخلص 💪"},
+ {k:"e",t:1110,len:90,title:"🌙 أذكار المساء", body:c=>"أذكار المساء"+c.nm+"، ما تنساهاش."},
+ {k:"r",t:1200,title:"⏰ لسه فيه وقت", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>(c.d.streak>=3?"سلسلتك "+c.d.streak+" أيام 🔥 ما تكسرهاش النهارده":"لسه فيه وقت")+"، 20 دقيقة تكفي."},
+ {k:"c",t:1260,title:"🎉 عاش يا بطل", ok:c=>!c.restToday&&c.d.trained===c.date, body:c=>"خلّصت تمرين النهارده"+c.nm+(c.d.streak>=2?"، وسلسلتك "+c.d.streak+" أيام 🔥":"")+". ارتاح وكُل كويس."},
+ {k:"p",t:0,len:1440,title:"🏆 رقم قياسي جديد", ok:c=>c.d.pr===c.date, body:c=>"كسرت رقمك"+c.nm+"! كمّل كده 💪"},
+ {k:"h",t:540,len:720,title:"🔥 شدّ حيلك", key:c=>c.date+"-"+Math.floor(c.mins/120), body:c=>QUOTES[(c.day+Math.floor(c.mins/120))%QUOTES.length]}
+];
+const OPT_IN={h:true}; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
 // دالة صافية: بتقرر مين ياخد إيه دلوقتي (عشان نقدر نختبرها)
 function decide(d,nowMs){
   const out=[]; if(!d||!d.tok) return out;
   const loc=new Date(nowMs+(d.off||0)*60000), date=loc.toISOString().slice(0,10), mins=loc.getUTCHours()*60+loc.getUTCMinutes(), dow=loc.getUTCDay(), sent=d.sent||{};
-  const day=Math.floor(nowMs/86400000), nm=d.name?" يا "+String(d.name).slice(0,20):"";
+  const c={d,date,mins,sent,day:Math.floor(nowMs/DAYMS),nm:d.name?" يا "+String(d.name).slice(0,20):"",restToday:!!(d.rest&&d.rest[dow])};
   for(const K of KINDS){
-    if(!d[K.k]) continue; const t=K.h*60; if(mins<t||mins>=t+120) continue; if(sent[K.k]===date) continue;
-    if(K.k==="w"){ if(d.rest&&d.rest[dow]) continue; if(d.trained===date) continue; }
-    out.push({k:K.k,date,title:K.title,body:K.body(nm,day)});
+    if(OPT_IN[K.k]?d[K.k]!==true:d[K.k]===false) continue;
+    const len=K.len||120; if(mins<K.t||mins>=K.t+len) continue;
+    const key=K.key?K.key(c):date; if(sent[K.k]===key) continue;
+    if(K.ok&&!K.ok(c)) continue;
+    out.push({k:K.k,date:key,title:K.title,body:K.body(c)});
   } return out;
 }
 module.exports={decide};

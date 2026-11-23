@@ -1,0 +1,25 @@
+name: Send message
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "عنوان الإشعار"
+        required: true
+        default: "دفتر تمرين"
+      body:
+        description: "نص الرسالة"
+        required: true
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: cd push && npm install firebase-admin@12 --no-audit --no-fund
+      - run: node push/broadcast.js
+        env:
+          FCM_KEY: ${{ secrets.FCM_KEY }}
+          TITLE: ${{ github.event.inputs.title }}
+          BODY: ${{ github.event.inputs.body }}
