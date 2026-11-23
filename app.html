@@ -99,6 +99,26 @@
 .lb-kp{display:flex;flex-direction:column;gap:2px;text-align:start;min-height:64px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
 .lb-kp small{color:var(--muted);font-size:.75rem;line-height:1.4}
 .lb-kp[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+/* KFIT-FEAT */
+.ft{display:flex;flex-direction:column;gap:14px}.ft-top{display:flex}
+.ft-hero{text-align:center;padding:18px 14px;border-radius:18px;background:linear-gradient(160deg,var(--surface),var(--bg));border:1px solid var(--line)}
+.ft-hi{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--accent);color:#fff;font-size:1.6rem}
+.ft-hero h2{margin:8px 0 4px;font-size:1.5rem}.ft-hero p{margin:0;color:var(--muted)}
+.ft-g{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:2px}
+.ft-gh{display:flex;align-items:center;gap:10px;margin-bottom:8px}.ft-gh h3{margin:0;font-size:1.15rem;flex:1}
+.ft-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--fc);color:#fff;font-size:1.3rem;flex:none}
+.ft-n{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:99px;border:1px solid var(--line);color:var(--muted);font-size:.8rem;font-weight:800;flex:none}
+.ft-i{display:block;position:relative;text-align:start;padding:10px 20px 10px 4px;margin:0;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;width:100%}
+button.ft-i{cursor:pointer}.ft-i b{display:block;font-size:1rem;padding-inline-start:16px;position:relative}
+.ft-i b::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--fc)}
+.ft-i span{display:block;color:var(--muted);font-size:.86rem;line-height:1.75;padding-inline-start:16px;margin-top:2px}
+.ft-hl{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"a b c" "a d c";align-items:center;column-gap:12px;width:100%;margin:12px 0;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.ft-hl span{grid-area:a;font-size:1.6rem}.ft-hl b{grid-area:b}.ft-hl small{grid-area:d;color:var(--muted)}.ft-hl i{grid-area:c;font-style:normal;font-size:1.5rem;color:var(--accent)}
+.wu{margin:0 0 12px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:0 12px}
+.wu summary{display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;list-style:none}.wu summary::-webkit-details-marker{display:none}
+.wu summary small{margin-inline-start:auto;color:var(--muted)}.wu ul{margin:0;padding:0 18px 12px;line-height:2}
+.hx-chip.st{border-color:#FF7A3F;color:#FF7A3F}
+.lb-ins{margin:6px 0 0;padding:0 18px;line-height:2}
 </style>
 <title>دفتر كريم سامي</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
@@ -2487,7 +2507,7 @@ var XLIB=[
  {id:"xsbridge",g:"Single_Leg_Glute_Bridge",n:"Single-Leg Glute Bridge",ar:"جسر برجل واحدة",m:["glutes","hams"],lo:8,hi:12,u:true,us:" لكل رجل",cue:"زي الجسر العادي بس برجل واحدة والتانية مرفوعة. حافظ على الحوض مستوي."},
  {id:"xcrunch",g:"Crunches",n:"Crunch",ar:"كرنش أرضي",m:["abs"],lo:15,hi:25,cue:"نايم على ضهرك وإيديك ورا راسك من غير ما تشد رقبتك. ارفع كتفك بشدّ البطن وانزل ببطء."},
  {id:"xrcrunch",g:"Reverse_Crunch",n:"Reverse Crunch",ar:"كرنش عكسي",m:["abs"],lo:12,hi:20,cue:"نايم على ضهرك، قرّب ركبك من صدرك وارفع الحوض شوية بشدّ أسفل البطن وانزل بتحكم."},
- {id:"xplank",g:"Plank",n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
+ {id:"xplank",g:"Plank",one:true,n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
  {id:"xsplank",g:"Side_Bridge",n:"Side Plank",ar:"بلانك جانبي",m:["abs"],lo:20,hi:40,rp:"20–40 ث",u:true,us:" لكل ناحية",cue:"على كوع واحد وجسمك خط مستقيم، ارفع الحوض وثبّت. سجّل الثواني في خانة التكرار."},
  {id:"xbdip",g:"Bench_Dips",n:"Bench Dip",ar:"متوازي على كرسي",m:["triceps","chest","delt_f"],lo:10,hi:15,cue:"إيديك على حافة كرسي أو بنش وجسمك قدامه. انزل بثني الكوع لحد 90 درجة وارفع. كوعيك لورا مش لبرا."},
  {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["glutes","quads"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
@@ -2502,7 +2522,7 @@ var XLIB=[
  {id:"xbor",g:"Bent_Over_Two-Dumbbell_Row",n:"Bent-Over Dumbbell Row",ar:"تجديف بالدمبل",m:["lats","upper_back","biceps"],lo:10,hi:12,cue:"ميّل جذعك لقدام والضهر مستقيم، اسحب الدمبلين ناحية بطنك وقرّب لوحي الكتف، وانزل ببطء."},
  {id:"xdbp",g:"Dumbbell_Bench_Press",n:"Dumbbell Bench Press",ar:"ضغط صدر بالدمبل",m:["chest","delt_f","triceps"],lo:10,hi:15,cue:"نايم على بنش، ادفع الدمبلين لفوق وانزلهم بتحكم لحد ما تحس بتمدد في الصدر."}
 ];
-XLIB.forEach(function(x){ var e=Object.assign({s:3,rt:"60–90 ث",rest:75,q:x.n+" form"},x); delete e.g; delete e.ar; if(x.g){ var b="assets/lib/"+x.g; e.imgs=[b+"-0.webp",b+"-1.webp"]; } LIB[e.id]=e; AR[e.id]=x.ar; });
+XLIB.forEach(function(x){ var e=Object.assign({s:3,rt:"60–90 ث",rest:75,q:x.n+" form"},x); delete e.g; delete e.ar; delete e.one; if(x.g){ var b="assets/lib/"+x.g; e.imgs=x.one?[b+"-0.webp"]:[b+"-0.webp",b+"-1.webp"]; } LIB[e.id]=e; AR[e.id]=x.ar; });
 
 var WS=6, WNAMES={0:"الأحد",1:"الإثنين",2:"الثلاثاء",3:"الأربعاء",4:"الخميس",5:"الجمعة",6:"السبت"}, WDS=[];
 function setWDS(st){ WS=st; WDS=[0,1,2,3,4,5,6].map(function(i){ var dw=(st+i)%7; return [WNAMES[dw],dw]; }); }
@@ -3033,6 +3053,7 @@ function renderTrain(){
   }
   if(restToday && dayIdx===startIdx) h.push('<div class="banner">النهارده يوم راحة. التمرين الجاي: <b>'+day.name+'</b> يوم '+day.wd+'.</div>');
   if(day.rest){ renderRestDay(day, d, h); $("app").innerHTML = h.join(""); return; }
+  h.push(lbWarm(day));
   if(d3on() && S.prefs.d3m!=="list"){ $("app").innerHTML = h.join("")+d3focus(day,d); return; } /* KFIT-DESIGN-3 */
   var exn = 0;
   visibleEx(day).forEach(function(e){
@@ -3156,12 +3177,12 @@ function renderAll(){
   if(view!=="train") justSaved=null;
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   renderTabs();
-  ["home","today","train","log","body","food","share","comm","set","lab","qib"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi"};
+  ["home","today","train","log","body","food","share","comm","set","lab","qib","feat"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi",feat:"vh"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else if(view==="feat") renderFeat(); else renderShare();
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
@@ -3820,7 +3841,7 @@ function hxTop(tk,pi,nm){
   var day=DAYS[pi], done=planDoneOn(tk), vis=day.rest?[]:visibleEx(day), sets=0; vis.forEach(function(e){ sets+=e.s||0; });
   var ws=weekStartKey(tk), wk=weekTrainCount(ws), pc=Math.min(100,Math.round(wk/TARGET*100));
   return '<section class="hx-top"><div class="hx-ph"><div class="hx-tp"><h2 class="hx-gr">'+hxGreet()+' يا '+(nm?esc(nm):"بطل")+'</h2><div class="hx-date">'+fmtDate(tk)+'</div></div><div class="hx-bt"><p>'+TAG+'</p></div></div>'+
-    '<div class="hx-panel"><div class="hx-prow"><span class="hx-chip">'+(day.rest?(day.act?"نشاط النهارده":"النهارده راحة"):"تمرين اليوم")+'</span>'+
+    '<div class="hx-panel"><div class="hx-prow"><span class="hx-chip">'+(day.rest?(day.act?"نشاط النهارده":"النهارده راحة"):"تمرين اليوم")+'</span>'+lbStreakChip()+
     (day.rest?'':'<p class="hx-meta"><span>'+vis.length+' تمارين</span><span>'+sets+' مجموعة</span></p>')+'</div>'+
     '<h2>'+esc(day.rest?day.name:"تمرين "+day.name)+'</h2>'+(day.rest?'<p class="sub">'+esc(day.note||"")+'</p>':'')+
     '<button type="button" class="hx-go" data-act="gotrain" data-i="'+pi+'">'+(day.rest?"افتح اليوم":(done?"افتح تمرين النهارده":"ابدأ التمرين"))+'<span class="hx-pb">'+HXI.play+'</span></button>'+hxAch()+'</div></section>';
@@ -4243,6 +4264,11 @@ function qRepMode(){ var m=+(S.prefs&&S.prefs.qrp)||0; return (m>=0&&m<=4)?m:0; 
 var QPOS_K="kf_qpos", QPT2=0;
 function qposGet(){ try{ return JSON.parse(localStorage.getItem(QPOS_K)||"null"); }catch(e){ return null; } }
 function qposSet(v){ try{ if(v) localStorage.setItem(QPOS_K,JSON.stringify(v)); else localStorage.removeItem(QPOS_K); }catch(e){} }
+function qAlt(){ var n=QA.n; if(!n||!QD.idx) return ""; var id=QA.rc||RECITER.id, n3=("00"+n).slice(-3);
+  if(QA.av){ var v=QA.av; return id==="ar.alafasy"?"https://everyayah.com/data/Alafasy_128kbps/"+n3+("00"+v).slice(-3)+".mp3":""; }
+  if(id==="ar.alafasy") return "https://server8.mp3quran.net/afs/"+n3+".mp3";
+  if(id==="maher") return "https://download.quranicaudio.com/qdc/maher_al_muaiqly/murattal/"+n+".mp3";
+  return "https://download.quranicaudio.com/qdc/mohamed_siddiq_el-minshawi/murattal/"+n+".mp3"; }
 function qAudio(){
   if(AU) return AU;
   AU=new Audio(); AU.preload="none";
@@ -4257,7 +4283,7 @@ function qAudio(){
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
     ms.setActionHandler("stop",function(){ AU.pause(); }); } }catch(e){}
-  AU.addEventListener("error",function(){ toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
+  AU.addEventListener("error",function(){ if(!QA.fb){ QA.fb=1; var u2=qAlt(); if(u2){ AU.src=u2; var pp=AU.play(); if(pp&&pp.catch) pp.catch(function(){}); return; } } toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
   return AU;
 }
 function qGl(s,v){ var g=v; for(var i=0;i<s-1;i++) g+=QD.idx[i][2]; return g; }
@@ -4273,7 +4299,7 @@ function qAyPre(s_,v_){ if(!QD.idx) return; QA.pre=QA.pre||{};
   for(var k=1;k<=2;k++){ var ns=s_, nv=v_+k; if(nv>QD.idx[ns-1][2]){ nv-=QD.idx[ns-1][2]; ns++; } if(ns>114) break;
     (function(u){ if(QA.pre[u]) return; QA.pre[u]="p"; try{ fetch(u).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){ QA.pre[u]=URL.createObjectURL(bl); }).catch(function(){ QA.pre[u]="x"; }); }catch(e){ QA.pre[u]="x"; } })(qAyUrl(ns,nv)); } }
 function qPlayAy(s,v,fol){
-  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.rc=RECITER.id; QA.tk++;
+  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.fb=0; QA.rc=RECITER.id; QA.tk++;
   if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; }
   var u=qAyUrl(s,v), pb=QA.pre&&QA.pre[u]; if(QA.ab){ try{ URL.revokeObjectURL(QA.ab); }catch(e){} QA.ab=""; }
   if(pb&&pb.indexOf("blob:")===0){ QA.ab=pb; a.src=pb; delete QA.pre[u]; } else a.src=u;
@@ -4288,7 +4314,7 @@ function qPlay(n,force,rep){
   if(!force && QA.n===n && QA.rc===RECITER.id && !a.paused){ a.pause(); return; }
   function go(){ try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){} var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); }); try{ if("mediaSession" in navigator){ var nm=QD.idx?QD.idx[n-1][1]:""; navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+nm,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){} qBar(); }
   if(QA.n!==n || force || QA.rc!==RECITER.id){
-    QA.n=n; QA.av=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
+    QA.n=n; QA.av=0; QA.fb=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
     var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
     function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
       if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }
@@ -4318,7 +4344,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+lbGymStrip()+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -7361,7 +7387,7 @@ function lbQibStart(){
   }catch(e){ msg("الجهاز مش بيدعم البوصلة."); }
 }
 
-function lbToolTab(){ return lbOrmCard(); }
+function lbToolTab(){ return lbOrmCard()+lbGymCard(); }
 function lbPrayStrip(){
   var L=lbLoc(), now=new Date(), nx=lbNext(lbPray(now,L.lat,L.lng),now);
   return '<button type="button" class="lb-strip" data-act="view" data-v="ibd" aria-label="مواقيت الصلاة"><span>🕌 <b id="lb-snx">'+nx.n+'</b> بعد <b id="lb-sin">'+lbLeft(nx.mins)+'</b></span><span class="lb-sg">المواقيت والقبلة ‹</span></button>';
@@ -7388,7 +7414,7 @@ function lbGain(o){
   });
   return best;
 }
-function lbMuscTab(){
+function lbMuscTab0(){
   var L=lbMuscle(); if(!L.length) return '<section class="card"><h2>تطور العضلات</h2><div class="empty">سجّل كام تمرين وهتشوف هنا كل عضلة اشتغلت قد إيه وأوزانها بتتحسن إزاي.</div></section>';
   var wk=lbWeeks(4), lbls=wk.map(function(k){ return sd(k); });
   return '<section class="card"><h2>تطور العضلات</h2><p class="sub">عدد المجموعات الأسبوعية لكل عضلة في آخر 4 أسابيع (الأخير = الأسبوع الحالي).</p></section>'+L.map(function(o){
@@ -7500,6 +7526,98 @@ function lbSince(){
   if(!parts.length) return "";
   return '<p class="sub">من أول قياس ('+sd(f0.date)+'): '+parts.join(" · ")+' سم</p>';
 }
+
+var FEAT=[
+ {g:"التمرين",ic:"🏋️",c:"#8B5CF6",items:[
+  ["اليوم","تمرين النهارده قدامك: سجّل الوزن والتكرارات لكل مجموعة، وعدّاد راحة بيعدّ معاك ومعاه ذكر قصير.","today"],
+  ["تسخين قبل التمرين","قايمة تسخين بتظهر أول ما تفتح تمرين اليوم، على حسب العضلات اللي هتشتغل.","train"],
+  ["التمرين","برنامجك الأسبوعي من يومين لـ٥ أيام. لكل تمرين صور الحركة (دوس عليها تتكبّر) وفيديو يوتيوب وزرار «بدّل التمرين».","train"],
+  ["بعد التمرين","كارت يقولك عملت كام مجموعة وحجم التمرين والعضلات اللي اشتغلت، وبيعلّم لك أي رقم قياسي جديد.","log"],
+  ["السجل","كل تمارينك القديمة متسجّلة، وتقدر تشوف إنت زوّدت قد إيه من مرة للتانية.","log"],
+  ["سلسلة أيام التمرين","🔥 عدّاد أيام التمرين ورا بعض، بيظهر في الرئيسية جنب تمرين اليوم.","home"]]},
+ {g:"جسمك وأكلك",ic:"📏",c:"#F59E0B",items:[
+  ["الجسم","وزنك وقياساتك بالسنتيمتر وصور قبل وبعد مع مقارنة، وكمان «من أول قياس» عشان تشوف التغيير الكلي.","body"],
+  ["الأكل","سجّل وجبات يومك وعدّل عليها في أي وقت.","food"],
+  ["الملخص","ملخص أسبوعك وإنجازاتك، وتقدر تعمله كصورة تشاركها، وفيه نسخة احتياطية لبياناتك.","share"]]},
+ {g:"برامج وأدوات",ic:"🧰",c:"#3B82F6",items:[
+  ["برامج جاهزة","برامج كريم الثابتة، وعلوي/سفلي، وPush/Pull/Legs، وتمرين البيت بوزن الجسم. اختار واحد وأيامك تتغيّر على طول.","lab"],
+  ["حاسبة 1RM","تعرف أقصى وزن تقدر ترفعه مرة واحدة من وزن وتكرارات تمرينك.","lab"],
+  ["تقدّم العضلات","كل عضلة اتحسّنت قد إيه، وكمان اكتشافات من بياناتك زي أحسن يوم عندك وأكتر تمرين اتقدّمت فيه.","lab"],
+  ["اشتراك الجيم","اكتب تاريخ انتهاء اشتراكك وبيفكّرك لما يقرب.","lab"],
+  ["تقرير PDF","تقرير كامل بتقدّمك تطبعه أو تحفظه PDF وتديه لمدربك.","lab"]]},
+ {g:"القرآن والعبادات",ic:"🕌",c:"#10B981",items:[
+  ["المصحف","صفحات المصحف أو آية بآية، وتكبّر الخط وتصغّره، وتعلّم مكانك، وتنسخ الآية وتشاركها.","ibd"],
+  ["الاستماع","ثلاث قرّاء. دوس على أي آية واختار «استمع من هنا» والصوت يكمّل بيها لآخر السورة والآية بتتلوّن والصفحة بتتقلّب.","ibd"],
+  ["ختمتي والورد","ورد يومي بعدد الصفحات اللي تختاره، ومتابعة ختمتك لحد ما تخلّص.","ibd"],
+  ["الأذكار","أذكار الصباح والمساء والنوم بعدّاد لكل ذكر. تتعلّم ✓ أول ما تخلّص نصها.","ibd"],
+  ["مواقيت الصلاة","بتتحسب على موبايلك من غير نت وبتتجدد كل يوم، والرئيسية فيها الصلاة الجاية.","ibd"],
+  ["اتجاه القبلة","بوصلة بتوريك اتجاه القبلة من مكانك.","ibd"]]},
+ {g:"مجتمع وحساب",ic:"👥",c:"#EF4444",items:[
+  ["مجتمع الأبطال","شارك إنجازك وشجّع غيرك. المنشورات بتتراجع من المدرب قبل ما تظهر.","comm"],
+  ["الإعدادات وحسابك","اسمك وصورتك ورقم واتساب لو عايز المدرب يرد عليك، وتسجيل الدخول بجوجل عشان بياناتك تتحفظ وترجعلك لو غيرت موبايلك.","set"]]},
+ {g:"عن التطبيق",ic:"📱",c:"#06B6D4",items:[
+  ["على موبايلك","ثبّته على الشاشة الرئيسية فيفتح زي أي تطبيق، وبيشتغل كمان من غير نت.",""],
+  ["من غير إعلانات","التطبيق مجاني وما فيهوش إعلانات.",""]]}
+];
+function renderFeat(){
+  var n=0; FEAT.forEach(function(g){ n+=g.items.length; });
+  var h='<div class="fx ft"><div class="ft-top"><button type="button" class="sm-gh" data-act="view" data-v="home">رجوع</button></div>'+
+   '<div class="ft-hero"><span class="ft-hi">✨</span><h2>كل مميزات التطبيق</h2><p>'+n.toLocaleString("ar-EG")+' ميزة في '+FEAT.length.toLocaleString("ar-EG")+' أقسام. دوس على أي ميزة تفتحها.</p></div>';
+  FEAT.forEach(function(g){
+    h+='<section class="ft-g" style="--fc:'+g.c+'"><div class="ft-gh"><span class="ft-n">'+g.items.length.toLocaleString("ar-EG")+'</span><h3>'+esc(g.g)+'</h3><span class="ft-ic">'+g.ic+'</span></div>';
+    g.items.forEach(function(it){
+      h+=(it[2]?'<button type="button" class="ft-i" data-act="view" data-v="'+it[2]+'">':'<div class="ft-i">')+'<b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span>'+(it[2]?'</button>':'</div>');
+    });
+    h+='</section>';
+  });
+  $("app").innerHTML=h+'</div>';
+}
+function featLink(){ return '<button type="button" class="ft-hl" data-act="view" data-v="feat"><span>✨</span><b>كل مميزات التطبيق</b><small>تعرّف على كل اللي بيعمله</small><i aria-hidden="true">‹</i></button>'; }
+
+/* warm-up */
+var WARM={
+ gen:["5 دقايق مشي سريع أو دراجة خفيفة لحد ما جسمك يسخن"],
+ push:["دوران الكتف للأمام والخلف × ١٥","فتح الصدر بالدراعين × ١٢","ضغطة على الركب بخفة × ١٠"],
+ pull:["شد لوح الكتف لتحت ولورا × ١٥","دوران الدراعين الكبير × ١٥","قطة وجمل (Cat-Cow) × ١٠"],
+ legs:["سكوات بوزن الجسم × ١٥","لانج بالمشي × ١٠ لكل رجل","كوبري الجلوتس × ١٥","دوران الكاحل × ١٠ لكل رجل"],
+ core:["بلانك ٢٠ ثانية","قطة وجمل (Cat-Cow) × ١٠"],
+ arm:["دوران الرسغ × ١٠ في كل اتجاه","تمرين خفيف بدمبل صغير × ١٥"]
+};
+function lbWarmKeys(day){ var m={}; (day.ex||[]).forEach(function(e){ ((LIB[e.id]&&LIB[e.id].m)||e.m||[]).forEach(function(k){ m[k]=1; }); });
+  var o=["gen"]; if(m.chest||m.delt_f||m.triceps) o.push("push"); if(m.lats||m.upper_back||m.delt_r||m.traps||m.biceps) o.push("pull");
+  if(m.quads||m.hams||m.glutes||m.calves) o.push("legs"); if(m.abs||m.lower_back) o.push("core"); if(m.forearms) o.push("arm"); return o; }
+function lbWarm(day){
+  if(!day||day.rest) return ""; var ks=lbWarmKeys(day), li="";
+  ks.forEach(function(k){ WARM[k].forEach(function(t){ li+='<li>'+esc(t)+'</li>'; }); });
+  li+='<li>أول مجموعة من أول تمرين بنص الوزن × ٨ تكرارات</li>';
+  return '<details class="wu"><summary><span>🔥</span><b>سخّن قبل ما تبدأ</b><small>٣ – ٥ دقايق</small></summary><ul>'+li+'</ul></details>';
+}
+/* streak chip for home */
+function lbStreakChip(){ var n=0; try{ n=curStreak(); }catch(e){} return n>0?'<span class="hx-chip st">🔥 '+n.toLocaleString("ar-EG")+(n===1?" يوم":n===2?" يومين":n<=10?" أيام":" يوم")+' تمرين ورا بعض</span>':""; }
+/* gym subscription */
+function lbGymLeft(){ var e=S.gym&&S.gym.end; if(!e) return null; return diffD(e,todayKey()); }
+function lbGymStrip(){ var d=lbGymLeft(); if(d===null||d>7) return ""; return '<button type="button" class="lb-strip" data-act="view" data-v="lab"><span>🏋️ اشتراك الجيم '+(d<0?'خلص من '+(-d).toLocaleString("ar-EG")+' يوم':d===0?'بيخلص النهارده':'باقي <b>'+d.toLocaleString("ar-EG")+'</b> '+(d===1?'يوم':d===2?'يومين':'أيام'))+'</span><span class="lb-sg">جدّد ‹</span></button>'; }
+function lbGymCard(){ var d=lbGymLeft(), e=(S.gym&&S.gym.end)||"";
+  return '<section class="card lb"><h2>اشتراك الجيم</h2><p class="sub">اكتب تاريخ انتهاء اشتراكك وهنفكّرك في الرئيسية لما يفضل أسبوع.</p><label class="fld"><span>ينتهي يوم</span><input type="date" id="lb-gym" value="'+esc(e)+'"></label>'+
+   (d===null?'':'<div class="lb-big"><span>'+(d<0?'خلص من':'باقي')+'</span><b>'+Math.abs(d).toLocaleString("ar-EG")+'</b><span>يوم</span></div>')+'</section>'; }
+document.addEventListener("change",function(e){ var t=e.target; if(t&&t.id==="lb-gym"){ if(!S.gym) S.gym={}; S.gym.end=t.value||""; if(!t.value) S.gym=null; persist(); if(view==="lab") renderLab(); } });
+/* insights */
+function lbInsights(){
+  var ss=S.sessions||[], out=[]; if(ss.length<4) return "";
+  var wd=[0,0,0,0,0,0,0], nm=["الأحد","الاتنين","التلات","الأربع","الخميس","الجمعة","السبت"];
+  ss.forEach(function(x){ var d=new Date(x.date+"T12:00:00"); wd[d.getDay()]++; });
+  var bi=0; wd.forEach(function(v,i){ if(v>wd[bi]) bi=i; }); if(wd[bi]>=2) out.push("أكتر يوم بتتمرن فيه: <b>"+nm[bi]+"</b> ("+wd[bi].toLocaleString("ar-EG")+" مرة)");
+  var tk=todayKey(), n30=ss.filter(function(x){ return diffD(tk,x.date)<=30; }).length; out.push("تمارين آخر ٣٠ يوم: <b>"+n30.toLocaleString("ar-EG")+"</b>");
+  var best=null, by={}; ss.slice().sort(function(a,b){ return a.date<b.date?-1:1; }).forEach(function(x){ Object.keys(x.sets||{}).forEach(function(id){ var m=0; x.sets[id].forEach(function(z){ if((z.w||0)>m) m=z.w; }); if(m>0){ (by[id]=by[id]||[]).push(m); } }); });
+  Object.keys(by).forEach(function(id){ var a=by[id]; if(a.length>=2){ var g=a[a.length-1]-a[0]; if(g>0&&(!best||g>best.g)) best={id:id,g:g,a:a[0],b:a[a.length-1]}; } });
+  if(best) out.push("أكتر تمرين اتقدّمت فيه: <b>"+esc(peName(best.id))+"</b> من "+best.a+" لـ "+best.b+" كجم");
+  var ws=S.weights||{}, ks=Object.keys(ws).filter(function(k){ return diffD(tk,k)<=30; }).sort();
+  if(ks.length>=2){ var dw=Math.round((ws[ks[ks.length-1]]-ws[ks[0]])*10)/10; out.push("وزنك آخر ٣٠ يوم: <b dir=\"ltr\">"+(dw>0?"+":"")+dw+"</b> كجم"); }
+  if(!out.length) return "";
+  return '<section class="card"><h2>اكتشافات من بياناتك</h2><ul class="lb-ins">'+out.map(function(t){ return '<li>'+t+'</li>'; }).join("")+'</ul></section>';
+}
+
+function lbMuscTab(){ return lbInsights()+lbMuscTab0(); }
 
 renderAll();
 initCloud();

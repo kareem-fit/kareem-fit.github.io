@@ -2509,7 +2509,7 @@ var XLIB=[
  {id:"xsbridge",g:"Single_Leg_Glute_Bridge",n:"Single-Leg Glute Bridge",ar:"جسر برجل واحدة",m:["glutes","hams"],lo:8,hi:12,u:true,us:" لكل رجل",cue:"زي الجسر العادي بس برجل واحدة والتانية مرفوعة. حافظ على الحوض مستوي."},
  {id:"xcrunch",g:"Crunches",n:"Crunch",ar:"كرنش أرضي",m:["abs"],lo:15,hi:25,cue:"نايم على ضهرك وإيديك ورا راسك من غير ما تشد رقبتك. ارفع كتفك بشدّ البطن وانزل ببطء."},
  {id:"xrcrunch",g:"Reverse_Crunch",n:"Reverse Crunch",ar:"كرنش عكسي",m:["abs"],lo:12,hi:20,cue:"نايم على ضهرك، قرّب ركبك من صدرك وارفع الحوض شوية بشدّ أسفل البطن وانزل بتحكم."},
- {id:"xplank",g:"Plank",n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
+ {id:"xplank",g:"Plank",one:true,n:"Plank",ar:"بلانك",m:["abs"],lo:30,hi:60,rp:"30–60 ث",cue:"على كوعيك وجسمك خط مستقيم. شد البطن والمؤخرة وماتخليش الحوض يوطّي. سجّل الثواني في خانة التكرار."},
  {id:"xsplank",g:"Side_Bridge",n:"Side Plank",ar:"بلانك جانبي",m:["abs"],lo:20,hi:40,rp:"20–40 ث",u:true,us:" لكل ناحية",cue:"على كوع واحد وجسمك خط مستقيم، ارفع الحوض وثبّت. سجّل الثواني في خانة التكرار."},
  {id:"xbdip",g:"Bench_Dips",n:"Bench Dip",ar:"متوازي على كرسي",m:["triceps","chest","delt_f"],lo:10,hi:15,cue:"إيديك على حافة كرسي أو بنش وجسمك قدامه. انزل بثني الكوع لحد 90 درجة وارفع. كوعيك لورا مش لبرا."},
  {id:"xlunge",g:"Bodyweight_Walking_Lunge",n:"Walking Lunge",ar:"لانج بالمشي",m:["glutes","quads"],lo:10,hi:16,u:true,us:" لكل رجل",cue:"خطوة واسعة لقدام وانزل لحد ما الركبتين 90 درجة، وبعدين ادفع بالرجل اللي قدام وخد الخطوة اللي بعدها."},
@@ -2524,7 +2524,7 @@ var XLIB=[
  {id:"xbor",g:"Bent_Over_Two-Dumbbell_Row",n:"Bent-Over Dumbbell Row",ar:"تجديف بالدمبل",m:["lats","upper_back","biceps"],lo:10,hi:12,cue:"ميّل جذعك لقدام والضهر مستقيم، اسحب الدمبلين ناحية بطنك وقرّب لوحي الكتف، وانزل ببطء."},
  {id:"xdbp",g:"Dumbbell_Bench_Press",n:"Dumbbell Bench Press",ar:"ضغط صدر بالدمبل",m:["chest","delt_f","triceps"],lo:10,hi:15,cue:"نايم على بنش، ادفع الدمبلين لفوق وانزلهم بتحكم لحد ما تحس بتمدد في الصدر."}
 ];
-XLIB.forEach(function(x){ var e=Object.assign({s:3,rt:"60–90 ث",rest:75,q:x.n+" form"},x); delete e.g; delete e.ar; if(x.g){ var b="assets/lib/"+x.g; e.imgs=[b+"-0.webp",b+"-1.webp"]; } LIB[e.id]=e; AR[e.id]=x.ar; });
+XLIB.forEach(function(x){ var e=Object.assign({s:3,rt:"60–90 ث",rest:75,q:x.n+" form"},x); delete e.g; delete e.ar; delete e.one; if(x.g){ var b="assets/lib/"+x.g; e.imgs=x.one?[b+"-0.webp"]:[b+"-0.webp",b+"-1.webp"]; } LIB[e.id]=e; AR[e.id]=x.ar; });
 
 var WS=6, WNAMES={0:"الأحد",1:"الإثنين",2:"الثلاثاء",3:"الأربعاء",4:"الخميس",5:"الجمعة",6:"السبت"}, WDS=[];
 function setWDS(st){ WS=st; WDS=[0,1,2,3,4,5,6].map(function(i){ var dw=(st+i)%7; return [WNAMES[dw],dw]; }); }
@@ -4266,6 +4266,11 @@ function qRepMode(){ var m=+(S.prefs&&S.prefs.qrp)||0; return (m>=0&&m<=4)?m:0; 
 var QPOS_K="kf_qpos", QPT2=0;
 function qposGet(){ try{ return JSON.parse(localStorage.getItem(QPOS_K)||"null"); }catch(e){ return null; } }
 function qposSet(v){ try{ if(v) localStorage.setItem(QPOS_K,JSON.stringify(v)); else localStorage.removeItem(QPOS_K); }catch(e){} }
+function qAlt(){ var n=QA.n; if(!n||!QD.idx) return ""; var id=QA.rc||RECITER.id, n3=("00"+n).slice(-3);
+  if(QA.av){ var v=QA.av; return id==="ar.alafasy"?"https://everyayah.com/data/Alafasy_128kbps/"+n3+("00"+v).slice(-3)+".mp3":""; }
+  if(id==="ar.alafasy") return "https://server8.mp3quran.net/afs/"+n3+".mp3";
+  if(id==="maher") return "https://download.quranicaudio.com/qdc/maher_al_muaiqly/murattal/"+n+".mp3";
+  return "https://download.quranicaudio.com/qdc/mohamed_siddiq_el-minshawi/murattal/"+n+".mp3"; }
 function qAudio(){
   if(AU) return AU;
   AU=new Audio(); AU.preload="none";
@@ -4280,7 +4285,7 @@ function qAudio(){
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
     ms.setActionHandler("stop",function(){ AU.pause(); }); } }catch(e){}
-  AU.addEventListener("error",function(){ toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
+  AU.addEventListener("error",function(){ if(!QA.fb){ QA.fb=1; var u2=qAlt(); if(u2){ AU.src=u2; var pp=AU.play(); if(pp&&pp.catch) pp.catch(function(){}); return; } } toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
   return AU;
 }
 function qGl(s,v){ var g=v; for(var i=0;i<s-1;i++) g+=QD.idx[i][2]; return g; }
@@ -4296,7 +4301,7 @@ function qAyPre(s_,v_){ if(!QD.idx) return; QA.pre=QA.pre||{};
   for(var k=1;k<=2;k++){ var ns=s_, nv=v_+k; if(nv>QD.idx[ns-1][2]){ nv-=QD.idx[ns-1][2]; ns++; } if(ns>114) break;
     (function(u){ if(QA.pre[u]) return; QA.pre[u]="p"; try{ fetch(u).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){ QA.pre[u]=URL.createObjectURL(bl); }).catch(function(){ QA.pre[u]="x"; }); }catch(e){ QA.pre[u]="x"; } })(qAyUrl(ns,nv)); } }
 function qPlayAy(s,v,fol){
-  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.rc=RECITER.id; QA.tk++;
+  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.fb=0; QA.rc=RECITER.id; QA.tk++;
   if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; }
   var u=qAyUrl(s,v), pb=QA.pre&&QA.pre[u]; if(QA.ab){ try{ URL.revokeObjectURL(QA.ab); }catch(e){} QA.ab=""; }
   if(pb&&pb.indexOf("blob:")===0){ QA.ab=pb; a.src=pb; delete QA.pre[u]; } else a.src=u;
@@ -4311,7 +4316,7 @@ function qPlay(n,force,rep){
   if(!force && QA.n===n && QA.rc===RECITER.id && !a.paused){ a.pause(); return; }
   function go(){ try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){} var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); }); try{ if("mediaSession" in navigator){ var nm=QD.idx?QD.idx[n-1][1]:""; navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+nm,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){} qBar(); }
   if(QA.n!==n || force || QA.rc!==RECITER.id){
-    QA.n=n; QA.av=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
+    QA.n=n; QA.av=0; QA.fb=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
     var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
     function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
       if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }
