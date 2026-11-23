@@ -3841,7 +3841,7 @@ function hxTop(tk,pi,nm){
   var day=DAYS[pi], done=planDoneOn(tk), vis=day.rest?[]:visibleEx(day), sets=0; vis.forEach(function(e){ sets+=e.s||0; });
   var ws=weekStartKey(tk), wk=weekTrainCount(ws), pc=Math.min(100,Math.round(wk/TARGET*100));
   return '<section class="hx-top"><div class="hx-ph"><div class="hx-tp"><h2 class="hx-gr">'+hxGreet()+' يا '+(nm?esc(nm):"بطل")+'</h2><div class="hx-date">'+fmtDate(tk)+'</div></div><div class="hx-bt"><p>'+TAG+'</p></div></div>'+
-    '<div class="hx-panel"><div class="hx-prow"><span class="hx-chip">'+(day.rest?(day.act?"نشاط النهارده":"النهارده راحة"):"تمرين اليوم")+'</span>'+lbStreakChip()+
+    '<div class="hx-panel"><div class="hx-prow">'+((!day.rest&&lbStreakN()>0)?'':'<span class="hx-chip">'+(day.rest?(day.act?"نشاط النهارده":"النهارده راحة"):"تمرين اليوم")+'</span>')+lbStreakChip()+
     (day.rest?'':'<p class="hx-meta"><span>'+vis.length+' تمارين</span><span>'+sets+' مجموعة</span></p>')+'</div>'+
     '<h2>'+esc(day.rest?day.name:"تمرين "+day.name)+'</h2>'+(day.rest?'<p class="sub">'+esc(day.note||"")+'</p>':'')+
     '<button type="button" class="hx-go" data-act="gotrain" data-i="'+pi+'">'+(day.rest?"افتح اليوم":(done?"افتح تمرين النهارده":"ابدأ التمرين"))+'<span class="hx-pb">'+HXI.play+'</span></button>'+hxAch()+'</div></section>';
@@ -7593,14 +7593,19 @@ function lbWarm(day){
   return '<details class="wu"><summary><span>🔥</span><b>سخّن قبل ما تبدأ</b><small>٣ – ٥ دقايق</small></summary><ul>'+li+'</ul></details>';
 }
 /* streak chip for home */
-function lbStreakChip(){ var n=0; try{ n=curStreak(); }catch(e){} return n>0?'<span class="hx-chip st">🔥 '+n.toLocaleString("ar-EG")+(n===1?" يوم":n===2?" يومين":n<=10?" أيام":" يوم")+' تمرين ورا بعض</span>':""; }
+function lbStreakN(){ var tk=todayKey(), n=0, k=tk, g=0; try{ while(g++<400){ var d=DAYS[planIdx(k)]; if(d&&d.rest){ k=addD(k,-1); continue; } if(trainSessionOn(k)) n++; else if(k!==tk) break; k=addD(k,-1); } }catch(e){} return n; }
+function lbStreakChip(){ var n=lbStreakN(); return n>0?'<span class="hx-chip st">🔥 '+n.toLocaleString("ar-EG")+(n===1?" يوم":n===2?" يومين":n<=10?" أيام":" يوم")+' تمرين ورا بعض</span>':""; }
 /* gym subscription */
 function lbGymLeft(){ var e=S.gym&&S.gym.end; if(!e) return null; return diffD(e,todayKey()); }
 function lbGymStrip(){ var d=lbGymLeft(); if(d===null||d>7) return ""; return '<button type="button" class="lb-strip" data-act="view" data-v="lab"><span>🏋️ اشتراك الجيم '+(d<0?'خلص من '+(-d).toLocaleString("ar-EG")+' يوم':d===0?'بيخلص النهارده':'باقي <b>'+d.toLocaleString("ar-EG")+'</b> '+(d===1?'يوم':d===2?'يومين':'أيام'))+'</span><span class="lb-sg">جدّد ‹</span></button>'; }
 function lbGymCard(){ var d=lbGymLeft(), e=(S.gym&&S.gym.end)||"";
-  return '<section class="card lb"><h2>اشتراك الجيم</h2><p class="sub">اكتب تاريخ انتهاء اشتراكك وهنفكّرك في الرئيسية لما يفضل أسبوع.</p><label class="fld"><span>ينتهي يوم</span><input type="date" id="lb-gym" value="'+esc(e)+'"></label>'+
+  return '<section class="card lb"><h2>اشتراك الجيم</h2><p class="sub">اكتب تاريخ انتهاء اشتراكك وهنفكّرك في الرئيسية لما يفضل أسبوع.</p><label class="fld"><span>ينتهي يوم (اكتبه بأرقام إنجليزي أو عربي)</span><input type="text" id="lb-gym" inputmode="numeric" dir="ltr" autocomplete="off" placeholder="25/12/2026" value="'+esc(lbGymFmt(e))+'"></label><p class="sub">الشكل: يوم/شهر/سنة، زي 25/12/2026</p>'+
    (d===null?'':'<div class="lb-big"><span>'+(d<0?'خلص من':'باقي')+'</span><b>'+Math.abs(d).toLocaleString("ar-EG")+'</b><span>يوم</span></div>')+'</section>'; }
-document.addEventListener("change",function(e){ var t=e.target; if(t&&t.id==="lb-gym"){ if(!S.gym) S.gym={}; S.gym.end=t.value||""; if(!t.value) S.gym=null; persist(); if(view==="lab") renderLab(); } });
+function lbGymFmt(k){ if(!k) return ""; var p=k.split("-"); return p.length===3?(+p[2])+"/"+(+p[1])+"/"+p[0]:""; }
+function lbGymParse(t){ var a=String(t||"").replace(/[٠-٩]/g,function(c){ return c.charCodeAt(0)-1632; }).replace(/[۰-۹]/g,function(c){ return c.charCodeAt(0)-1776; }), n=a.split(/\D+/).filter(Boolean).map(Number); if(n.length!==3) return null;
+  var y,m,d; if(String(n[0]).length>=3||n[0]>31){ y=n[0]; m=n[1]; d=n[2]; } else { d=n[0]; m=n[1]; y=n[2]; } if(y<100) y+=2000;
+  var dt=new Date(y,m-1,d); if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d) return null; return y+"-"+("0"+m).slice(-2)+"-"+("0"+d).slice(-2); }
+document.addEventListener("change",function(e){ var t=e.target; if(t&&t.id==="lb-gym"){ if(!t.value.trim()){ S.gym=null; persist(); if(view==="lab") renderLab(); return; } var k=lbGymParse(t.value); if(!k){ toast("اكتب التاريخ زي 25/12/2026"); return; } if(!S.gym) S.gym={}; S.gym.end=k; persist(); if(view==="lab") renderLab(); } });
 /* insights */
 function lbInsights(){
   var ss=S.sessions||[], out=[]; if(ss.length<4) return "";
