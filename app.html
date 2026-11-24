@@ -5956,7 +5956,7 @@ function pushCard(){
   return css+'<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">شغّالة ✓ ('+n+' من '+PUSHK.length+') · دوس على النوع علشان تقفله أو تفتحه</p><div class="pch">'+PUSHK.map(function(k){ var on=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); return '<button type="button" data-act="pushk" data-k="'+k[0]+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+k[1]+'</button>'; }).join("")+'</div>'+sol+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
 }
 /* ===== الأذان داخل التطبيق (لما التطبيق يكون مفتوح) ===== */
-var ADH_URL="assets/adhan/adhan.mp3", ADH_OK=null, ADH=null, ADH_PL={};
+var ADH_URL="adhan.mp3", ADH_OK=null, ADH=null, ADH_PL={};
 function adhCheck(cb){ if(ADH_OK!==null){ if(cb) cb(ADH_OK); return; } try{ fetch(ADH_URL,{method:"HEAD",cache:"no-store"}).then(function(r){ ADH_OK=!!r.ok; if(cb) cb(ADH_OK); if(ADH_OK&&view==="set") renderAll(); }).catch(function(){ ADH_OK=false; }); }catch(e){ ADH_OK=false; } }
 function adhPlay(){ try{ if(!ADH) ADH=new Audio(ADH_URL); ADH.currentTime=0; var pr=ADH.play(); if(pr&&pr.catch) pr.catch(function(){ toast("دوس على ▶ علشان يشتغل الأذان"); }); }catch(e){} }
 function adhStop(){ try{ if(ADH){ ADH.pause(); ADH.currentTime=0; } }catch(e){} var b=document.getElementById("adhbar"); if(b) b.remove(); }
