@@ -5266,6 +5266,9 @@ document.addEventListener("click", function(ev){
   else if(a==="qtx"){ var qm=document.getElementById("qtm"); if(qm) qm.remove(); }
   else if(a==="cardiotog"){ var ck=todayKey()+"|"+DAYS[dayIdx].id; S.cardio=S.cardio||{}; if(S.cardio[ck]) delete S.cardio[ck]; else S.cardio[ck]=1; persist(); renderAll(); }
   else if(a==="pushon"){ pushEnable(); }
+  else if(a==="adhplay"){ adhPlay(); }
+  else if(a==="adhstop"){ adhStop(); }
+  else if(a==="adhtog"){ S.prefs.adhan=(S.prefs.adhan===false); persist(); renderAll(); }
   else if(a==="pushoff"){ pushOff(); }
   else if(a==="pushk"){ var pk2=pushPrefs(), kk=b.getAttribute("data-k"); pk2[kk]=(kk==="h")?(pk2.h!==true):(pk2[kk]===false); persist(); pushSync(); renderAll(); }
   else if(a==="hfc"){ S.prefs.hfc=(S.prefs.hfc===false); persist(); renderAll(); }
@@ -5902,14 +5905,15 @@ function renderTrn(){
 /* ===== الإشعارات ===== */
 function pushPrefs(){ if(!S.prefs.push) S.prefs.push={on:false,m:true,e:true,w:true,q:true}; return S.prefs.push; }
 function pushLoad(){ return new Promise(function(res,rej){ if(window.firebase&&firebase.messaging) return res(); var sc=document.createElement("script"); sc.src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"; sc.onload=function(){res();}; sc.onerror=function(){rej(new Error("load"));}; document.head.appendChild(sc); }); }
-var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
+var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","قبل الصلاة بـ 10 دقايق"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
 function pushSync(){
   var p=pushPrefs(), u=cmUser(); if(!p.on||!p.tok||!u||!KS.fs) return;
   var rest=[]; for(var d=0;d<7;d++){ var it=null; for(var i=0;i<DAYS.length;i++){ if(DAYS[i].dow===d) it=DAYS[i]; } rest.push(!it||!!it.rest); }
   var tk=todayKey(), tr=false, last="", pr=null;
   S.sessions.forEach(function(x){ if(x.date===tk){ tr=true; if(x.pr&&x.pr.length) pr=tk; } if(x.date>last) last=x.date; });
   var st=0; try{ st=lbStreakN(); }catch(e){}
-  var o={tok:p.tok,off:-new Date().getTimezoneOffset(),rest:rest,trained:tr?tk:null,last:last||null,pr:pr,streak:st,gym:(S.gym&&S.gym.end)||null,name:(S.profile.name||"").slice(0,20),upd:Date.now()};
+  var pt=null; try{ var L0=lbLoc(), tm0=lbPray(new Date(),L0.lat,L0.lng); pt={}; ["fajr","dhuhr","asr","maghrib","isha"].forEach(function(k){ if(!isNaN(tm0[k])) pt[k]=Math.round(tm0[k]*60); }); }catch(e){}
+  var o={pt:pt,tok:p.tok,off:-new Date().getTimezoneOffset(),rest:rest,trained:tr?tk:null,last:last||null,pr:pr,streak:st,gym:(S.gym&&S.gym.end)||null,name:(S.profile.name||"").slice(0,20),upd:Date.now()};
   PUSHK.forEach(function(k){ o[k[0]]=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); });
   KS.fs.collection("push").doc(u.uid).set(o,{merge:true}).catch(function(){});
 }
@@ -5943,6 +5947,31 @@ function pushCard(){
   var n=PUSHK.filter(function(k){ return k[0]==="h"?p.h===true:p[k[0]]!==false; }).length;
   return css+'<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">شغّالة ✓ ('+n+' من '+PUSHK.length+') · دوس على النوع علشان تقفله أو تفتحه</p><div class="pch">'+PUSHK.map(function(k){ var on=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); return '<button type="button" data-act="pushk" data-k="'+k[0]+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+k[1]+'</button>'; }).join("")+'</div>'+sol+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
 }
+/* ===== الأذان داخل التطبيق (لما التطبيق يكون مفتوح) ===== */
+var ADH_URL="assets/adhan/adhan.mp3", ADH_OK=null, ADH=null, ADH_PL={};
+function adhCheck(cb){ if(ADH_OK!==null){ if(cb) cb(ADH_OK); return; } try{ fetch(ADH_URL,{method:"HEAD",cache:"no-store"}).then(function(r){ ADH_OK=!!r.ok; if(cb) cb(ADH_OK); if(ADH_OK&&view==="set") renderAll(); }).catch(function(){ ADH_OK=false; }); }catch(e){ ADH_OK=false; } }
+function adhPlay(){ try{ if(!ADH) ADH=new Audio(ADH_URL); ADH.currentTime=0; var pr=ADH.play(); if(pr&&pr.catch) pr.catch(function(){ toast("دوس على ▶ علشان يشتغل الأذان"); }); }catch(e){} }
+function adhStop(){ try{ if(ADH){ ADH.pause(); ADH.currentTime=0; } }catch(e){} var b=document.getElementById("adhbar"); if(b) b.remove(); }
+function adhTick(){
+  if(document.hidden||S.prefs.adhan===false||ADH_OK!==true) return;
+  var L=lbLoc(), now=new Date(), tm=lbPray(now,L.lat,L.lng), cur=now.getHours()*60+now.getMinutes(), dk=todayKey();
+  [["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]].forEach(function(x){
+    var t=tm[x[0]]; if(isNaN(t)) return; var m=Math.round(t*60);
+    if(cur>=m&&cur<m+2&&ADH_PL[dk+x[0]]!==1){
+      ADH_PL[dk+x[0]]=1; if(document.getElementById("adhbar")) return;
+      var bar=document.createElement("div"); bar.id="adhbar"; bar.setAttribute("role","status");
+      bar.style.cssText="position:fixed;inset-inline:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:99999;background:#0B2C45;color:#fff;border:1px solid #F0BE3C;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,.45)";
+      bar.innerHTML='<b style="flex:1">🕌 حان وقت صلاة '+x[1]+'</b><button type="button" class="sm-gh" data-act="adhplay">▶</button><button type="button" class="sm-gh" data-act="adhstop">إيقاف</button>';
+      document.body.appendChild(bar); adhPlay(); if(ADH) ADH.onended=adhStop;
+    }
+  });
+}
+setInterval(adhTick,20000);
+function adhCard(){
+  if(ADH_OK!==true) return "";
+  var on=S.prefs.adhan!==false;
+  return '<section class="fx-card">'+stHead(SETI.palette,"الأذان")+'<p class="sub">بيأذّن من التطبيق وقت كل صلاة لو كان مفتوح. (لما يكون مقفول بيوصلك إشعار بس.)</p><div class="pch"><button type="button" data-act="adhtog" aria-pressed="'+on+'">'+(on?'✓ ':'')+'الأذان شغّال</button><button type="button" data-act="adhplay" aria-pressed="false">جرّب الصوت</button></div></section>';
+}
 function pushOff(){ var p=pushPrefs(), u=cmUser(); p.on=false; p.tok=""; persist(); if(u&&KS.fs) KS.fs.collection("push").doc(u.uid).set({tok:"",upd:Date.now()},{merge:true}).catch(function(){}); renderAll(); }
 setInterval(pushSync,60000); document.addEventListener("visibilitychange",function(){ if(!document.hidden) pushSync(); });
 function renderSet(){
@@ -5969,7 +5998,7 @@ function renderSet(){
   }).join("")+'</div></section>');
   h.push('<section class="fx-card">'+stHead(SETI.palette,"الأذكار والنوايا")+'<p class="sub">النية قبل التمرين، والأذكار، وتتبّع الصلاة، والحديث في الرئيسية. شغّالة عند الكل من الأول، وتقدر تقفلها لو مش عايزها.</p><button type="button" class="sm-gh wide" data-act="faith" role="switch" aria-checked="'+faithOn()+'"><span>'+(faithOn()?'مفعّلة ✓':'مقفولة')+'</span>'+(faithOn()?'اقفلها':'شغّلها')+'</button></section>');
   h.push('<section class="fx-card">'+stHead(SETI.palette,"بطاقة الأذكار والقرآن")+'<p class="sub">بطاقة في الرئيسية بتفكّرك بأذكار الصباح والمساء وبقراءة القرآن النهارده. بتظهر بس لو الأذكار مفعّلة.</p><button type="button" class="sm-gh wide" data-act="hfc" role="switch" aria-checked="'+(S.prefs.hfc!==false)+'"><span>'+(S.prefs.hfc!==false?'ظاهرة ✓':'مخفية')+'</span>'+(S.prefs.hfc!==false?'اخفيها':'اظهرها')+'</button></section>');
-  h.push(pushCard());
+  h.push(pushCard()); adhCheck(); h.push(adhCard());
   h.push(installCard());
   h.push('<section class="fx-card">'+stHead(SMI.db,"بياناتك")+'<p class="sub">ملف فيه كل تمارينك وأوزانك وقياساتك ووجباتك. بياناتك أصلًا محفوظة على حسابك، والملف للاحتياط بس.</p><button type="button" class="sm-gh wide" data-act="dljson"><span>'+SMI.down+'</span>نزّل ملف البيانات</button></section>');
   h.push(restoreCard().replace('<section class="card">','<section class="fx-card">'));

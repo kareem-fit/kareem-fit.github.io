@@ -15,7 +15,8 @@ const KINDS=[
  {k:"p",t:0,len:1440,title:"🏆 رقم قياسي جديد", ok:c=>c.d.pr===c.date, body:c=>"كسرت رقمك"+c.nm+"! كمّل كده 💪"},
  {k:"h",t:540,len:720,title:"🔥 شدّ حيلك", key:c=>c.date+"-"+Math.floor(c.mins/120), body:c=>QUOTES[(c.day+Math.floor(c.mins/120))%QUOTES.length]}
 ];
-const OPT_IN={h:true}; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
+const OPT_IN={h:true};
+const PRAYERS=[["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]]; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
 // دالة صافية: بتقرر مين ياخد إيه دلوقتي (عشان نقدر نختبرها)
 function decide(d,nowMs){
   const out=[]; if(!d||!d.tok) return out;
@@ -27,7 +28,17 @@ function decide(d,nowMs){
     const key=K.key?K.key(c):date; if(sent[K.k]===key) continue;
     if(K.ok&&!K.ok(c)) continue;
     out.push({k:K.k,date:key,title:K.title,body:K.body(c)});
-  } return out;
+  }
+  // تنبيه قبل الصلاة (الوقت بييجي من موبايل المستخدم في d.pt بالدقايق من نص الليل)
+  if(d.s!==false && d.pt){
+    for(const [id,nm] of PRAYERS){
+      const t=d.pt[id]; if(typeof t!=="number") continue;
+      const left=Math.round(t-mins); if(left<2||left>14) continue;
+      const k="s_"+id; if(sent[k]===date) continue;
+      out.push({k,date,title:"🕌 استعد لصلاة "+nm,body:"باقي "+left+" دقايق على أذان "+nm+"، جهّز نفسك للصلاة."});
+    }
+  }
+  return out;
 }
 module.exports={decide};
 if(require.main===module){
