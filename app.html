@@ -855,7 +855,7 @@ html body .seg2.three button[aria-pressed=true]{background:var(--t-accent);color
 .hx-pray .pray{padding:0}
 .hx-had{position:relative;display:flex;gap:12px;align-items:flex-start;border-radius:16px;border:1px solid #E0A82E;padding:14px 16px;background:linear-gradient(135deg,rgba(224,168,46,.10),var(--t-surface))}
 .hx-hb{flex:1;min-width:0}.hx-hb p{margin:6px 0 0;line-height:1.9;font-size:.98rem}
-.hx-rest{display:none}.hx-had.open .hx-rest{display:inline}.hx-had.open .hx-dots{display:none}
+.hx-hl{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}.hx-shi{width:28px;height:28px;border-radius:50%;border:1px solid var(--t-line);background:var(--t-bg);color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.hx-rest{display:none}.hx-had.open .hx-rest{display:inline}.hx-had.open .hx-dots{display:none}
 .hx-more{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--t-line);background:var(--t-bg);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
 .hx-had.open .hx-more{transform:rotate(180deg)}
 .hx-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -3186,7 +3186,7 @@ function renderAll(){
   updateProgress();
   ksMotion();
   d3coerce(); d3after(); /* KFIT-DESIGN-3 */
-  if(view==="home") setTimeout(wnMaybe,600);
+  if(view==="home") setTimeout(popMaybe,600);
 }
 
 /* ---------- rest timer ---------- */
@@ -3913,7 +3913,7 @@ function hxRemind(tk){
 }
 function hxHadith(){
   var a="المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف", b="، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.";
-  return '<section class="hx-had"><span class="hx-ico gold">'+HXI.star+'</span><div class="hx-hb"><h2>قوة تنفعك</h2>'+
+  return '<section class="hx-had"><div class="hx-hl"><span class="hx-ico gold">'+HXI.star+'</span><button type="button" class="hx-shi" data-act="hadsh" aria-label="مشاركة الحديث"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v6h14v-6"/></svg></button></div><div class="hx-hb"><h2>قوة تنفعك</h2>'+
     '<p>«'+a+'<span class="hx-dots">…</span><span class="hx-rest">'+b+'</span>»</p></div>'+
     '<button type="button" class="hx-more" data-hx="had" aria-expanded="false" aria-label="عرض باقي الحديث">'+HXI.down+'</button></section>';
 }
@@ -4792,7 +4792,11 @@ function cvWrap(x,txt,maxW){
 }
 function cvRRp(x,px,py,w,h,r){ x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r); x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath(); }
 var QSZ={story:{w:1080,h:1920,hs:1,k:1,mf:88,l:"ستوري"},post:{w:1080,h:1350,hs:1,k:1,mf:84,l:"بوست"},square:{w:1080,h:1080,hs:.85,k:.85,mf:72,l:"مربع"},wide:{w:1280,h:720,hs:.7,k:.72,mf:60,l:"عريض"}};
-var qtSize="story";
+var qtSize="story", STORYO=null;
+function storyFull(){ var u=lsGet(STORY_SRC); if(!u) return STORY; if(!STORYO||STORYO._s!==u){ STORYO=new Image(); STORYO._s=u; STORYO.onload=function(){ if(document.getElementById("qtimg")) qtPaint(); }; STORYO.src=u; } return (STORYO.complete&&STORYO.naturalWidth)?STORYO:STORY; }
+function qtBI(){ var bgm=S.share.bg||"default"; if(bgm==="mine"&&hasStory()) return storyFull(); if(bgm!=="none"&&HERO.complete&&HERO.naturalWidth) return HERO; return null; }
+function qtQP(){ var q=S.share.qp||(S.share.qp={x:.5,y:.25,z:1}); return q; }
+function qtGeo(BI,W,H){ var q=qtQP(), z=Math.max(1,Math.min(3,q.z||1)), sc=Math.max(W/BI.naturalWidth,H/BI.naturalHeight)*z, iw=BI.naturalWidth*sc, ih=BI.naturalHeight*sc; return {iw:iw,ih:ih,px:(W-iw)*(q.x==null?.5:q.x),py:(H-ih)*(q.y==null?.25:q.y)}; }
 function cvPromoAt(x,px,py,w,k){
   var ww=w/k, h=190;
   x.save(); x.translate(px,py); x.scale(k,k);
@@ -4811,9 +4815,9 @@ function drawQuote(txt,logo,sz){
   var x=c.getContext("2d");
   x.fillStyle=cvGr(x,0,0,0,H,[[0,"#06182A"],[.45,"#0B2C45"],[1,"#051524"]]); x.fillRect(0,0,W,H);
   var bgm=S.share.bg||"default", BI=null;
-  if(bgm==="mine" && hasStory()) BI=STORY; else if(bgm!=="none" && HERO.complete && HERO.naturalWidth) BI=HERO;
-  if(BI){ var sc=Math.max(W/BI.naturalWidth,H*0.62/BI.naturalHeight); x.drawImage(BI,(W-BI.naturalWidth*sc)/2,0,BI.naturalWidth*sc,BI.naturalHeight*sc); }
-  var oa=(BI===STORY)?[.12,.58,.88]:[.55,.86,.96];
+  BI=qtBI();
+  if(BI){ var g0=qtGeo(BI,W,H); x.drawImage(BI,g0.px,g0.py,g0.iw,g0.ih); }
+  var oa=(bgm==="mine")?[.10,.50,.74]:[.45,.72,.88];
   x.fillStyle=cvGr(x,0,0,0,H,[[0,"rgba(5,20,36,"+oa[0]+")"],[.38,"rgba(6,24,42,"+oa[1]+")"],[.62,"rgba(6,24,42,"+oa[2]+")"],[1,"#051524"]]); x.fillRect(0,0,W,H);
   var gl=x.createRadialGradient(W/2,H*.5,10,W/2,H*.5,Math.max(W,H)*.45); gl.addColorStop(0,"rgba(255,110,40,.20)"); gl.addColorStop(1,"rgba(255,110,40,0)"); x.fillStyle=gl; x.fillRect(0,0,W,H);
   x.strokeStyle="rgba(255,122,63,.38)"; x.lineWidth=3; cvPath(x,24,24,W-48,H-48,46); x.stroke();
@@ -4844,28 +4848,50 @@ function drawQuote(txt,logo,sz){
   return c;
 }
 var qtCanvas=null, qtTxt="", qtLg=null;
-function qtPaint(){
+function qtPaint(fast){
   try{ qtCanvas=drawQuote(qtTxt,qtLg,qtSize); }catch(e){ toast("حصلت مشكلة في الصورة"); return; }
-  var im=document.getElementById("qtimg"); if(im) im.src=qtCanvas.toDataURL("image/png");
+  var im=document.getElementById("qtimg"); if(im) im.src=fast===true?qtCanvas.toDataURL("image/jpeg",.6):qtCanvas.toDataURL("image/png");
+  var adj=document.getElementById("qtadj");
+  if(adj&&fast!==true){ var okb=!!qtBI(), q=qtQP();
+    adj.innerHTML=(hasStory()?'<label class="sm-chg">تغيير صورتي<input type="file" id="sbg-file" accept="image/*"></label>':'')+(okb?'<span class="qth">اسحب الصورة بصباعك لتحريكها</span><label class="qtz2">تكبير<input type="range" id="qtzoom" min="100" max="300" value="'+Math.round((q.z||1)*100)+'"></label><button type="button" class="sm-chg" data-act="qtreset">إعادة</button>':'');
+  }
   var bgr=document.getElementById("qtbg");
-  if(bgr){ var cb=S.share.bg||"default", ok=hasStory();
+  if(bgr&&fast!==true){ var cb=S.share.bg||"default", ok=hasStory();
     function qb(v,l){ return '<button type="button" data-act="sbg" data-v="'+v+'" aria-pressed="'+(cb===v)+'">'+l+'</button>'; }
     bgr.innerHTML=qb("default","الافتراضية")+qb("none","بدون صورة")+(ok?qb("mine","صورتي"):'<label class="sm-up">صورتي<input type="file" id="sbg-file" accept="image/*"></label>');
   }
   var bs=document.querySelectorAll("#qtm [data-act='qtsz']"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed",String(bs[i].getAttribute("data-v")===qtSize));
 }
 var qtHdr="";
-function openQuoteShare(ov){
-  qtHdr=ov?"إنجازي":"";
+function openQuoteShare(ov,hdr){
+  qtHdr=hdr||(ov?"إنجازي":"");
   var txt=ov||todayMsgText(); if(!txt){ toast("مفيش رسالة النهارده"); return; }
   withFonts(function(){ qtLogo(function(logo){
     qtTxt=txt; qtLg=logo;
     var m=document.getElementById("qtm"); if(m) m.remove();
     m=document.createElement("div"); m.id="qtm"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","مشاركة رسالة اليوم");
     var seg=Object.keys(QSZ).map(function(n){ return '<button type="button" data-act="qtsz" data-v="'+n+'" aria-pressed="'+(n===qtSize)+'">'+QSZ[n].l+'</button>'; }).join("");
-    m.innerHTML='<div class="qtb"><div class="seg2 qtz">'+seg+'</div><div class="qtbgh">خلفية الصورة</div><div class="seg2 three" id="qtbg"></div><div class="qtimgw"><img id="qtimg" alt="رسالة اليوم"></div><div class="qtr"><button type="button" class="btn" data-act="qtgo">مشاركة</button><button type="button" class="btn ghost" data-act="qtdl">تحميل الصورة</button><button type="button" class="btn ghost" data-act="qtx">إغلاق</button></div></div>';
-    document.body.appendChild(m); qtPaint();
+    m.innerHTML='<div class="qtb"><div class="seg2 qtz">'+seg+'</div><div class="qtbgh">خلفية الصورة</div><div class="seg2 three" id="qtbg"></div><style>#qtm .qtadj{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.8rem}#qtm .qth{opacity:.75;flex:1 1 100%}#qtm .qtz2{display:flex;align-items:center;gap:6px;flex:1}#qtm .qtz2 input{flex:1}#qtimg{touch-action:none;cursor:grab}</style><div class="qtadj" id="qtadj"></div><div class="qtimgw"><img id="qtimg" alt="رسالة اليوم" draggable="false"></div><div class="qtr"><button type="button" class="btn" data-act="qtgo">مشاركة</button><button type="button" class="btn ghost" data-act="qtdl">تحميل الصورة</button><button type="button" class="btn ghost" data-act="qtx">إغلاق</button></div></div>';
+    document.body.appendChild(m); qtPaint(); qtBind(m);
   }); });
+}
+var qtRaf=0;
+function qtBind(m){
+  var im=m.querySelector("#qtimg"), drag=null;
+  function again(){ if(qtRaf) return; qtRaf=requestAnimationFrame(function(){ qtRaf=0; qtPaint(true); }); }
+  im.addEventListener("pointerdown",function(e){ if(!qtBI()) return; drag={x:e.clientX,y:e.clientY}; try{ im.setPointerCapture(e.pointerId); }catch(x){} });
+  im.addEventListener("pointermove",function(e){
+    if(!drag) return; var BI=qtBI(); if(!BI) return; var Z=QSZ[qtSize]||QSZ.story, g=qtGeo(BI,Z.w,Z.h), q=qtQP(), r=im.getBoundingClientRect();
+    var dx=(e.clientX-drag.x)*(Z.w/r.width), dy=(e.clientY-drag.y)*(Z.h/r.height); drag.x=e.clientX; drag.y=e.clientY;
+    var rx=Z.w-g.iw, ry=Z.h-g.ih;
+    if(rx<-1) q.x=Math.max(0,Math.min(1,(q.x==null?.5:q.x)+dx/rx));
+    if(ry<-1) q.y=Math.max(0,Math.min(1,(q.y==null?.25:q.y)+dy/ry));
+    again();
+  });
+  function end(){ if(!drag) return; drag=null; persist(); qtPaint(); }
+  im.addEventListener("pointerup",end); im.addEventListener("pointercancel",end);
+  m.addEventListener("input",function(e){ if(e.target&&e.target.id==="qtzoom"){ qtQP().z=(+e.target.value)/100; again(); } });
+  m.addEventListener("change",function(e){ if(e.target&&e.target.id==="qtzoom"){ persist(); qtPaint(); } });
 }
 function withFonts(fn){
   try{
@@ -5226,8 +5252,12 @@ document.addEventListener("click", function(ev){
   }
   else if(a==="codeoff"){ S.override=null; initDay(); persist(); renderAll(); toast("رجع البرنامج الأصلي"); }
   else if(a==="shareqt"){ openQuoteShare(); }
+  else if(a==="hadsh"){ openQuoteShare("المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.","قوة تنفعك"); }
   else if(a==="fshare"){ var st2=fStreak(); if(st2>0) openQuoteShare(st2.toLocaleString("ar-EG")+(st2===1?" يوم":st2===2?" يومين":st2<=10?" أيام":" يوم")+" ورا بعض على أذكاري وقراءة القرآن، والحمد لله. ابدأ إنت كمان."); }
   else if(a==="bkdl"){ bkDownload(); }
+  else if(a==="pnyes"){ var pn=document.getElementById("pnm"); if(pn) pn.remove(); S.prefs.pnAt=Date.now(); persist(); pushEnable(); }
+  else if(a==="pnlater"){ var pn2=document.getElementById("pnm"); if(pn2) pn2.remove(); S.prefs.pnAt=Date.now(); persist(); }
+  else if(a==="tpok"||a==="tpgo"){ var tp=document.getElementById("tpm"); if(tp) tp.remove(); S.prefs.tipAt=Date.now(); S.prefs.tipI=(S.prefs.tipI||0)+1; persist(); if(a==="tpgo"){ view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); } }
   else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w2"; persist(); }
   else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w2"; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); if(view==="set") setTimeout(function(){ var pc=document.querySelector("[data-act=pushon],#push-card"); if(pc) pc.scrollIntoView({block:"center"}); },80); }
   else if(a==="qtgo"){ if(qtCanvas) shareOut(qtCanvas,"رسالة-اليوم-"+todayKey()+".png"); }
@@ -5266,6 +5296,7 @@ document.addEventListener("click", function(ev){
   else if(a==="fs"){ if(window.__setFs) window.__setFs(b.getAttribute("data-v")); renderAll(); }
   else if(a==="theme"){ if(window.__setTheme) window.__setTheme(b.getAttribute("data-t")); renderAll(); }
   else if(a==="sbgedit"){ editStory(); }
+  else if(a==="qtreset"){ S.share.qp={x:.5,y:.25,z:1}; persist(); qtPaint(); }
   else if(a==="meedit"){ editMe(); }
   else if(a==="fxm"){ fxMO=!fxMO; renderAll(); }
   else if(a==="fxfav"){ fxFav=!fxFav; renderAll(); }
@@ -5438,7 +5469,7 @@ function setStory(file){
       c.getContext("2d").drawImage(im,0,0,c.width,c.height);
       var d=c.toDataURL("image/jpeg",0.85);
       try{ localStorage.setItem(STORY_KEY,d); }catch(e){}
-      S.share.bg="mine"; persist(); STORY.src=d; renderAll(); toast("اتحطّت صورتك في الستوري");
+      S.share.bg="mine"; S.share.qp={x:.5,y:.25,z:1}; try{ localStorage.removeItem(STORY_SRC); }catch(e){} persist(); STORY.src=d; renderAll(); if(document.getElementById("qtm")) setTimeout(function(){ qtPaint(); },60); toast("اتحطّت صورتك في الستوري");
     };
     im.onerror=function(){ toast("الصورة دي مش مدعومة"); };
     im.src=String(rd.result);
@@ -5805,6 +5836,43 @@ function bkRestore(file){
   r.onerror=function(){ toast("ماقدرتش أقرا الملف"); };
   r.readAsText(file);
 }
+/* ===== نوافذ دورية: طلب الإشعارات + نصايح اكتشاف ===== */
+function pnDue(){
+  try{
+    if(!S.welcomed||!("Notification" in window)||!("serviceWorker" in navigator)) return false;
+    if(Notification.permission==="denied"||pushPrefs().on||!cmUser()) return false;
+    return !S.prefs.pnAt||(Date.now()-S.prefs.pnAt>3*864e5);
+  }catch(e){ return false; }
+}
+function popMaybe(){
+  if(view!=="home"||document.querySelector("#pnm,#wnm,#tpm")) return;
+  if(pnMaybe()) return;
+  wnMaybe(); if(document.getElementById("wnm")) return;
+  tipMaybe();
+}
+function pnMaybe(){
+  if(!pnDue()) return false;
+  var m=document.createElement("div"); m.id="pnm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","تفعيل الإشعارات");
+  m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>🔔 فعّل الإشعارات</h3><p class="sub" style="text-align:center;line-height:1.9">علشان نفكّرك بالأذكار وتمرينك، ونشجّعك، وننبّهك قبل الصلاة. تقدر تقفل أي نوع منها أو كلها من الإعدادات في أي وقت.</p><button type="button" class="btn" data-act="pnyes">فعّل الإشعارات</button><button type="button" class="sm-gh wide" data-act="pnlater">مش دلوقتي</button></div>';
+  document.body.appendChild(m); return true;
+}
+var POPTIPS=[
+ ["👥","المجتمع","شارك إنجازك مع الناس، وشوف رسائل زمايلك وشجّعهم. هتلاقيه تحت في «المزيد».","comm","افتح المجتمع"],
+ ["📖","القرآن والعبادات","المصحف كامل بالتلاوة، وأذكار الصباح والمساء والنوم، ومواقيت الصلاة والقبلة في مكان واحد.","ibd","افتح"],
+ ["📊","الملخص","شوف إنجازك في الأسبوع والشهر، وشاركه ستوري بضغطة.","share","شوف ملخصي"],
+ ["🗓️","رتّب تمرينك بنفسك","اختار تمرين كل يوم وغيّر برنامجك براحتك، من صفحة التمرين.","train","جرّب"],
+ ["⋯","«المزيد» فيه حاجات كتير","فيه سجل تمارينك، والجسم والقياسات، والأكل، والإعدادات. دوس «المزيد» وشوف كله.","",""],
+ ["🔥","سلسلة أيامك","اتمرّن يوم ورا يوم وما تكسرش السلسلة. الإشعارات هتفكّرك قبل ما اليوم يخلص.","set","الإعدادات"]
+];
+function tipMaybe(){
+  if(!S.welcomed||!S.prefs||S.prefs.wn!=="w2") return;
+  if(!S.prefs.tipAt){ S.prefs.tipAt=Date.now(); persist(); return; }
+  if(Date.now()-S.prefs.tipAt<2*864e5) return;
+  var i=(S.prefs.tipI||0)%POPTIPS.length, t=POPTIPS[i];
+  var m=document.createElement("div"); m.id="tpm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","نصيحة");
+  m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>'+t[0]+' '+t[1]+'</h3><p class="sub" style="text-align:center;line-height:1.9">'+t[2]+'</p>'+(t[3]?'<button type="button" class="btn" data-act="tpgo" data-v="'+t[3]+'">'+t[4]+'</button><button type="button" class="sm-gh wide" data-act="tpok">تمام</button>':'<button type="button" class="btn" data-act="tpok">تمام</button>')+'</div>';
+  document.body.appendChild(m);
+}
 function wnMaybe(){
   if(view!=="home"||!S.welcomed||(S.prefs&&S.prefs.wn==="w2")||document.getElementById("wnm")) return;
   var m=document.createElement("div"); m.id="wnm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","جديد في التطبيق");
@@ -5812,7 +5880,7 @@ function wnMaybe(){
   m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>جديد في Kareem-Fit</h3>'+
     it("🔔","إشعارات جديدة","تفكير بالأذكار والتمرين، وتشجيع لما تغيب، وتنبيه بأرقامك القياسية. فعّلها من الإعدادات وتقدر تقفل أي نوع","set","فعّل")+
     it("📖","المصحف كامل","آية بآية أو صفحات المصحف، بالتلاوة وبدون نت","ibd","افتح")+
-    it("🗓️","رتّب تمرينك بنفسك","اختار تمرين كل يوم، وشوف شريط أسبوعك","trn","جرّب")+
+    it("🗓️","رتّب تمرينك بنفسك","اختار تمرين كل يوم، وشوف شريط أسبوعك","train","جرّب")+
     '<button type="button" class="btn" data-act="wnok">تمام، ابدأ</button></div>';
   document.body.appendChild(m);
 }
