@@ -36,9 +36,9 @@ function decide(d,nowMs){
   if(d.s!==false && d.pt){
     for(const [id,nm] of PRAYERS){
       const t=d.pt[id]; if(typeof t!=="number") continue;
-      const left=Math.round(t-mins); if(left<2||left>14) continue;
-      const k="s_"+id; if(sent[k]===date) continue;
-      out.push({k,date,title:"🕌 استعد لصلاة "+nm,body:"باقي "+left+" دقايق على أذان "+nm+"، جهّز نفسك للصلاة."});
+      const left=Math.round(t-mins);
+      if(left>=2&&left<=14){ const k="s_"+id; if(!sent[k]||sent[k]!==date) out.push({k,date,ttl:Math.max(60,left*60),title:"🕌 استعد لصلاة "+nm,body:"باقي "+left+" دقايق على أذان "+nm+"، جهّز نفسك للصلاة."}); }
+      else if(left>=-4&&left<=1){ const k="t_"+id; if(sent[k]!==date) out.push({k,date,ttl:900,title:"🕌 حان وقت صلاة "+nm,body:"حان الآن موعد صلاة "+nm+". الصلاة في وقتها أحسن 🤍"}); }
     }
   }
   return out;
@@ -54,7 +54,7 @@ if(require.main===module){
       const d=doc.data(), list=decide(d,Date.now());
       for(const m of list){
         try{
-          await admin.messaging().send({token:d.tok,data:{title:m.title,body:m.body,url:"./app.html",tag:m.k},webpush:{headers:{Urgency:"high",TTL:"7200"}}});
+          await admin.messaging().send({token:d.tok,data:{title:m.title,body:m.body,url:"./app.html",tag:m.k},webpush:{headers:{Urgency:"high",TTL:String(m.ttl||7200)}}});
           await doc.ref.set({sent:{[m.k]:m.date}},{merge:true}); sentN++;
         }catch(e){
           console.log("fail",doc.id,m.k,e.code||e.message);
