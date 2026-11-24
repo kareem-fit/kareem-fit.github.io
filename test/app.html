@@ -5230,8 +5230,8 @@ document.addEventListener("click", function(ev){
   else if(a==="shareqt"){ openQuoteShare(); }
   else if(a==="fshare"){ var st2=fStreak(); if(st2>0) openQuoteShare(st2.toLocaleString("ar-EG")+(st2===1?" يوم":st2===2?" يومين":st2<=10?" أيام":" يوم")+" ورا بعض على أذكاري وقراءة القرآن، والحمد لله. ابدأ إنت كمان."); }
   else if(a==="bkdl"){ bkDownload(); }
-  else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w1"; persist(); }
-  else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w1"; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); }
+  else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w2"; persist(); }
+  else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w2"; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); if(view==="set") setTimeout(function(){ var pc=document.querySelector("[data-act=pushon],#push-card"); if(pc) pc.scrollIntoView({block:"center"}); },80); }
   else if(a==="qtgo"){ if(qtCanvas) shareOut(qtCanvas,"رسالة-اليوم-"+todayKey()+".png"); }
   else if(a==="qtdl"){ if(qtCanvas) qtCanvas.toBlob(function(bl){ if(bl) saveFile("رسالة-اليوم-"+todayKey()+".png",bl,"اتنزّلت الصورة"); },"image/png"); }
   else if(a==="qtsz"){ qtSize=b.getAttribute("data-v")||"story"; qtPaint(); }
@@ -5808,14 +5808,13 @@ function bkRestore(file){
   r.readAsText(file);
 }
 function wnMaybe(){
-  if(view!=="home"||!S.welcomed||(S.prefs&&S.prefs.wn)||document.getElementById("wnm")) return;
+  if(view!=="home"||!S.welcomed||(S.prefs&&S.prefs.wn==="w2")||document.getElementById("wnm")) return;
   var m=document.createElement("div"); m.id="wnm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","جديد في التطبيق");
   function it(ic,t,d,v,l){ return '<div class="wn-i"><span class="wn-ic">'+ic+'</span><span class="wn-t"><b>'+t+'</b><small>'+d+'</small></span>'+(v?'<button type="button" class="sm-gh" data-act="wngo" data-v="'+v+'">'+l+'</button>':'')+'</div>'; }
   m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>جديد في Kareem-Fit</h3>'+
+    it("🔔","إشعارات جديدة","تفكير بالأذكار والتمرين، وتشجيع لما تغيب، وتنبيه بأرقامك القياسية. فعّلها من الإعدادات وتقدر تقفل أي نوع","set","فعّل")+
     it("📖","المصحف كامل","آية بآية أو صفحات المصحف، بالتلاوة وبدون نت","ibd","افتح")+
-    it("☀️","أذكار الصباح والمساء والنوم","مع عدّاد وبطاقة «عبادتك النهارده» وسلسلة أيامك","home","")+
     it("🗓️","رتّب تمرينك بنفسك","اختار تمرين كل يوم، وشوف شريط أسبوعك","trn","جرّب")+
-    it("💾","نسخة احتياطية","احفظ بياناتك وارجّعها من الإعدادات","set","شوف")+
     '<button type="button" class="btn" data-act="wnok">تمام، ابدأ</button></div>';
   document.body.appendChild(m);
 }
