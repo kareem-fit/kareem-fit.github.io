@@ -855,7 +855,7 @@ html body .seg2.three button[aria-pressed=true]{background:var(--t-accent);color
 .hx-pray .pray{padding:0}
 .hx-had{position:relative;display:flex;gap:12px;align-items:flex-start;border-radius:16px;border:1px solid #E0A82E;padding:14px 16px;background:linear-gradient(135deg,rgba(224,168,46,.10),var(--t-surface))}
 .hx-hb{flex:1;min-width:0}.hx-hb p{margin:6px 0 0;line-height:1.9;font-size:.98rem}
-.hx-hl{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}.hx-shi{width:28px;height:28px;border-radius:50%;border:1px solid var(--t-line);background:var(--t-bg);color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.hx-rest{display:none}.hx-had.open .hx-rest{display:inline}.hx-had.open .hx-dots{display:none}
+.hx-hl{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}.hx-shi{width:28px;height:28px;border-radius:50%;border:1px solid var(--t-line);background:var(--t-bg);color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.hx-src{opacity:.7}.hx-rest{display:none}.hx-had.open .hx-rest{display:inline}.hx-had.open .hx-dots{display:none}
 .hx-more{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--t-line);background:var(--t-bg);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
 .hx-had.open .hx-more{transform:rotate(180deg)}
 .hx-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -3911,9 +3911,17 @@ function hxRemind(tk){
   if(!rows.length) return "";
   return '<section class="hx-msg bk hx-rem" aria-label="تذكير"><div class="hx-mh"><h2>تذكير سريع</h2><span class="hx-mi">'+HXI.bulb+'</span></div>'+rows.join("")+'<button type="button" class="rl" data-hx="remlater" data-d="'+tk+'">بعدين</button></section>';
 }
+var HAD0="المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.";
+var HADS=[{t:HAD0,s:""}];
+function hadCur(){ var w=Math.floor((Date.now()+3*864e5)/(7*864e5)); return HADS[w%HADS.length]||HADS[0]; }
+function hadLoad(){ try{ fetch("hadith.json",{cache:"no-cache"}).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(Array.isArray(j)){ var a=j.filter(function(x){ return x&&typeof x.t==="string"&&x.t.trim(); }); if(a.length){ HADS=a; if(view==="home") renderAll(); } } }).catch(function(){}); }catch(e){} }
+function hadShare(){ var h=hadCur(); openQuoteShare(h.t+(h.s?" ("+h.s+")":""),h.t===HAD0?"قوة تنفعك":"حديث الأسبوع"); }
 function hxHadith(){
-  var a="المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف", b="، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.";
-  return '<section class="hx-had"><div class="hx-hl"><span class="hx-ico gold">'+HXI.star+'</span><button type="button" class="hx-shi" data-act="hadsh" aria-label="مشاركة الحديث"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v6h14v-6"/></svg></button></div><div class="hx-hb"><h2>قوة تنفعك</h2>'+
+  var h=hadCur(), a, b;
+  if(h.t===HAD0){ a="المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف"; b="، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز."; }
+  else { var w=h.t.trim().split(/\s+/); a=esc(w.slice(0,9).join(" ")); b=w.length>9?" "+esc(w.slice(9).join(" ")):""; }
+  if(h.s) b+=' <small class="hx-src">— '+esc(h.s)+'</small>';
+  return '<section class="hx-had"><div class="hx-hl"><span class="hx-ico gold">'+HXI.star+'</span><button type="button" class="hx-shi" data-act="hadsh" aria-label="مشاركة الحديث"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v6h14v-6"/></svg></button></div><div class="hx-hb"><h2>'+(h.t===HAD0?"قوة تنفعك":"حديث الأسبوع")+'</h2>'+
     '<p>«'+a+'<span class="hx-dots">…</span><span class="hx-rest">'+b+'</span>»</p></div>'+
     '<button type="button" class="hx-more" data-hx="had" aria-expanded="false" aria-label="عرض باقي الحديث">'+HXI.down+'</button></section>';
 }
@@ -5252,7 +5260,7 @@ document.addEventListener("click", function(ev){
   }
   else if(a==="codeoff"){ S.override=null; initDay(); persist(); renderAll(); toast("رجع البرنامج الأصلي"); }
   else if(a==="shareqt"){ openQuoteShare(); }
-  else if(a==="hadsh"){ openQuoteShare("المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير. احرص على ما ينفعك، واستعن بالله ولا تعجز.","قوة تنفعك"); }
+  else if(a==="hadsh"){ hadShare(); }
   else if(a==="fshare"){ var st2=fStreak(); if(st2>0) openQuoteShare(st2.toLocaleString("ar-EG")+(st2===1?" يوم":st2===2?" يومين":st2<=10?" أيام":" يوم")+" ورا بعض على أذكاري وقراءة القرآن، والحمد لله. ابدأ إنت كمان."); }
   else if(a==="bkdl"){ bkDownload(); }
   else if(a==="pnyes"){ var pn=document.getElementById("pnm"); if(pn) pn.remove(); S.prefs.pnAt=Date.now(); persist(); pushEnable(); }
@@ -5905,7 +5913,7 @@ function renderTrn(){
 /* ===== الإشعارات ===== */
 function pushPrefs(){ if(!S.prefs.push) S.prefs.push={on:false,m:true,e:true,w:true,q:true}; return S.prefs.push; }
 function pushLoad(){ return new Promise(function(res,rej){ if(window.firebase&&firebase.messaging) return res(); var sc=document.createElement("script"); sc.src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"; sc.onload=function(){res();}; sc.onerror=function(){rej(new Error("load"));}; document.head.appendChild(sc); }); }
-var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","قبل الصلاة بـ 10 دقايق"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
+var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","قبل الصلاة بـ 10 دقايق"],["f","نصايح وتشجيع"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
 function pushSync(){
   var p=pushPrefs(), u=cmUser(); if(!p.on||!p.tok||!u||!KS.fs) return;
   var rest=[]; for(var d=0;d<7;d++){ var it=null; for(var i=0;i<DAYS.length;i++){ if(DAYS[i].dow===d) it=DAYS[i]; } rest.push(!it||!!it.rest); }
@@ -7770,6 +7778,7 @@ function lbInsights(){
 
 function lbMuscTab(){ return lbInsights()+lbMuscTab0(); }
 
+hadLoad();
 renderAll();
 initCloud();
 })();

@@ -9,12 +9,15 @@ const KINDS=[
  {k:"g",t:600, title:"🏟️ اشتراك الجيم", ok:c=>{ if(!c.d.gym) return false; const l=diff(c.d.gym,c.date); c.gl=l; return l===3||l===1||l===0; }, body:c=>c.gl===0?"اشتراك الجيم بيخلص النهارده، جدّده.":"اشتراك الجيم فاضل عليه "+(c.gl===1?"يوم واحد":"٣ أيام")+"."},
  {k:"q",t:750, title:"💬 رسالة اليوم", body:c=>QUOTES[c.day%QUOTES.length]},
  {k:"w",t:990, title:"🏋️ تمرين النهارده", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>"تمرين النهارده مستنيك"+c.nm+". ابدأ قبل ما اليوم يخلص 💪"},
+ {k:"f",t:870,title:c=>c.day%2===0?"💡 هل تعرف؟":"💪 تشجيع", body:c=>c.day%2===0?TIPSF[Math.floor(c.day/2)%TIPSF.length]:ENC[Math.floor(c.day/2)%ENC.length]},
  {k:"e",t:1110,len:90,title:"🌙 أذكار المساء", body:c=>"أذكار المساء"+c.nm+"، ما تنساهاش."},
  {k:"r",t:1200,title:"⏰ لسه فيه وقت", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>(c.d.streak>=3?"سلسلتك "+c.d.streak+" أيام 🔥 ما تكسرهاش النهارده":"لسه فيه وقت")+"، 20 دقيقة تكفي."},
  {k:"c",t:1260,title:"🎉 عاش يا بطل", ok:c=>!c.restToday&&c.d.trained===c.date, body:c=>"خلّصت تمرين النهارده"+c.nm+(c.d.streak>=2?"، وسلسلتك "+c.d.streak+" أيام 🔥":"")+". ارتاح وكُل كويس."},
  {k:"p",t:0,len:1440,title:"🏆 رقم قياسي جديد", ok:c=>c.d.pr===c.date, body:c=>"كسرت رقمك"+c.nm+"! كمّل كده 💪"},
  {k:"h",t:540,len:720,title:"🔥 شدّ حيلك", key:c=>c.date+"-"+Math.floor(c.mins/120), body:c=>QUOTES[(c.day+Math.floor(c.mins/120))%QUOTES.length]}
 ];
+const TIPSF=["جرّبت «المجتمع» في التطبيق؟ شارك إنجازك وشجّع زمايلك 👥","فيه مصحف كامل بالتلاوة جوه التطبيق. افتح «القرآن والعبادات» 📖","افتح «الملخص» وشوف إنجازك في الأسبوع وشاركه ستوري 📊","من «المزيد» هتلاقي السجل والجسم والأكل والإعدادات. لف فيه وشوف 👀","رتّب تمرينك بنفسك: اختار تمرين كل يوم من صفحة التمرين 🗓️","سجّل وزنك وقياساتك من «الجسم» وشوف تقدمك بالأرقام 📏","عدّاد الأذكار والسلسلة في «القرآن والعبادات». كمّل سلسلتك 🔥"];
+const ENC=["كل تمرين بتعمله النهارده بيفرق معاك بعد شهر. كمّل 💪","مش لازم تمرين كامل. 15 دقيقة أحسن من صفر.","الانضباط أهم من الحماس. اللي بيكمّل هو اللي بيوصل.","افتكر ليه بدأت. النهارده خطوة جديدة.","جسمك بيشكرك على كل مرة بتتحرك فيها 🙏","الأيام الصعبة هي اللي بتبني الأبطال.","ما تقارنش نفسك بحد. قارن نفسك بنفسك من أسبوع."];
 const OPT_IN={h:true};
 const PRAYERS=[["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]]; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
 // دالة صافية: بتقرر مين ياخد إيه دلوقتي (عشان نقدر نختبرها)
@@ -27,7 +30,7 @@ function decide(d,nowMs){
     const len=K.len||120; if(mins<K.t||mins>=K.t+len) continue;
     const key=K.key?K.key(c):date; if(sent[K.k]===key) continue;
     if(K.ok&&!K.ok(c)) continue;
-    out.push({k:K.k,date:key,title:K.title,body:K.body(c)});
+    out.push({k:K.k,date:key,title:typeof K.title==="function"?K.title(c):K.title,body:K.body(c)});
   }
   // تنبيه قبل الصلاة (الوقت بييجي من موبايل المستخدم في d.pt بالدقايق من نص الليل)
   if(d.s!==false && d.pt){
