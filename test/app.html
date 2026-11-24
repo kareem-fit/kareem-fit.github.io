@@ -4050,8 +4050,20 @@ function qdlOne(n,done){
   var r=RECITER, key="a:"+r.id+":"+n;
   return fetch(r.u(n)).then(function(res){ if(!res.ok) throw 0; return res.blob(); }).then(function(b){ if(!b||b.size<20000) throw 0; return kvSet(key,b); }).then(function(){ QDL.keys[key]=1; });
 }
+/* KFIT-AUTOSAVE: أي سورة بتتسمع بالنت بتتحفظ لوحدها (مرة واحدة، بدون ما تشغّل تحميل) */
+function qdlAuto(n,rc){
+  var key="a:"+rc.id+":"+n;
+  if(QDL.keys[key]||QDL.busy) return;
+  try{ if(navigator.connection&&navigator.connection.saveData) return; }catch(e){}
+  QDL.auto=QDL.auto||{}; if(QDL.auto[key]) return; QDL.auto[key]=1;
+  try{ navigator.storage&&navigator.storage.persist&&navigator.storage.persist(); }catch(e){}
+  fetch(rc.u(n)).then(function(res){ if(!res.ok) throw 0; return res.blob(); }).then(function(b){ if(!b||b.size<20000) throw 0; return kvSet(key,b); })
+  .then(function(){ QDL.keys[key]=1; delete QDL.auto[key]; toast("السورة اتحفظت على موبايلك وهتشتغل من غير نت ✓"); qdlPaint(); })
+  .catch(function(){ delete QDL.auto[key]; });
+}
 function qdlSura(n){
-  if(QDL.busy) return; QDL.busy=true; QDL.cancel=false; QDL.cur=n; QDL.done=0; QDL.total=1; QDL.msg="بينزّل سورة "+(QD.idx?QD.idx[n-1][1]:n)+"…"; qdlPaint();
+  if(QDL.busy) return;
+  if(QDL.auto&&QDL.auto["a:"+RECITER.id+":"+n]){ toast("السورة دي بتتحفظ لوحدها وانت بتسمع"); return; } QDL.busy=true; QDL.cancel=false; QDL.cur=n; QDL.done=0; QDL.total=1; QDL.msg="بينزّل سورة "+(QD.idx?QD.idx[n-1][1]:n)+"…"; qdlPaint();
   try{ navigator.storage&&navigator.storage.persist&&navigator.storage.persist(); }catch(e){}
   qdlOne(n).then(function(){ toast("اتحمّلت ✓"); }).catch(function(){ toast("ماقدرتش أنزّلها. جرّب تاني أو اتأكد من النت والمساحة."); }).then(function(){ QDL.busy=false; QDL.cur=0; QDL.msg=""; qdlPaint(); });
 }
@@ -4171,7 +4183,7 @@ function renderQdl(){
   var h='<div class="fx ib"><div class="ad-top"><button type="button" class="sm-gh" data-act="ibback">رجوع</button><h2>التحميل بدون نت</h2></div>'+
    '<div class="q-card"><h3>📖 نص المصحف</h3><p>النص كله صغير (حوالي ٢ ميجا). حمّله مرة واحدة والمصحف يشتغل من غير نت ويفتح أسرع.</p>'+
    (txt?'<div class="q-ok">✓ النص متحمّل ومتاح من غير نت</div>':'<button type="button" class="btn" data-act="qdlt"'+(bz?' disabled':'')+'>نزّل نص المصحف كله</button>')+'</div>'+
-   '<div class="q-card"><h3>🎧 التلاوة</h3><p>التلاوة بتتحمّل لكل قارئ لوحده. السورة الواحدة من ٢ لـ ٣٠ ميجا، والقرآن كله بيوصل لـ ٦٠٠ ميجا أو أكتر. يفضّل تنزّل على الواي فاي.</p>'+
+   '<div class="q-card"><h3>🎧 التلاوة</h3><p>التلاوة بتتحمّل لكل قارئ لوحده. السورة الواحدة من ٢ لـ ٣٠ ميجا، والقرآن كله بيوصل لـ ٦٠٠ ميجا أو أكتر. يفضّل تنزّل على الواي فاي. ومش لازم تنزّل حاجة: أي سورة بتسمعها بالنت بتتحفظ لوحدها وتشتغل بعد كده من غير نت.</p>'+
    '<button type="button" class="ib-row q-rc" data-act="qrcs"><span class="ib-ic">🎙️</span><span class="ib-tx"><b>'+esc(RECITER.name)+'</b><small>'+cnt.toLocaleString("ar-EG")+' من ١١٤ سورة محمّلة · دوس لتغيير القارئ</small></span><span class="ib-ch">‹</span></button>'+
    (cnt<114?'<button type="button" class="btn" data-act="qdla"'+(bz?' disabled':'')+'>نزّل القرآن كله بصوت '+esc(RECITER.name)+'</button>':'<div class="q-ok">✓ كل السور محمّلة لهذا القارئ</div>')+
    (cnt?'<button type="button" class="sm-gh" data-act="qdlx"'+(bz?' disabled':'')+'>امسح تحميلات '+esc(RECITER.name)+'</button>':'')+'</div>'+pr+
@@ -4352,7 +4364,7 @@ function qPlay(n,force,rep){
     var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
     function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
       if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }
-      go(); }
+      go(); if(u.indexOf("blob:")!==0) qdlAuto(n,rc); }
     if(QDL.loaded && !QDL.keys["a:"+rc.id+":"+n]) setSrc(rc.u(n));
     else kvGet("a:"+rc.id+":"+n).then(function(b){ setSrc(b?URL.createObjectURL(b):rc.u(n)); }).catch(function(){ setSrc(rc.u(n)); });
   } else go();
@@ -6562,7 +6574,7 @@ document.addEventListener("click", function(ev){
   else if(a==="qrc"){ S.prefs.rc=b.getAttribute("data-id"); persist(); rcInit(); var rs=document.getElementById("qrcs"); if(rs) rs.remove(); if(AU&&QA.n&&!AU.paused) qPlay(QA.n,true); renderAll(); toast("القارئ: "+RECITER.name); }
   else if(a==="qdl"){ view="qdl"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qdlt") qdlText();
-  else if(a==="qdla"){ if(confirm("هتنزّل القرآن كله بصوت "+RECITER.name+". الحجم كبير (ممكن ٦٠٠ ميجا أو أكتر). الأفضل تكون على الواي فاي وتسيب الشاشة مفتوحة. نكمل؟")) qdlAll(); }
+  else if(a==="qdla"){ if(confirm("هتنزّل القرآن كله بصوت "+RECITER.name+". الحجم كبير (ممكن ٦٠٠ ميجا أو أكتر). الأفضل تكون على الواي فاي وتسيب التطبيق مفتوح لحد ما يخلص. (مش لازم: أي سورة بتسمعها بالنت بتتحفظ لوحدها.) نكمل؟")) qdlAll(); }
   else if(a==="qdlc"){ QDL.cancel=true; }
   else if(a==="qdls") qdlSura(+b.getAttribute("data-n"));
   else if(a==="qdld") qdlDel(+b.getAttribute("data-n"));
