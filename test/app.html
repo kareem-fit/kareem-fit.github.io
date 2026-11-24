@@ -4282,20 +4282,43 @@ function qAlt(){ var n=QA.n; if(!n||!QD.idx) return ""; var id=QA.rc||RECITER.id
   return "https://download.quranicaudio.com/qdc/mohamed_siddiq_el-minshawi/murattal/"+n+".mp3"; }
 function qAudio(){
   if(AU) return AU;
-  AU=new Audio(); AU.preload="none";
-  AU.addEventListener("ended",function(){ if(QA.av){ var an=QA.n, av=QA.av+1; if(QD.idx&&av<=QD.idx[an-1][2]) qPlayAy(an,av,view==="qpage"&&QS.pg===qPgOf(an,av-1)); else { QA.av=0; if(an<114) qPlay(an+1,true); else qBar(); } return; }
-    qposSet(null); var m=qRepMode(); QA.done=(QA.done||0)+1;
-    if(m===4||(m>=2&&QA.done<m)){ qPlay(QA.n,true,true); return; }
-    if(m>=1){ QA.done=0; qBar(); return; }
-    if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
-  AU.addEventListener("play",qBar); AU.addEventListener("pause",qBar);
-  AU.addEventListener("timeupdate",function(){ if(QA.n&&!QA.av&&AU.currentTime>3&&Date.now()-QPT2>4000){ QPT2=Date.now(); qposSet({n:QA.n,rc:QA.rc,t:Math.floor(AU.currentTime)}); } if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
+  AU=qMk();
   try{ if("mediaSession" in navigator){ var ms=navigator.mediaSession;
     ms.setActionHandler("play",function(){ AU.play(); }); ms.setActionHandler("pause",function(){ AU.pause(); });
     ms.setActionHandler("nexttrack",function(){ if(QA.n<114) qPlay(QA.n+1,true); }); ms.setActionHandler("previoustrack",function(){ if(QA.n>1) qPlay(QA.n-1,true); });
     ms.setActionHandler("stop",function(){ AU.pause(); }); } }catch(e){}
-  AU.addEventListener("error",function(){ if(!QA.fb){ QA.fb=1; var u2=qAlt(); if(u2){ AU.src=u2; var pp=AU.play(); if(pp&&pp.catch) pp.catch(function(){}); return; } } toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
   return AU;
+}
+var AU2=null;
+function qMk(){
+  var el=new Audio(); el.preload="none";
+  el.addEventListener("ended",function(){ if(el!==AU) return;
+    if(QA.av){ var an=QA.n, av=QA.av+1; if(QD.idx&&av<=QD.idx[an-1][2]) qAyNext(an,av,view==="qpage"&&QS.pg===qPgOf(an,av-1)); else { QA.av=0; QA.nx=null; if(an<114) qPlay(an+1,true); else qBar(); } return; }
+    qposSet(null); var m=qRepMode(); QA.done=(QA.done||0)+1;
+    if(m===4||(m>=2&&QA.done<m)){ qPlay(QA.n,true,true); return; }
+    if(m>=1){ QA.done=0; qBar(); return; }
+    if(QA.n<114) qPlay(QA.n+1,true); else qBar(); });
+  el.addEventListener("play",function(){ if(el===AU) qBar(); }); el.addEventListener("pause",function(){ if(el===AU) qBar(); });
+  el.addEventListener("timeupdate",function(){ if(el!==AU) return; if(QA.n&&!QA.av&&AU.currentTime>3&&Date.now()-QPT2>4000){ QPT2=Date.now(); qposSet({n:QA.n,rc:QA.rc,t:Math.floor(AU.currentTime)}); } if(AU.currentTime>60&&!AU.paused&&!(S.qday&&S.qday[todayKey()])) qMark(); });
+  el.addEventListener("error",function(){ if(el!==AU) return; if(!QA.fb){ QA.fb=1; var u2=qAlt(); if(u2){ AU.src=u2; var pp=AU.play(); if(pp&&pp.catch) pp.catch(function(){}); return; } } toast("ماقدرتش أشغّل التلاوة. اتأكد من النت."); qBar(); });
+  return el;
+}
+/* انتقال بدون وقفة بين الآيات: الآية الجاية بتتحمّل مسبقًا في عنصر صوت تاني وبتشتغل أول ما اللي قبلها يخلص */
+function qNxSet(s,v,u,bu){ if(!QA.av||!AU) return; var el=AU2||(AU2=qMk()); if(el===AU) return; el.preload="auto"; el.src=bu; try{ el.load(); }catch(e){} QA.nx={s:s,v:v,el:el,bu:bu,u:u}; }
+function qAyNext(s,v,fol){
+  var nx=QA.nx;
+  if(nx&&nx.s===s&&nx.v===v&&nx.el&&nx.el.readyState>=2){
+    var old=AU, el=nx.el, oldBlob=QA.ab;
+    QA.nx=null; AU2=old; AU=el; QA.n=s; QA.av=v; QA.fb=0; QA.rc=RECITER.id; QA.tk++; QA.ab=nx.bu; if(QA.pre) delete QA.pre[nx.u];
+    if(oldBlob){ try{ URL.revokeObjectURL(oldBlob); }catch(e){} }
+    try{ el.defaultPlaybackRate=el.playbackRate=qSpd(); }catch(e){}
+    var pr=el.play();
+    if(pr&&pr.catch) pr.catch(function(){ AU=old; AU2=el; QA.nx=null; qPlayAy(s,v,fol); });
+    try{ if("mediaSession" in navigator){ navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+QD.idx[s-1][1]+" · آية "+v,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){}
+    qBar(); qAyPre(s,v);
+    if(fol&&view==="qpage"){ var pg=qPgOf(s,v); if(pg&&pg!==QS.pg){ QS.pg=pg; renderQpage(); window.scrollTo(0,0); return; } }
+    qAyHi(); return; }
+  qPlayAy(s,v,fol);
 }
 function qGl(s,v){ var g=v; for(var i=0;i<s-1;i++) g+=QD.idx[i][2]; return g; }
 function qAyUrl(s,v){ var r=RECITER;
@@ -4308,9 +4331,9 @@ function qAyHi(){ var o=document.querySelectorAll(".pl"); for(var i=0;i<o.length
   if(es[0]){ try{ var r=es[0].getBoundingClientRect(); if(r.top<130||r.bottom>window.innerHeight-130) es[0].scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} } }
 function qAyPre(s_,v_){ if(!QD.idx) return; QA.pre=QA.pre||{};
   for(var k=1;k<=2;k++){ var ns=s_, nv=v_+k; if(nv>QD.idx[ns-1][2]){ nv-=QD.idx[ns-1][2]; ns++; } if(ns>114) break;
-    (function(u){ if(QA.pre[u]) return; QA.pre[u]="p"; try{ fetch(u).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){ QA.pre[u]=URL.createObjectURL(bl); }).catch(function(){ QA.pre[u]="x"; }); }catch(e){ QA.pre[u]="x"; } })(qAyUrl(ns,nv)); } }
+    (function(u,ks,kv,kk){ if(QA.pre[u]){ if(kk===1&&QA.pre[u].indexOf("blob:")===0&&!(QA.nx&&QA.nx.s===ks&&QA.nx.v===kv)) qNxSet(ks,kv,u,QA.pre[u]); return; } QA.pre[u]="p"; try{ fetch(u).then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(bl){ QA.pre[u]=URL.createObjectURL(bl); if(kk===1) qNxSet(ks,kv,u,QA.pre[u]); }).catch(function(){ QA.pre[u]="x"; }); }catch(e){ QA.pre[u]="x"; } })(qAyUrl(ns,nv),ns,nv,k); } }
 function qPlayAy(s,v,fol){
-  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.fb=0; QA.rc=RECITER.id; QA.tk++;
+  if(!QD.idx) return; rcInit(); var a=qAudio(); QA.n=s; QA.av=v; QA.fb=0; QA.rc=RECITER.id; QA.tk++; QA.nx=null;
   if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; }
   var u=qAyUrl(s,v), pb=QA.pre&&QA.pre[u]; if(QA.ab){ try{ URL.revokeObjectURL(QA.ab); }catch(e){} QA.ab=""; }
   if(pb&&pb.indexOf("blob:")===0){ QA.ab=pb; a.src=pb; delete QA.pre[u]; } else a.src=u;
@@ -4325,7 +4348,7 @@ function qPlay(n,force,rep){
   if(!force && QA.n===n && QA.rc===RECITER.id && !a.paused){ a.pause(); return; }
   function go(){ try{ a.defaultPlaybackRate=a.playbackRate=qSpd(); }catch(e){} var pr=a.play(); if(pr&&pr.catch) pr.catch(function(){ qBar(); }); try{ if("mediaSession" in navigator){ var nm=QD.idx?QD.idx[n-1][1]:""; navigator.mediaSession.metadata=new MediaMetadata({title:"سورة "+nm,artist:RECITER.name,album:"Kareem-Fit"}); } }catch(e){} qBar(); }
   if(QA.n!==n || force || QA.rc!==RECITER.id){
-    QA.n=n; QA.av=0; QA.fb=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
+    QA.nx=null; QA.n=n; QA.av=0; QA.fb=0; QA.rc=RECITER.id; var tk=++QA.tk, rc=RECITER;
     var sv=qposGet(), resume=(!force&&sv&&sv.n===n&&sv.rc===rc.id&&sv.t>5)?sv.t:0;
     function setSrc(u){ if(tk!==QA.tk) return; if(QA.url){ try{ URL.revokeObjectURL(QA.url); }catch(e){} QA.url=""; } if(u.indexOf("blob:")===0) QA.url=u; a.src=u;
       if(resume){ a.addEventListener("loadedmetadata",function f(){ a.removeEventListener("loadedmetadata",f); try{ if(a.duration&&resume<a.duration-8){ a.currentTime=resume; toast("كملت من "+Math.floor(resume/60)+":"+("0"+(resume%60)).slice(-2)); } }catch(e){} }); }

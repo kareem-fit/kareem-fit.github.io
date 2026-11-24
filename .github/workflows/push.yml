@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
 jobs:
   send:
     runs-on: ubuntu-latest
@@ -15,3 +18,7 @@ jobs:
       - run: node push/send.js
         env:
           FCM_KEY: ${{ secrets.FCM_KEY }}
+      - name: keep schedule alive
+        run: if [ "$(date -u +%H%M)" -lt 0010 ]; then gh api -X PUT "repos/${{ github.repository }}/actions/workflows/push.yml/enable" || true; fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
