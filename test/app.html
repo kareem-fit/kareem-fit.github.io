@@ -1791,7 +1791,7 @@ html body .rest-time{font-size:1.6rem}
 .intent .in-more[open] .in-m2{display:inline}
 .intent .in-more ul{padding:0 14px 6px}
 .intent .in-more:not([open]){position:relative}</style>
-<script>/* KFIT-CALM pre-paint */try{var __r=document.documentElement,__t=localStorage.getItem("kt-theme");if(__t==="modern"||__t==="light"||__t==="black"||__t==="calm")__r.setAttribute("data-v3",__t);if(localStorage.getItem("kt-fs")==="lg")__r.setAttribute("data-fs","lg")}catch(e){}</script>
+<script>/* KFIT-CALM pre-paint */try{var __r=document.documentElement,__t=localStorage.getItem("kt-theme");if(__t==="modern"||__t==="light"||__t==="black"||__t==="calm"||__t==="dusk")__r.setAttribute("data-v3",__t);if(localStorage.getItem("kt-fs")==="lg")__r.setAttribute("data-fs","lg")}catch(e){}</script>
 <style id="kf-calm">/* KFIT-CALM: كل ده مقصور على html:where(:not([data-design="3"]))[data-v3="calm"] — تصميم 1 مش بيتلمس */
 html[data-v3="calm"]{--t-bg:#FAF5FF;--t-surface:#FFFFFF;--t-ink:#1E1B3A;--t-muted:#5B4B80;--t-line:#E3D8FB;--t-accent:#6D28D9;--t-onac:#FFFFFF;--t-ok:#047857;--t-onok:#FFFFFF;--t-body:#E8DFFF;--t-muscle:#C4B5E0;--t-h1:#F3ECFF;--t-h2:#E9DDFF;--t-tag:#B45309;--t-nav:rgba(255,255,255,.97);--t-scrim:rgba(30,27,58,.5);--d2-gold:#F59E0B;--d2-gold-lt:#FCD34D;--d2-deep:#2D1B5E;--d2-ov:36,20,84;--d2-sh:0 4px 20px rgba(109,40,217,.10)}
 html[data-v3="calm"]:root:root:root:root:root:root,html[data-v3="calm"] body.v-welcome{color-scheme:light}
@@ -1924,6 +1924,10 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan u{position:absolute
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan[aria-pressed="true"]{border-color:var(--t-accent,#6D28D9);background:color-mix(in srgb,var(--t-accent,#6D28D9) 12%,transparent);box-shadow:0 0 0 1px var(--t-accent,#6D28D9)}
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]{background:var(--t-accent,#6D28D9);border-color:var(--t-accent,#6D28D9);color:var(--t-onac,#08202F)}</style>
 <style id="pgcss">
+html[data-v3="dusk"]{--t-bg:#1B1736;--t-surface:#262050;--t-ink:#F5F2FF;--t-muted:#CFC8F2;--t-line:#3B3470;--t-accent:#A78BFA;--t-onac:#1A1236;--t-ok:#4ADE9A;--t-onok:#052E16;--t-body:#302A62;--t-muscle:#51498F;--t-h1:#262050;--t-h2:#302A62;--t-tag:#F5B544;--t-nav:rgba(27,23,54,.97);--t-scrim:rgba(10,8,30,.72);color-scheme:dark}
+html[data-v3="dusk"],html[data-v3="dusk"] body{background:var(--t-bg);color:var(--t-ink)}
+html[data-v3="dusk"] #v3nav{background:var(--t-nav);border-top:1px solid var(--t-line)}
+html[data-v3="dusk"] #v3nav button[aria-current="page"]{color:var(--t-accent)}
 .pgsw{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.78rem;font-weight:800;color:#FF7A3F!important;border:1.5px solid currentColor;border-radius:999px;padding:6px 12px;background:transparent;white-space:nowrap;cursor:pointer;min-height:36px;flex:none}
 .pgsw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pgrow{display:flex;justify-content:flex-end;margin:0 0 8px}
@@ -2438,8 +2442,8 @@ html[data-design="3"] .fx[data-d3b]>.d3-bw .rw{justify-content:flex-start}
 html[data-d3f] .fx[data-d3b]>.d3-bw .rw{justify-content:flex-start}
 html[data-design="3"] .fx[data-d3b]>.d3-bw .n b,html[data-design="3"] .fx[data-d3b]>.d3-bw small,html[data-design="3"] .fx[data-d3b]>.d3-bw .n span{text-shadow:0 2px 14px rgba(0,0,0,.45)}
 html[data-d3f] .fx[data-d3b]>.d3-bw .n b,html[data-d3f] .fx[data-d3b]>.d3-bw small,html[data-d3f] .fx[data-d3b]>.d3-bw .n span{text-shadow:0 2px 14px rgba(0,0,0,.45)}
-html[data-design="3"]:not([data-v3="light"]) .fx[data-d3b]>.d3-bw .n b,html[data-design="3"]:not([data-v3="calm"]) .fx[data-d3b]>.d3-bw .n b{color:#fff}
-html[data-d3f]:not([data-v3="light"]) .fx[data-d3b]>.d3-bw .n b,html[data-d3f]:not([data-v3="calm"]) .fx[data-d3b]>.d3-bw .n b{color:#fff}
+html[data-design="3"]:not([data-v3="light"]):not([data-v3="calm"]) .fx[data-d3b]>.d3-bw .n b{color:#fff}
+html[data-d3f]:not([data-v3="light"]):not([data-v3="calm"]) .fx[data-d3b]>.d3-bw .n b{color:#fff}
 html[data-design="3"] .fx[data-d3b]>.d3-bw .p{background:rgba(6,10,14,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:rgba(255,255,255,.92)}
 html[data-d3f] .fx[data-d3b]>.d3-bw .p{background:rgba(6,10,14,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:rgba(255,255,255,.92)}
 html[data-design="3"] .fx[data-d3b]>.d3-bw .p b{color:#fff}
@@ -2591,7 +2595,33 @@ html.d3-tt,html.d3-tt body,html.d3-tt *{transition:background-color .35s ease,co
 @keyframes d3halo{from{box-shadow:0 0 0 0 rgba(34,211,138,.5),0 10px 26px -6px rgba(34,211,138,.6)}to{box-shadow:0 0 0 34px rgba(34,211,138,0),0 10px 26px -6px rgba(34,211,138,.6)}}
 @keyframes d3up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes d3in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* KFIT-D3-CALM: "هادي" inside design 2 (dusk violet + gold, between dark and light) */</style>
+/* KFIT-D3-CALM: "هادي" inside design 2 (dusk violet + gold, between dark and light) */
+html[data-design="3"][data-v3="dusk"]{
+  --d3-bg:var(--t-bg); --d3-surface:var(--t-surface); --d3-elev:var(--t-body); --d3-line:var(--t-line); --d3-line2:var(--t-muscle);
+  --d3-acc:var(--t-accent); --d3-acc2:#F5B544; --d3-onacc:var(--t-onac); --d3-ok:var(--t-ok); --d3-warn:#F5B544; --d3-bad:#FF8A9A;
+  --d3-tx:var(--t-ink); --d3-tx2:var(--t-muted); --d3-tx3:var(--t-muted); --d3-glass:var(--t-nav);
+  --d3-shadow:0 8px 28px rgba(8,5,30,.45); --d3-glow:0 10px 26px rgba(167,139,250,.32);
+    --d3-kn:rgba(255,255,255,.05);
+  --d3-ember:rgba(167,139,250,.30); --d3-ember2:rgba(245,181,68,.12);
+  --d3-c1:#2E2862; --d3-c2:#221D4B; --d3-hl:rgba(255,255,255,.08); --d3-sh:0 10px 24px -14px rgba(8,5,30,.7);
+  
+}
+html[data-d3f][data-v3="dusk"]{
+  --d3-bg:var(--t-bg); --d3-surface:var(--t-surface); --d3-elev:var(--t-body); --d3-line:var(--t-line); --d3-line2:var(--t-muscle);
+  --d3-acc:var(--t-accent); --d3-acc2:#F5B544; --d3-onacc:var(--t-onac); --d3-ok:var(--t-ok); --d3-warn:#F5B544; --d3-bad:#FF8A9A;
+  --d3-tx:var(--t-ink); --d3-tx2:var(--t-muted); --d3-tx3:var(--t-muted); --d3-glass:var(--t-nav);
+  --d3-shadow:0 8px 28px rgba(8,5,30,.45); --d3-glow:0 10px 26px rgba(167,139,250,.32);
+    --d3-kn:rgba(255,255,255,.05);
+  --d3-ember:rgba(167,139,250,.30); --d3-ember2:rgba(245,181,68,.12);
+  --d3-c1:#2E2862; --d3-c2:#221D4B; --d3-hl:rgba(255,255,255,.08); --d3-sh:0 10px 24px -14px rgba(8,5,30,.7);
+  
+}
+html[data-design="3"][data-v3="dusk"] .d3-next{position:relative;overflow:hidden;isolation:isolate;
+  background:radial-gradient(90% 120% at 0% 0%,rgba(167,139,250,.26),transparent 60%),linear-gradient(180deg,var(--d3-c1),var(--d3-c2));
+  border-color:var(--d3-acc);box-shadow:inset 0 1px 0 var(--d3-hl),0 14px 30px -16px rgba(167,139,250,.55)}
+html[data-d3f][data-v3="dusk"] .d3-next{position:relative;overflow:hidden;isolation:isolate;
+  background:radial-gradient(90% 120% at 0% 0%,rgba(167,139,250,.26),transparent 60%),linear-gradient(180deg,var(--d3-c1),var(--d3-c2));
+  border-color:var(--d3-acc);box-shadow:inset 0 1px 0 var(--d3-hl),0 14px 30px -16px rgba(167,139,250,.55)}</style>
 <style id="pecss">
 .pe{position:fixed;inset:0;z-index:9990;background:var(--bg,#0f1115);color:var(--ink,#f2f2f2);overflow:auto;-webkit-overflow-scrolling:touch}
 .pe-box{max-width:560px;margin:0 auto;padding:14px 16px 40px}
@@ -6259,7 +6289,7 @@ function renderSet(){
   h.push(codeCard().replace('<section class="card">','<section class="fx-card">'));
   h.push('<section class="fx-card">'+stHead(SETI.user,"نسخة احتياطية")+'<p class="sub">حمّل ملف فيه تمارينك وأوزانك وكل بياناتك، وارجّعه لو غيّرت الموبايل أو مسحت التطبيق. الصور مش داخلة في النسخة.</p><button type="button" class="btn" data-act="bkdl">حمّل نسختي</button><label class="sm-up wide">رجّع من نسخة<input type="file" id="bk-file" accept="application/json,.json" hidden></label></section>');
   var cur=(window.__curTheme?window.__curTheme():"classic");
-  var TH=[["classic","كلاسيك","#08202F","#FF7A3F"],["modern","عصري","#0F172A","#F97316"],["light","فاتح","#F1F5F9","#C2410C"],["black","أسود","#000000","#FF7A3F"],["calm","هادي","#FAF5FF","#6D28D9"]];
+  var TH=[["classic","كلاسيك","#08202F","#FF7A3F"],["modern","عصري","#0F172A","#F97316"],["light","فاتح","#F1F5F9","#C2410C"],["black","أسود","#000000","#FF7A3F"],["calm","هادي","#FAF5FF","#6D28D9"],["dusk","هادي ليلي","#1B1736","#A78BFA"]];
   var fz=(window.__curFs?window.__curFs():"n");
   h.push('<section class="fx-card">'+stHead(SETI.palette,"حجم الخط")+'<div class="st-fs" role="group" aria-label="حجم الخط"><button type="button" data-act="fs" data-v="n" aria-pressed="'+(fz==="n")+'">خط عادي</button><button type="button" data-act="fs" data-v="lg" aria-pressed="'+(fz==="lg")+'">خط كبير</button></div><p class="st-note">الخط العادي هو الحجم اللي التطبيق متظبط عليه، وكل الشاشات بتظهر فيه صح. الخط الكبير بيكبّر الكلام، بس ممكن بعض الحاجات تتزاحم أو تتقطع على الموبايل.</p></section>');
   h.push('<section class="fx-card">'+stHead(SETI.palette,"المظهر")+'<div class="st-th">'+TH.map(function(t){
@@ -8229,11 +8259,11 @@ if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch
   };
   var main=[["home","vh","الرئيسية"],["today","vo","اليوم"],["train","vt","التمرين"],["food","vf","الأكل"]];
   var more=[["comm","vc","المجتمع"],["ibd","vi","القرآن والعبادات"],["log","vl","السجل"],["body","vb","الجسم"],["lab","vlb","برامج وأدوات"],["share","vs","الملخص"],["set","vx","الإعدادات"]];
-  var themes=[["classic","كلاسيك","#08202F"],["modern","عصري","#0F172A"],["light","فاتح","#F1F5F9"],["black","أسود","#000000"],["calm","هادي","#FAF5FF"]];
+  var themes=[["classic","كلاسيك","#08202F"],["modern","عصري","#0F172A"],["light","فاتح","#F1F5F9"],["black","أسود","#000000"],["calm","هادي","#FAF5FF"],["dusk","هادي ليلي","#1B1736"]];
   var nav=document.getElementById("v3nav"), sh=document.getElementById("v3sheet"), box=sh.firstElementChild;
   nav.innerHTML=main.map(function(m){return '<button type="button" data-v3="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join("")+'<button type="button" data-v3="more">'+I.more+'<span>المزيد</span></button>';
   box.insertAdjacentHTML("beforeend",more.map(function(m){return '<button type="button" class="it" data-v3s="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join(""));
-  function curTheme(){ var a=document.documentElement.getAttribute("data-v3"); return a==="modern"||a==="light"||a==="black"||a==="calm"?a:"classic"; }
+  function curTheme(){ var a=document.documentElement.getAttribute("data-v3"); return a==="modern"||a==="light"||a==="black"||a==="calm"||a==="dusk"?a:"classic"; }
   function setTheme(t){
     if(t==="classic") document.documentElement.removeAttribute("data-v3"); else document.documentElement.setAttribute("data-v3",t);
     try{ localStorage.setItem("kt-theme",t); }catch(e){}
