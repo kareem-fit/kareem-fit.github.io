@@ -5954,7 +5954,7 @@ function renderTrn(){
 /* ===== الإشعارات ===== */
 function pushPrefs(){ if(!S.prefs.push) S.prefs.push={on:false,m:true,e:true,w:true,q:true}; return S.prefs.push; }
 function pushLoad(){ return new Promise(function(res,rej){ if(window.firebase&&firebase.messaging) return res(); var sc=document.createElement("script"); sc.src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"; sc.onload=function(){res();}; sc.onerror=function(){rej(new Error("load"));}; document.head.appendChild(sc); }); }
-var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","تنبيه الصلاة (قبلها وعند وقتها)"],["f","نصايح وتشجيع"],["g","اشتراك الجيم"],["h","تحفيز كل ساعتين"]];
+var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","تنبيه الصلاة (قبلها وعند وقتها)"],["f","نصايح وتشجيع"],["g","اشتراك الجيم"]];
 function pushSync(){
   var p=pushPrefs(), u=cmUser(); if(!p.on||!p.tok||!u||!KS.fs) return;
   var rest=[]; for(var d=0;d<7;d++){ var it=null; for(var i=0;i<DAYS.length;i++){ if(DAYS[i].dow===d) it=DAYS[i]; } rest.push(!it||!!it.rest); }

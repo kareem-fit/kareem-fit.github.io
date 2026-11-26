@@ -4,22 +4,22 @@ const DAYMS=86400000;
 const diff=(a,b)=>Math.round((Date.parse(a+"T00:00:00Z")-Date.parse(b+"T00:00:00Z"))/DAYMS);
 // كل نوع: k=المفتاح، t=ساعة البداية (بالدقايق)، len=مدة الشباك، ok=شرط إضافي، key=مفتاح منع التكرار، body
 const KINDS=[
- {k:"m",t:420, title:"☀️ أذكار الصباح", body:c=>"ما تنساش أذكار الصباح"+c.nm+"، دقيقتين وتخلّصها."},
- {k:"a",t:600, title:"👋 وحشتنا", ok:c=>c.d.last&&diff(c.date,c.d.last)>=3&&!(c.sent.a&&diff(c.date,c.sent.a)<3), body:c=>"بقالك "+diff(c.date,c.d.last)+" أيام بعيد"+c.nm+". ارجع بتمرين خفيف النهارده 💪"},
- {k:"g",t:600, title:"🏟️ اشتراك الجيم", ok:c=>{ if(!c.d.gym) return false; const l=diff(c.d.gym,c.date); c.gl=l; return l===3||l===1||l===0; }, body:c=>c.gl===0?"اشتراك الجيم بيخلص النهارده، جدّده.":"اشتراك الجيم فاضل عليه "+(c.gl===1?"يوم واحد":"٣ أيام")+"."},
- {k:"q",t:750, title:"💬 رسالة اليوم", body:c=>QUOTES[c.day%QUOTES.length]},
- {k:"w",t:990, title:"🏋️ تمرين النهارده", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>"تمرين النهارده مستنيك"+c.nm+". ابدأ قبل ما اليوم يخلص 💪"},
- {k:"f",t:870,title:c=>c.day%2===0?"💡 هل تعرف؟":"💪 تشجيع", body:c=>c.day%2===0?TIPSF[Math.floor(c.day/2)%TIPSF.length]:ENC[Math.floor(c.day/2)%ENC.length]},
- {k:"e",t:1110,len:90,title:"🌙 أذكار المساء", body:c=>"أذكار المساء"+c.nm+"، ما تنساهاش."},
- {k:"r",t:1200,title:"⏰ لسه فيه وقت", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>(c.d.streak>=3?"سلسلتك "+c.d.streak+" أيام 🔥 ما تكسرهاش النهارده":"لسه فيه وقت")+"، 20 دقيقة تكفي."},
- {k:"c",t:1260,title:"🎉 عاش يا بطل", ok:c=>!c.restToday&&c.d.trained===c.date, body:c=>"خلّصت تمرين النهارده"+c.nm+(c.d.streak>=2?"، وسلسلتك "+c.d.streak+" أيام 🔥":"")+". ارتاح وكُل كويس."},
- {k:"p",t:0,len:1440,title:"🏆 رقم قياسي جديد", ok:c=>c.d.pr===c.date, body:c=>"كسرت رقمك"+c.nm+"! كمّل كده 💪"},
- {k:"h",t:540,len:720,title:"🔥 شدّ حيلك", key:c=>c.date+"-"+Math.floor(c.mins/120), body:c=>QUOTES[(c.day+Math.floor(c.mins/120))%QUOTES.length]}
+ {k:"m",t:420,len:120,ttl:7200, title:"☀️ أذكار الصباح", body:c=>"ما تنساش أذكار الصباح"+c.nm+"، دقيقتين وتخلّصها."},
+ {k:"a",t:600,len:120,ttl:7200, title:"👋 وحشتنا", ok:c=>c.d.last&&diff(c.date,c.d.last)>=3&&!(c.sent.a&&diff(c.date,c.sent.a)<3), body:c=>"بقالك "+diff(c.date,c.d.last)+" أيام بعيد"+c.nm+". ارجع بتمرين خفيف النهارده 💪"},
+ {k:"g",t:600,len:120,ttl:7200, title:"🏟️ اشتراك الجيم", ok:c=>{ if(!c.d.gym) return false; const l=diff(c.d.gym,c.date); c.gl=l; return l===3||l===1||l===0; }, body:c=>c.gl===0?"اشتراك الجيم بيخلص النهارده، جدّده.":"اشتراك الجيم فاضل عليه "+(c.gl===1?"يوم واحد":"٣ أيام")+"."},
+ {k:"q",t:630,len:60,ttl:3600, title:"💬 رسالة اليوم", body:c=>QUOTES[c.day%QUOTES.length]},
+ {k:"w",t:960,len:90,ttl:5400, title:"🏋️ تمرين النهارده", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>"تمرين النهارده مستنيك"+c.nm+". ابدأ قبل ما اليوم يخلص 💪"},
+ {k:"f",t:930,len:60,ttl:3600,title:c=>c.day%2===0?"💡 هل تعرف؟":"💪 تشجيع", body:c=>c.day%2===0?TIPSF[Math.floor(c.day/2)%TIPSF.length]:ENC[Math.floor(c.day/2)%ENC.length]},
+ {k:"e",t:1050,len:60,ttl:3600,title:"🌙 أذكار المساء", body:c=>"أذكار المساء"+c.nm+"، ما تنساهاش."},
+ {k:"r",t:1200,len:60,ttl:3600,title:"⏰ لسه فيه وقت", ok:c=>!c.restToday&&c.d.trained!==c.date, body:c=>(c.d.streak>=3?"سلسلتك "+c.d.streak+" أيام 🔥 ما تكسرهاش النهارده":"لسه فيه وقت")+"، 20 دقيقة تكفي."},
+ {k:"c",t:1260,len:60,ttl:3600,title:"🎉 عاش يا بطل", ok:c=>!c.restToday&&c.d.trained===c.date, body:c=>"خلّصت تمرين النهارده"+c.nm+(c.d.streak>=2?"، وسلسلتك "+c.d.streak+" أيام 🔥":"")+". ارتاح وكُل كويس."},
+ {k:"p",t:0,len:1440,ttl:7200,title:"🏆 رقم قياسي جديد", ok:c=>c.d.pr===c.date, body:c=>"كسرت رقمك"+c.nm+"! كمّل كده 💪"},
 ];
 const TIPSF=["جرّبت «المجتمع» في التطبيق؟ شارك إنجازك وشجّع زمايلك 👥","فيه مصحف كامل بالتلاوة جوه التطبيق. افتح «القرآن والعبادات» 📖","افتح «الملخص» وشوف إنجازك في الأسبوع وشاركه ستوري 📊","من «المزيد» هتلاقي السجل والجسم والأكل والإعدادات. لف فيه وشوف 👀","رتّب تمرينك بنفسك: اختار تمرين كل يوم من صفحة التمرين 🗓️","سجّل وزنك وقياساتك من «الجسم» وشوف تقدمك بالأرقام 📏","عدّاد الأذكار والسلسلة في «القرآن والعبادات». كمّل سلسلتك 🔥"];
 const ENC=["كل تمرين بتعمله النهارده بيفرق معاك بعد شهر. كمّل 💪","مش لازم تمرين كامل. 15 دقيقة أحسن من صفر.","الانضباط أهم من الحماس. اللي بيكمّل هو اللي بيوصل.","افتكر ليه بدأت. النهارده خطوة جديدة.","جسمك بيشكرك على كل مرة بتتحرك فيها 🙏","الأيام الصعبة هي اللي بتبني الأبطال.","ما تقارنش نفسك بحد. قارن نفسك بنفسك من أسبوع."];
-const OPT_IN={h:true};
-const PRAYERS=[["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]]; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
+const OPT_IN={};
+const PRAYERS=[["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"]]; // الأنواع اللي مقفولة لحد ما المستخدم يفتحها
+const PRIO=["p","c","r","w","e","m","q","f","g","a"]; // لو أكتر من واحد وقته جه: الصلاة الأول، وبعدها بالترتيب ده
 // دالة صافية: بتقرر مين ياخد إيه دلوقتي (عشان نقدر نختبرها)
 function decide(d,nowMs){
   const out=[]; if(!d||!d.tok) return out;
@@ -30,18 +30,21 @@ function decide(d,nowMs){
     const len=K.len||120; if(mins<K.t||mins>=K.t+len) continue;
     const key=K.key?K.key(c):date; if(sent[K.k]===key) continue;
     if(K.ok&&!K.ok(c)) continue;
-    out.push({k:K.k,date:key,title:typeof K.title==="function"?K.title(c):K.title,body:K.body(c)});
+    out.push({k:K.k,date:key,ttl:K.ttl,title:typeof K.title==="function"?K.title(c):K.title,body:K.body(c)});
   }
-  // تنبيه قبل الصلاة (الوقت بييجي من موبايل المستخدم في d.pt بالدقايق من نص الليل)
+  // تنبيه الصلاة (الوقت بييجي من موبايل المستخدم في d.pt بالدقايق من نص الليل). ما بيتبعتش أي حاجة بعد وقت الصلاة.
+  const pr=[];
   if(d.s!==false && d.pt){
     for(const [id,nm] of PRAYERS){
       const t=d.pt[id]; if(typeof t!=="number") continue;
       const left=Math.round(t-mins);
-      if(left>=2&&left<=14){ const k="s_"+id; if(!sent[k]||sent[k]!==date) out.push({k,date,ttl:Math.max(60,left*60),title:"🕌 استعد لصلاة "+nm,body:"باقي "+left+" دقايق على أذان "+nm+"، جهّز نفسك للصلاة."}); }
-      else if(left>=-4&&left<=1){ const k="t_"+id; if(sent[k]!==date) out.push({k,date,ttl:900,title:"🕌 حان وقت صلاة "+nm,body:"حان الآن موعد صلاة "+nm+". الصلاة في وقتها أحسن 🤍"}); }
+      if(left>=2&&left<=14){ const k="s_"+id; if(sent[k]!==date) pr.push({k,date,ttl:Math.max(60,left*60),title:"🕌 اقترب أذان "+nm,body:"جهّز نفسك للصلاة."}); }
+      else if(left>=-1&&left<=1){ const k="t_"+id; if(sent[k]!==date) pr.push({k,date,ttl:120,title:"🕌 حان وقت صلاة "+nm,body:"حان الآن موعد صلاة "+nm+". الصلاة في وقتها أحسن 🤍"}); }
     }
   }
-  return out;
+  // إشعار واحد بس في كل فحص لكل مستخدم: الصلاة الأول، وبعدها بالأولوية. الباقي بيستنى الفحص اللي بعده (لو شباكه لسه مفتوح).
+  out.sort((x,y)=>PRIO.indexOf(x.k)-PRIO.indexOf(y.k));
+  return pr.concat(out).slice(0,1);
 }
 module.exports={decide};
 if(require.main===module){
