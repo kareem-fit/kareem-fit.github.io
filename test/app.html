@@ -6990,7 +6990,7 @@ $("today").textContent = new Date().toLocaleDateString("ar-EG",{weekday:"long",d
 /* ===== KFIT-DESIGN-3 (FOCUS): runs inside the app IIFE, uses the same state S, DAYS, draft, persist, rest timer ===== */
 /* KFIT-PG: اختيار شكل كل صفحة لوحدها (تصميم 1 هو الأصل، تصميم 2 اختياري للصفحة دي بس) */
 var PGV={today:1,train:1,log:1,body:1,food:1};
-function pgIs(v){ return !!(S.prefs.pg&&S.prefs.pg[v]==="2"); }
+function pgIs(v){ var x=S.prefs.pg&&S.prefs.pg[v]; return v==="body"?x!=="1":x==="2"; } /* الجسم: تصميم 2 هو الأساسي */
 function d3fz(){ return document.documentElement.hasAttribute("data-d3f"); }
 function pgApply(){ var h=document.documentElement; if(view==="train"){ h.removeAttribute("data-design"); if(pgIs("train")) h.setAttribute("data-d3f",""); else h.removeAttribute("data-d3f"); return; } h.removeAttribute("data-d3f"); if(PGV[view]&&pgIs(view)) h.setAttribute("data-design","3"); else h.removeAttribute("data-design"); }
 function pgBtn(v){ var on=pgIs(v); return '<button type="button" class="pgsw" data-pgsw="'+v+'" aria-pressed="'+on+'" aria-label="غيّر شكل الصفحة"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>'+(on?"تصميم 1":"تصميم 2")+'</span></button>'; }
@@ -7176,6 +7176,7 @@ function d3today(){
     (day.rest?'':'<ul class="d3-chips">'+ch.map(function(k,i){ return '<li class="'+(i<2?"a":"")+'">'+MN[k]+'</li>'; }).join("")+'</ul>')+
     '<button type="button" class="d3-cta" data-act="gotrain" data-i="'+pi+'">'+D3I.train+'<span>'+(day.rest?"افتح اليوم":(doneToday?"افتح تمرين النهارده":(cnt[0]>0?"كمّل التمرين ("+cnt[0]+"/"+cnt[1]+")":"ابدأ التمرين")))+'</span></button></div>';
   var app=$("app"); var first=app.firstElementChild; if(first){ first.insertAdjacentHTML("afterbegin",h); } else app.innerHTML=h;
+  try{ var kz=app.querySelector(".d3-kpis"), nz=app.querySelector(".d3-next"); if(kz&&nz) kz.parentNode.insertBefore(nz,kz); }catch(e){} /* كارت النهارده فوق الأرقام الأربعة */
   d3ring($("d3r1"),t1,92); d3ring($("d3r2"),sd2,76); d3ring($("d3r3"),n7,60);
 }
 /* ---- shell: tabs + orb, created once ---- */
