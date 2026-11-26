@@ -1927,6 +1927,9 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 .pgsw{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.78rem;font-weight:800;color:#FF7A3F!important;border:1.5px solid currentColor;border-radius:999px;padding:6px 12px;background:transparent;white-space:nowrap;cursor:pointer;min-height:36px;flex:none}
 .pgsw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pgrow{display:flex;justify-content:flex-end;margin:0 0 8px}
+.pgseg{display:inline-flex;border:1.5px solid #FF7A3F;border-radius:999px;overflow:hidden}
+.pgseg button{font:inherit;font-size:.8rem;font-weight:800;color:#FF7A3F;background:transparent;border:0;padding:6px 16px;min-height:36px;cursor:pointer}
+.pgseg button[aria-pressed="true"]{background:#FF7A3F;color:#fff}
 .bd-h .pgsw,.td-hi .pgsw,.d3-hi .pgsw{margin-inline-start:auto}
 html[data-design="3"] .pgsw{color:var(--d3-acc,#FF7A3F)}
 html[data-design="3"] body{position:relative}
@@ -6894,10 +6897,16 @@ function pgApply(){ var h=document.documentElement; if(PGV[view]&&pgIs(view)) h.
 function pgBtn(v){ var on=pgIs(v); return '<button type="button" class="pgsw" data-pgsw="'+v+'" aria-pressed="'+on+'" aria-label="غيّر شكل الصفحة"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>'+(on?"تصميم 1":"تصميم 2")+'</span></button>'; }
 function pgInject(){
   var a=$("app"); if(!a||!PGV[view]||a.querySelector(".pgsw")) return;
+  if(view==="train"){ if(!d3on()) a.insertAdjacentHTML("afterbegin",'<div class="pgrow"><div class="pgseg" role="group" aria-label="طريقة العرض"><button type="button" data-trm="focus" aria-pressed="false">تركيز</button><button type="button" data-trm="list" aria-pressed="true">قائمة</button></div></div>'); return; }
   var hd=(view==="log"||(view==="body"&&!d3on()))?a.querySelector(".bd-h"):null;
   if(hd){ hd.insertAdjacentHTML("beforeend",pgBtn(view)); return; }
   a.insertAdjacentHTML("afterbegin",'<div class="pgrow">'+pgBtn(view)+'</div>');
 }
+document.addEventListener("click",function(ev){
+  var m=ev.target.closest&&ev.target.closest("[data-trm]"); if(!m) return;
+  S.prefs.pg=S.prefs.pg||{}; S.prefs.d3m="focus"; S.prefs.pg.train=m.getAttribute("data-trm")==="focus"?"2":"1";
+  persist(); renderAll(); window.scrollTo(0,0);
+});
 document.addEventListener("click",function(ev){
   var b=ev.target.closest&&ev.target.closest("[data-pgsw]"); if(!b) return;
   var v=b.getAttribute("data-pgsw"); S.prefs.pg=S.prefs.pg||{}; S.prefs.pg[v]=pgIs(v)?"1":"2";
@@ -7334,7 +7343,7 @@ document.addEventListener("click",function(ev){
   else if(a==="adjon"){ if(!cmAdmin()) return; BANON=true; var sh2=$("v3sheet"); if(sh2) sh2.hidden=true; banPanel(); banApply(); }
   else if(a==="adj"){ d3imgAct(b.getAttribute("data-k")); }
   else if(a==="dk"){ showDhikr(true); d3tick(); }
-  else if(a==="mode"){ S.prefs.d3m=b.getAttribute("data-m")==="list"?"list":"focus"; persist(); renderAll(); window.scrollTo(0,0); }
+  else if(a==="mode"){ S.prefs.d3m="focus"; S.prefs.pg=S.prefs.pg||{}; S.prefs.pg.train=b.getAttribute("data-m")==="list"?"1":"2"; persist(); renderAll(); window.scrollTo(0,0); }
   else if(a==="dot"){ D3.ed=+b.getAttribute("data-i"); d3draw(); }
   else if(a==="undo"){ var day2=DAYS[dayIdx], l2=d3dayExs(day2), ar2=draftFor(day2)[l2[d3idx(day2)].id], si=d3setIdx(ar2); if(si>=0){ ar2[si].d=false; D3.ed=null; persist(); updateProgress(); d3draw(); } }
   else if(a==="step"){ var st=[1,2.5,5], c=S.prefs.d3s||2.5; S.prefs.d3s=st[(st.indexOf(c)+1)%st.length]; persist(); d3draw(); }
