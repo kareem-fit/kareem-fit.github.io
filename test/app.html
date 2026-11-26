@@ -1295,6 +1295,7 @@ html[data-v3="light"] .bd-k.warn b,html[data-v3="light"] .bd-m em.up{color:#C257
 .lg-note small{color:#4FA8FF;font-weight:800;font-size:.74rem}.lg-note p{margin:4px 0 0;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
 .lg-del{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:12px;border:1.5px solid var(--t-line);background:transparent;color:var(--t-muted);font:inherit;font-weight:700;cursor:pointer}
 .lg-del svg{width:18px;height:18px}.lg-del.conf{background:#D93A2B;border-color:#D93A2B;color:#fff}
+.lg-dt-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.lg-dt-row small{color:var(--t-muted);font-size:.85rem}.lg-dt{min-height:44px;min-width:0;flex:1 1 auto;max-width:210px;border-radius:12px;border:1.5px solid var(--t-line);background:transparent;color:inherit;font:inherit;padding:0 10px;text-align:center}
 .lg-empty{align-items:center;text-align:center}.lg-empty .fx-ti{width:64px;height:64px}.lg-empty .fx-ti svg{width:34px;height:34px}.lg-empty .sub{margin:0}
 .td-hi{display:flex;align-items:center;gap:12px;padding:2px}
 .td-hi div{flex:1;min-width:0;display:flex;flex-direction:column}.td-hi small{color:var(--t-muted);font-size:.8rem}.td-hi b{font-size:1.2rem}
@@ -5669,6 +5670,18 @@ function lgStats(L){
   L.forEach(function(s){ var d=dayOf(s.day); if(!d||d.rest) return; o.n++; o.sets+=lgSets(s); o.vol+=lgVol(s); o.prs+=(s.pr?s.pr.length:0); });
   return o;
 }
+/* KFIT-CHDATE: نقل تمرين محفوظ ليوم تاني (لو نسيت تحفظه في يومه) */
+function lgMove(id,nk){
+  var s=null; S.sessions.forEach(function(x){ if(x.id===id) s=x; });
+  if(!s||!nk||nk>todayKey()||nk===s.date) return;
+  S.sessions=S.sessions.filter(function(x){ return !(x!==s && x.date===nk && x.day===s.day); });
+  s.date=nk;
+  S.sessions.sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:b.id-a.id; });
+  persist(); toast("اتنقل التمرين ليوم "+fmtDate(nk)); renderAll();
+}
+document.addEventListener("change",function(e){
+  var t=e.target; if(t&&t.classList&&t.classList.contains("lg-dt")) lgMove(+t.getAttribute("data-id"),t.value);
+});
 function lgCard(s){
   var d=dayOf(s.day), rest=!!(d&&d.rest), open=!!lgOpen[s.id], sets=lgSets(s), vol=lgVol(s), lines=[], prs=s.pr||[];
   if(d){
@@ -5682,6 +5695,7 @@ function lgCard(s){
   var meta=rest?'<span>يوم راحة ونشاط خفيف</span>':'<span>'+sets+' مجموعة</span><span>'+r1(vol/1000)+' طن</span>'+(prs.length?'<span class="pr">'+SMI.trophy+prs.length+'</span>':'')+(s.note?'<span class="nt">'+CXI.chat+'</span>':'');
   return '<section class="lg-s'+(prs.length?' pr':'')+(open?' open':'')+'"><button type="button" class="lg-h" data-act="lgopen" data-id="'+s.id+'" aria-expanded="'+open+'"><span class="lg-i">'+(rest?FXI.moon:SMI.dumb)+'</span><div class="lg-t"><b>'+(d?d.name:"")+'</b><small>'+fmtDate(s.date)+'</small><div class="lg-m">'+meta+'</div></div><span class="lg-c">'+FXI.chev+'</span></button>'+
     (open?'<div class="lg-b"><ul>'+lines.join("")+'</ul>'+(s.note?'<div class="lg-note"><small>ملاحظتك</small><p>'+esc(s.note)+'</p></div>':'')+
+      '<div class="lg-dt-row"><small>اتمرنته يوم:</small><input type="date" class="lg-dt" data-id="'+s.id+'" value="'+s.date+'" max="'+todayKey()+'" aria-label="غيّر يوم التمرين"></div>'+
       '<button type="button" class="lg-del'+(pendingDel===s.id?' conf':'')+'" data-act="del" data-id="'+s.id+'">'+FXI.del+(pendingDel===s.id?'تأكيد الحذف':'حذف التمرين')+'</button></div>':'')+'</section>';
 }
 function renderLog(){
