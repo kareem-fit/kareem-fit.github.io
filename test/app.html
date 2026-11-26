@@ -1929,6 +1929,10 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 .pgrow{display:flex;justify-content:flex-end;margin:0 0 8px}
 .bd-h .pgsw,.td-hi .pgsw,.d3-hi .pgsw{margin-inline-start:auto}
 html[data-design="3"] .pgsw{color:var(--d3-acc,#FF7A3F)}
+html[data-design="3"] body{position:relative}
+html[data-design="3"] .wrap{position:relative;z-index:1}
+html[data-design="3"] #d3bg[data-b]:not([data-b="body"]){top:var(--d3top,76px)}
+html[data-design="3"] #d3bg[data-b="body"]{top:var(--d3top,76px)}
 html[data-design="3"] #d3orb:not([hidden]){bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
@@ -2364,8 +2368,12 @@ html[data-design="3"] .tabs .tab{scroll-snap-align:center}
 .d3-fr .lg li span{justify-self:start}
 /* photo behind the top of every page (one crop per page; the page content sits on top) */
 #d3bg{display:none}
+html[data-design="3"] #d3bg{display:block;position:absolute;top:118px;left:0;right:0;height:340px;z-index:0;pointer-events:none;background:center top/cover no-repeat;opacity:.55;-webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent)}
+html[data-design="3"][data-v3="light"] #d3bg{opacity:.22}
 #d3bg[data-b="home"]{display:none!important}
+html[data-design="3"] #d3bg{left:50%;right:auto;width:min(100vw,560px);transform:translateX(-50%)}
 /* log + training: the photo is a clean rounded banner (no fade), shown as-is; only the edge gets a thin frame + warm glow */
+html[data-design="3"] #d3bg[data-b="log"],html[data-design="3"] #d3bg[data-b="train"]{display:none}
 html[data-design="3"] .fx[data-d3l]>.bd-h,html[data-design="3"] body.v-train .tabs{
   position:relative;border-radius:22px;border:1px solid color-mix(in srgb,var(--d3-acc) 45%,var(--d3-line2));
   box-shadow:0 10px 28px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.05) inset;overflow:hidden}
@@ -2377,6 +2385,9 @@ html[data-design="3"] body.v-train .tabs{overflow-x:auto;overflow-y:hidden;-webk
 html[data-design="3"] body.v-train .tabs{background:linear-gradient(to top,rgba(5,8,12,.45),transparent 60%),var(--bi-train,url(assets/bg/bg-train.webp)) var(--ix-train,50%) var(--iy-train,0%)/auto var(--iz-train,100%) no-repeat;padding:150px 12px 12px;margin-top:8px}
 html[data-design="3"][data-v3="light"] .fx[data-d3l]>.bd-h,html[data-design="3"][data-v3="light"] body.v-train .tabs{box-shadow:0 10px 24px rgba(15,23,42,.18),0 0 0 1px rgba(255,255,255,.35) inset}
 /* body: the photo is the backdrop of the whole page (fixed, behind weight + tabs + cards) */
+html[data-design="3"] #d3bg[data-b="body"]{display:block;position:fixed;top:126px;bottom:0;left:50%;right:auto;width:min(100vw,560px);height:auto;transform:translateX(-50%);opacity:.85;
+  background:url(assets/bg/bg-body.webp) var(--ix-body,0%) var(--iy-body,0%)/auto var(--iz-body,58%) no-repeat;-webkit-mask-image:linear-gradient(#000 calc(var(--iz-body,58%)*.5),transparent calc(var(--iz-body,58%)*.97));mask-image:linear-gradient(#000 calc(var(--iz-body,58%)*.5),transparent calc(var(--iz-body,58%)*.97))}
+html[data-design="3"][data-v3="light"] #d3bg[data-b="body"]{opacity:.5}
 html[data-design="3"] .fx[data-d3b]>.d3-bw{padding:14px 4px 6px;margin-top:6px;text-align:start;display:flex;flex-direction:column;align-items:flex-start;min-height:170px;justify-content:center}
 html[data-design="3"] .fx[data-d3b]>.d3-bw .n{justify-content:flex-end}
 html[data-design="3"] .fx[data-d3b]>.d3-bw .rw{justify-content:flex-start}
@@ -2394,6 +2405,8 @@ html[data-design="3"][data-v3="light"] .fx[data-d3b]>.d3-bw .p.warn b{color:var(
 body.d3-vbody .seg2{background:rgba(8,12,17,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(255,255,255,.18)}
 html[data-v3="light"] body.d3-vbody .seg2{background:rgba(255,255,255,.55);border-color:rgba(15,23,42,.14)}
 /* today + food photo bands read the same placement values */
+html[data-design="3"] #d3bg[data-b="today"]{background-position:var(--ix-today,50%) var(--iy-today,0%);background-size:var(--iz-today,100%) auto}
+html[data-design="3"] #d3bg[data-b="food"]{background-position:var(--ix-food,50%) var(--iy-food,0%);background-size:var(--iz-food,100%) auto}
 /* adjust panel (⋯ > ضبط الصور) */
 html body #v3sheet .d3-adjit{display:none!important}
 html body.kf-own #v3sheet .d3-adjit{display:flex!important}
@@ -7063,6 +7076,7 @@ function d3bgSet(){
   var el=$("d3bg"); if(!el){ el=document.createElement("div"); el.id="d3bg"; el.setAttribute("aria-hidden","true"); document.body.insertBefore(el,document.body.firstChild); }
   var m={today:"today",train:"train",log:"log",body:"body",food:"food"}[view]||"home", u="url(assets/bg/bg-"+m+".webp)";
   if(el.getAttribute("data-b")!==m){ el.setAttribute("data-b",m); el.style.backgroundImage=u; }
+  try{ var hd=document.querySelector("header.top"); if(hd) document.documentElement.style.setProperty("--d3top",(hd.offsetHeight+hd.offsetTop)+"px"); }catch(e){}
 }
 function d3shell(){
   if($("d3orb")) return;
@@ -7271,7 +7285,7 @@ document.addEventListener("click",function(ev){ var b=ev.target.closest&&ev.targ
 function d3after(){
   try{ banApply(); if(BANON) banPanel(); }catch(e){}
   if(!d3on()){ d3sync(); return; }
-  d3shell(); d3imgApply(); try{ banApply(); }catch(e){} d3imgPanel();
+  d3shell(); d3bgSet(); d3imgApply(); try{ banApply(); }catch(e){} d3imgPanel();
   if(view==="set"){ var lt=document.documentElement.getAttribute("data-v3")==="light"; Array.prototype.forEach.call(document.querySelectorAll(".st-t"),function(b){ var t=b.getAttribute("data-t"); if(t==="black") b.setAttribute("aria-pressed",String(!lt)); else if(t==="light") b.setAttribute("aria-pressed",String(lt)); }); }
   if(view==="today") d3today();
   if(view==="body") d3bodyv(); else if(view==="food") d3foodv(); else if(view==="log") d3logv();
