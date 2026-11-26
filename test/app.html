@@ -1756,6 +1756,16 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan u{position:absolute
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan[aria-pressed="true"]{border-color:var(--t-accent,#6D28D9);background:color-mix(in srgb,var(--t-accent,#6D28D9) 12%,transparent);box-shadow:0 0 0 1px var(--t-accent,#6D28D9)}
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]{background:var(--t-accent,#6D28D9);border-color:var(--t-accent,#6D28D9);color:var(--t-onac,#08202F)}
 </style>
+<style id="mix1">
+.dsw{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.78rem;font-weight:800;color:var(--t-accent,var(--d3-acc,#FF7A3F));border:1.5px solid currentColor;border-radius:999px;padding:6px 12px;background:transparent;white-space:nowrap;cursor:pointer;min-height:36px}
+.dsw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+html[data-design="3"] .d3-hi{align-items:center}
+html[data-design="3"] .d3-hi .dsw{margin-inline-start:auto}
+html[data-design="3"] body #d3tabs{position:fixed!important;inset-inline:0!important;bottom:0!important;top:auto!important;z-index:45;margin:0;padding-bottom:env(safe-area-inset-bottom,0px);border-bottom:0;border-top:1px solid var(--d3-line);background:color-mix(in srgb,var(--d3-bg,#08202F) 90%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+html[data-design="3"] #d3tabs .ind{bottom:auto;top:-1px;border-radius:0 0 3px 3px}
+html[data-design="3"] #d3orb:not([hidden]){bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+html[data-design="3"] body{padding-block-end:200px}
+</style>
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="kfk" viewBox="0 0 1199 1059"><defs><linearGradient id="gB" gradientUnits="userSpaceOnUse" x1="422.5" y1="210.2" x2="143.3" y2="617.9"><stop offset="0.0" stop-color="rgb(249,148,38)"/><stop offset="0.5" stop-color="rgb(252,126,16)"/><stop offset="1.0" stop-color="rgb(249,82,5)"/></linearGradient><linearGradient id="gF" gradientUnits="userSpaceOnUse" x1="576.6" y1="604.2" x2="189.9" y2="941.7"><stop offset="0.0" stop-color="rgb(131,36,10)"/><stop offset="0.5" stop-color="rgb(232,60,8)"/><stop offset="1.0" stop-color="rgb(230,51,8)"/></linearGradient><linearGradient id="gS" gradientUnits="userSpaceOnUse" x1="961.9" y1="98.0" x2="130.6" y2="851.9"><stop offset="0.0" stop-color="rgb(250,153,50)"/><stop offset="0.5" stop-color="rgb(252,114,11)"/><stop offset="1.0" stop-color="rgb(242,67,8)"/></linearGradient><linearGradient id="gA" gradientUnits="userSpaceOnUse" x1="611.3" y1="679.9" x2="998.9" y2="992.0"><stop offset="0.0" stop-color="rgb(222,74,9)"/><stop offset="0.5" stop-color="rgb(251,74,11)"/><stop offset="1.0" stop-color="rgb(229,45,14)"/></linearGradient></defs><polygon points="467.4,110.4 157.4,342.4 97.4,747.4 455.4,396.4" fill="url(#gB)"/><polygon points="44.4,1010.4 358.4,879.4 674.4,517.4 551.4,576.4 507.4,539.4 157.4,799.4" fill="url(#gF)"/><polygon points="1154.4,44.4 793.4,106.4 96.4,811.4 44.4,1010.4" fill="url(#gS)"/><polygon points="503.4,743.4 729.4,1014.4 1146.4,1011.4 711.4,529.4" fill="url(#gA)"/></symbol></svg>
 <!-- KFIT-SPLASH: شاشة تحميل بدل ما شاشة الدخول تظهر لحد ما فايربيز يرد -->
@@ -5733,7 +5743,7 @@ function renderToday(){
   var done=planDoneOn(tk), vis=visibleEx(day), sets=0; vis.forEach(function(e){ sets+=e.s||0; });
   var nm=(S.profile.name||"").trim(), hr=new Date().getHours(), gr=hr<12?"صباح الخير":(hr<17?"نهارك سعيد":"مساء الخير");
   var fd=firstDate(), dn=fd?Math.max(1,diffD(tk,fd)+1):1, pct=info.total?Math.round(info.score/info.total*100):0, st=curStreak();
-  h.push('<div class="td-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b></div><span class="td-date">'+fmtDate(tk)+'</span></div>');
+  h.push('<div class="td-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b></div>'+dswBtn()+'</div>');
   h.push('<section class="td-goal"><div class="td-gl"><small>هدف اليوم</small><div class="td-day">اليوم <b dir="ltr">'+dn+'</b></div><p>'+(day.rest?(day.name+" · "+day.note):(day.name+" · "+vis.length+" تمرين، "+sets+" مجموعة"))+'</p>'+
     (st>0?'<span class="td-st">'+FXI.flame+st+' أيام متتالية</span>':'')+
     '<button type="button" class="hx-go small" data-act="gotrain" data-i="'+pi+'">'+(day.rest?"افتح اليوم":(done?"افتح تمرين النهارده":"ابدأ التمرين"))+'<span class="hx-pb">'+HXI.play+'</span></button></div>'+
@@ -6756,6 +6766,11 @@ $("foot").innerHTML = '<span class="fl">'+'<svg class="kf-logo" viewBox="0 0 119
 try{ if(CONTACT.photo) document.documentElement.style.setProperty("--photo",'url("'+CONTACT.photo+'")'); document.documentElement.style.setProperty("--avatar",'url("'+AVATAR+'")'); }catch(e){}
 $("today").textContent = new Date().toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"long"});
 /* ===== KFIT-DESIGN-3 (FOCUS): runs inside the app IIFE, uses the same state S, DAYS, draft, persist, rest timer ===== */
+/* KFIT-MIX1: زرار تبديل التصميم (بيعرض التصميم التاني اللي هتروحله) */
+function dswBtn(){
+  var on=d3on();
+  return '<button type="button" class="dsw" data-d3s="'+(on?"1":"3")+'" aria-label="غيّر شكل التطبيق"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>'+(on?"تصميم 1":"تصميم 2")+'</span></button>';
+}
 function d3on(){ return document.documentElement.getAttribute("data-design")==="3"; }
 var D3={ix:{},ed:null,hold:0,tk:0,swipe:null};
 var D3I={
@@ -6909,7 +6924,7 @@ function d3today(){
   var ms={}; vis.forEach(function(e){ (e.m||[]).slice(0,1).forEach(function(k){ ms[k]=1; }); });
   var ch=Object.keys(ms).slice(0,4);
   var kp=[[Math.round(vol).toLocaleString("en-US"),"حجم الأسبوع (كجم)"],[weekPRs(ws),"أرقام قياسية الأسبوع"],[la?(Math.round(la*10)/10):"–","متوسط الوزن (كجم)"],[weekSets(ws),"مجموعات الأسبوع"]];
-  var h='<div class="d3-hero"><div class="d3-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b></div></div>'+
+  var h='<div class="d3-hero"><div class="d3-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b></div>'+dswBtn()+'</div>'+
     '<div class="d3-rings" role="img" aria-label="تمارين الأسبوع '+wp[0]+' من '+wp[1]+'، مجموعات اليوم '+cnt[0]+' من '+cnt[1]+'، السلسلة '+st+' يوم"><svg viewBox="0 0 200 200">'+
     '<circle class="tr" cx="100" cy="100" r="92" stroke-width="9"/><circle id="d3r1" cx="100" cy="100" r="92" stroke-width="9" stroke="var(--d3-acc)"/>'+
     '<circle class="tr" cx="100" cy="100" r="76" stroke-width="9"/><circle id="d3r2" cx="100" cy="100" r="76" stroke-width="9" stroke="var(--d3-ok)"/>'+
@@ -6935,7 +6950,7 @@ function d3shell(){
   var top=document.querySelector("header.top"); if(!top) return;
   var nav=document.createElement("nav"); nav.id="d3tabs"; nav.setAttribute("aria-label","التنقل الرئيسي");
   nav.innerHTML=D3TABS.map(function(t){ return '<button type="button" data-d3="tab" data-v="'+t[0]+'">'+D3I[t[3]]+'<span>'+t[2]+'</span></button>'; }).join("")+'<span class="ind" id="d3ind"></span>';
-  var brand=top.querySelector(".brand"); if(brand) brand.insertAdjacentElement("afterend",nav); else top.appendChild(nav);
+  var brand=top.querySelector(".brand"); document.body.appendChild(nav); /* KFIT-MIX1: تحت */
   if(brand){ var mb=document.createElement("button"); mb.type="button"; mb.id="d3more"; mb.className="d3-more"; mb.setAttribute("aria-label","المزيد"); mb.setAttribute("data-d3","more"); mb.innerHTML=D3I.dots; brand.appendChild(mb); }
   var orb=document.createElement("button"); orb.type="button"; orb.id="d3orb"; orb.hidden=true; orb.setAttribute("data-d3","orb"); orb.innerHTML='<span id="d3oi"></span><span id="d3ot"></span>'; document.body.appendChild(orb);
 }
