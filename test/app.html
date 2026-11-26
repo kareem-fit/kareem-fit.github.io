@@ -5546,8 +5546,10 @@ document.addEventListener("click", function(ev){
   else if(a==="pnyes"){ var pn=document.getElementById("pnm"); if(pn) pn.remove(); S.prefs.pnAt=Date.now(); persist(); pushEnable(); }
   else if(a==="pnlater"){ var pn2=document.getElementById("pnm"); if(pn2) pn2.remove(); S.prefs.pnAt=Date.now(); persist(); }
   else if(a==="tpok"||a==="tpgo"){ var tp=document.getElementById("tpm"); if(tp) tp.remove(); S.prefs.tipAt=Date.now(); S.prefs.tipI=(S.prefs.tipI||0)+1; persist(); if(a==="tpgo"){ view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); } }
-  else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w2"; persist(); }
-  else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w2"; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); if(view==="set") setTimeout(function(){ var pc=document.querySelector("[data-act=pushon],#push-card"); if(pc) pc.scrollIntoView({block:"center"}); },80); }
+  else if(a==="wnok"){ var wm=document.getElementById("wnm"); if(wm) wm.remove(); S.prefs.wn="w2"; S.prefs.wn3=1; persist(); }
+  else if(a==="wngo"){ var wm2=document.getElementById("wnm"); if(wm2) wm2.remove(); S.prefs.wn="w2"; S.prefs.wn3=1; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); if(view==="set") setTimeout(function(){ var pc=document.querySelector("[data-act=pushon],#push-card"); if(pc) pc.scrollIntoView({block:"center"}); },80); }
+  else if(a==="wn3ok"){ var w3=document.getElementById("wnm"); if(w3) w3.remove(); S.prefs.wn3=1; persist(); }
+  else if(a==="wn3go"){ var w4=document.getElementById("wnm"); if(w4) w4.remove(); S.prefs.wn3=1; persist(); view=b.getAttribute("data-v")||"home"; renderAll(); window.scrollTo(0,0); }
   else if(a==="qtgo"){ if(qtCanvas) shareOut(qtCanvas,"رسالة-اليوم-"+todayKey()+".png"); }
   else if(a==="qtdl"){ if(qtCanvas) qtCanvas.toBlob(function(bl){ if(bl) saveFile("رسالة-اليوم-"+todayKey()+".png",bl,"اتنزّلت الصورة"); },"image/png"); }
   else if(a==="qtsz"){ qtSize=b.getAttribute("data-v")||"story"; qtPaint(); }
@@ -6152,6 +6154,7 @@ function popMaybe(){
   if(view!=="home"||document.querySelector("#pnm,#wnm,#tpm")) return;
   if(pnMaybe()) return;
   wnMaybe(); if(document.getElementById("wnm")) return;
+  wn3Maybe(); if(document.getElementById("wnm")) return;
   tipMaybe();
 }
 function pnMaybe(){
@@ -6175,6 +6178,19 @@ function tipMaybe(){
   var i=(S.prefs.tipI||0)%POPTIPS.length, t=POPTIPS[i];
   var m=document.createElement("div"); m.id="tpm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","نصيحة");
   m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>'+t[0]+' '+t[1]+'</h3><p class="sub" style="text-align:center;line-height:1.9">'+t[2]+'</p>'+(t[3]?'<button type="button" class="btn" data-act="tpgo" data-v="'+t[3]+'">'+t[4]+'</button><button type="button" class="sm-gh wide" data-act="tpok">تمام</button>':'<button type="button" class="btn" data-act="tpok">تمام</button>')+'</div>';
+  document.body.appendChild(m);
+}
+/* KFIT-WN3: «جديد» للي كان مسجّل قبل كده (بيظهر مرة واحدة) */
+function wn3Maybe(){
+  if(view!=="home"||!S.welcomed||!S.prefs||S.prefs.wn!=="w2"||S.prefs.wn3||document.getElementById("wnm")) return;
+  var m=document.createElement("div"); m.id="wnm"; m.className="q-sh"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label","جديد في التطبيق");
+  function it(ic,t,d,v,l){ return '<div class="wn-i"><span class="wn-ic">'+ic+'</span><span class="wn-t"><b>'+t+'</b><small>'+d+'</small></span>'+(v?'<button type="button" class="sm-gh" data-act="wn3go" data-v="'+v+'">'+l+'</button>':'')+'</div>'; }
+  m.innerHTML='<div class="qs-b wn-b"><i class="qs-g"></i><h3>جديد في Kareem-Fit</h3>'+
+    it("🎨","اختار شكل كل صفحة","في اليوم والجسم والسجل والأكل فيه زرار فوق تغيّر شكل الصفحة بين تصميم 1 و2","today","جرّب")+
+    it("🎯","وضع «تركيز» في التمرين","تمرين واحد قدامك كل مرة، ولو عايز القايمة ترجع بضغطة","train","جرّب")+
+    it("🌙","مظهر جديد «هادي ليلي»","لون بنفسجي غامق مريح للعين بالليل","set","شوفه")+
+    it("🕌","تنبيه الفجر","بقى فيه تنبيه قبل الفجر وعند وقته، زي باقي الصلوات","set","فعّله")+
+    '<button type="button" class="btn" data-act="wn3ok">تمام</button></div>';
   document.body.appendChild(m);
 }
 function wnMaybe(){
@@ -8217,7 +8233,7 @@ auth.onAuthStateChanged(function(u){ if(!u){ $("gate").hidden=false; return; } i
   });
   auth.onAuthStateChanged(function(u){ if(u) setTimeout(show,3500); });
 })();
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").then(function(r){ /* KFIT-UPD: يدوّر على تحديث كل ما التطبيق يرجع قدام */ var ck=function(){ try{ r.update(); }catch(e){} }; document.addEventListener("visibilitychange",function(){ if(!document.hidden) ck(); }); setTimeout(ck,4000); }).catch(function(){});
 /* KFIT-NET: حالة الأوفلاين + تنبيه نسخة جديدة */
 (function(){
   var st=document.createElement("style");
