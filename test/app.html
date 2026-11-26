@@ -1933,9 +1933,15 @@ html[data-v3="dusk"] #v3nav button[aria-current="page"]{color:var(--t-accent)}
 .pgsw{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.78rem;font-weight:800;color:#FF7A3F!important;border:1.5px solid currentColor;border-radius:999px;padding:6px 12px;background:transparent;white-space:nowrap;cursor:pointer;min-height:36px;flex:none}
 .pgsw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pgrow{display:flex;justify-content:flex-end;margin:0 0 8px}
+#app{position:relative}
+.pgrow.ov{position:absolute;top:10px;inset-inline-end:10px;margin:0;z-index:6}
+.pgrow.ov .pgsw{font-size:.72rem;padding:4px 10px;min-height:30px;gap:5px;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pgrow.ov .pgsw svg{width:14px;height:14px}
+body.v-body .pgrow.ov{top:74px}
 .pgseg{display:inline-flex;border:1.5px solid #FF7A3F;border-radius:999px;overflow:hidden}
 .pgseg button{font:inherit;font-size:.8rem;font-weight:800;color:#FF7A3F;background:transparent;border:0;padding:6px 16px;min-height:36px;cursor:pointer}
 .pgseg button[aria-pressed="true"]{background:#FF7A3F;color:#fff}
+.d3-hi .d3-dn{display:inline-block;margin-top:3px;font-size:.8rem;font-weight:800;font-style:normal;color:var(--d3-acc)}
 .bd-h .pgsw,.td-hi .pgsw,.d3-hi .pgsw{margin-inline-start:auto}
 html[data-d3f] .d3f .d3-hd{display:none}
 html[data-d3f] #d3orb:not([hidden]){display:flex;bottom:calc(84px + env(safe-area-inset-bottom,0px))}
@@ -7021,7 +7027,7 @@ function pgInject(){
   if(view==="train"){ var fz=d3fz(); a.insertAdjacentHTML("afterbegin",'<div class="pgrow"><div class="pgseg" role="group" aria-label="طريقة العرض"><button type="button" data-trm="focus" aria-pressed="'+fz+'">تركيز</button><button type="button" data-trm="list" aria-pressed="'+!fz+'">قائمة</button></div></div>'); return; }
   var hd=null;
   if(hd){ hd.insertAdjacentHTML("beforeend",pgBtn(view)); return; }
-  a.insertAdjacentHTML("afterbegin",'<div class="pgrow">'+pgBtn(view)+'</div>');
+  a.insertAdjacentHTML("afterbegin",'<div class="pgrow ov">'+pgBtn(view)+'</div>');
 }
 document.addEventListener("click",function(ev){
   var m=ev.target.closest&&ev.target.closest("[data-trm]"); if(!m) return;
@@ -7186,7 +7192,7 @@ function d3today(){
   var ms={}; vis.forEach(function(e){ (e.m||[]).slice(0,1).forEach(function(k){ ms[k]=1; }); });
   var ch=Object.keys(ms).slice(0,4);
   var kp=[[Math.round(vol).toLocaleString("en-US"),"حجم الأسبوع (كجم)"],[weekPRs(ws),"أرقام قياسية الأسبوع"],[la?(Math.round(la*10)/10):"–","متوسط الوزن (كجم)"],[weekSets(ws),"مجموعات الأسبوع"]];
-  var h='<div class="d3-hero"><div class="d3-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b></div>'+pgBtn("today")+'</div>'+
+  var h='<div class="d3-hero"><div class="d3-hi">'+tdAv()+'<div><small>'+gr+'</small><b>'+esc(nm||"يا بطل")+'</b><em class="d3-dn">اليوم <span dir="ltr">'+(firstDate()?Math.max(1,diffD(tk,firstDate())+1):1)+'</span></em></div>'+pgBtn("today")+'</div>'+
     '<div class="d3-rings" role="img" aria-label="تمارين الأسبوع '+wp[0]+' من '+wp[1]+'، مجموعات اليوم '+cnt[0]+' من '+cnt[1]+'، السلسلة '+st+' يوم"><svg viewBox="0 0 200 200">'+
     '<circle class="tr" cx="100" cy="100" r="92" stroke-width="9"/><circle id="d3r1" cx="100" cy="100" r="92" stroke-width="9" stroke="var(--d3-acc)"/>'+
     '<circle class="tr" cx="100" cy="100" r="76" stroke-width="9"/><circle id="d3r2" cx="100" cy="100" r="76" stroke-width="9" stroke="var(--d3-ok)"/>'+
@@ -7207,7 +7213,7 @@ function d3bgSet(){
   var el=$("d3bg"); if(!el){ el=document.createElement("div"); el.id="d3bg"; el.setAttribute("aria-hidden","true"); document.body.insertBefore(el,document.body.firstChild); }
   var m={today:"today",train:"train",log:"log",body:"body",food:"food"}[view]||"home", u="url(assets/bg/bg-"+m+".webp)";
   if(el.getAttribute("data-b")!==m){ el.setAttribute("data-b",m); el.style.backgroundImage=u; }
-  try{ var hd=document.querySelector("header.top"); if(hd) document.documentElement.style.setProperty("--d3top",(hd.offsetHeight+hd.offsetTop)+"px"); }catch(e){}
+  try{ var hd=document.querySelector(".brand"); if(hd){ var rb=hd.getBoundingClientRect(), ps=getComputedStyle(hd).position, st=(ps==="sticky"||ps==="fixed")?0:(window.scrollY||0); document.documentElement.style.setProperty("--d3top",Math.round(rb.bottom+st)+"px"); } }catch(e){}
 }
 function d3shell(){
   if($("d3orb")) return;
