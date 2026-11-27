@@ -1950,7 +1950,7 @@ html[data-d3f] #d3orb:not([hidden]){display:flex;bottom:calc(84px + env(safe-are
 html[data-design="3"] .pgsw{color:var(--d3-acc,#FF7A3F)}
 html[data-design="3"] body{position:relative}
 html[data-design="3"] .wrap{position:relative;z-index:1}
-html[data-design="3"] #d3bg[data-b]:not([data-b="body"]){top:var(--d3top,76px)}
+html[data-design="3"] #d3bg[data-b]:not([data-b="body"]){position:fixed;top:var(--d3top,76px);left:50%;right:auto;width:min(100vw,560px);transform:translateX(-50%)}
 html[data-design="3"] #d3bg[data-b="body"]{top:var(--d3top,76px)}
 html[data-design="3"] #d3orb:not([hidden]){bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 </style>
@@ -2334,7 +2334,7 @@ html[data-design="3"] .bd-ks .bd-k em{font-size:.7rem;color:var(--d3-tx3)}
 /* log: compact header + sessions as quiet accordion rows */
 html[data-design="3"] .bd-h .fx-ti{display:none}
 html[data-design="3"] .bd-h h2{font-size:1.5rem;font-weight:800}
-html[data-design="3"] .lg-mh{position:sticky;top:112px;z-index:3;background:var(--d3-bg);padding:10px 2px 6px;margin-top:6px}
+html[data-design="3"] .lg-mh{position:sticky;top:calc(var(--d3top,70px) - 2px);z-index:3;background:var(--d3-bg);padding:10px 2px 6px;margin-top:6px}
 html[data-design="3"] .lg-mh b{font-size:1rem;color:var(--d3-tx)}
 html[data-design="3"] .lg-s{border-radius:14px;background:var(--d3-surface);border:1px solid var(--d3-line)}
 html[data-design="3"] .lg-s.pr{background:var(--d3-surface);border-color:var(--d3-line);border-inline-start:4px solid #F0BE3C}
