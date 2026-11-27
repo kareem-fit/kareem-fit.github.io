@@ -1938,6 +1938,13 @@ html[data-v3="dusk"] #v3nav button[aria-current="page"]{color:var(--t-accent)}
 .pgrow.ov .pgsw{font-size:.72rem;padding:4px 10px;min-height:30px;gap:5px;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .pgrow.ov .pgsw svg{width:14px;height:14px}
 body.v-body .pgrow.ov{top:74px}
+html[data-design="3"] body.v-food .pgrow.ov{top:-9px}
+.cmp img,.bd-p img{cursor:zoom-in}
+#imgbox{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;touch-action:pinch-zoom}
+#imgbox[hidden]{display:none}
+#imgbox img{max-width:100%;max-height:calc(100% - 64px);object-fit:contain;border-radius:8px;touch-action:pinch-zoom}
+#imgbox .cap{color:#fff;font-size:.9rem;margin-top:10px;text-align:center}
+#imgbox .x{position:absolute;top:max(12px,env(safe-area-inset-top,0px));inset-inline-start:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:26px;line-height:1}
 .pgseg{display:inline-flex;border:1.5px solid #FF7A3F;border-radius:999px;overflow:hidden}
 .pgseg button{font:inherit;font-size:.8rem;font-weight:800;color:#FF7A3F;background:transparent;border:0;padding:6px 16px;min-height:36px;cursor:pointer}
 .pgseg button[aria-pressed="true"]{background:#FF7A3F;color:#fff}
@@ -2164,7 +2171,6 @@ html[data-d3f][data-v3="light"],html[data-d3f][data-v3="calm"]{
     
 }
 /* ---- shell: top bar + 5 segmented tabs, old bottom nav and old views row are hidden ---- */
-html[data-design="3"] #v3sheet .it[data-v3s="vl"]{display:none}
 .d3-more{display:none;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--d3-elev);color:var(--d3-tx);border:1px solid var(--d3-line);flex:none}
 .d3-more svg{width:22px;height:22px;fill:currentColor}
 #d3tabs{display:none}
@@ -2509,7 +2515,7 @@ html[data-design="3"] #d3adj:not([hidden]){display:block;position:fixed;inset-in
 #d3adj .g2 .ok{background:linear-gradient(135deg,var(--d3-acc),var(--d3-acc2));color:var(--d3-onacc);border:0}
 body.d3-adj #d3orb{display:none!important}
 /* design 3 has only two looks: dark (أسود) and light (فاتح) */
-html[data-design="3"] .st-t[data-t="classic"],html[data-design="3"] .st-t[data-t="modern"],html[data-design="3"] #v3sheet [data-th="classic"],html[data-design="3"] #v3sheet [data-th="modern"]{display:none}
+html[data-design="3"] .st-t[data-t="classic"],html[data-design="3"] .st-t[data-t="modern"]{display:none}
 html[data-design="3"] .st-th{grid-template-columns:repeat(2,1fr)}
 /* ===== card surface: "forged steel" (no photos) ===== */
 html[data-design="3"]{--d3-kn:rgba(255,255,255,.045);--d3-ember:rgba(255,107,53,.30);--d3-ember2:rgba(255,159,28,.10)}
@@ -7024,6 +7030,18 @@ var PGV={today:1,train:1,log:1,body:1,food:1};
 function pgIs(v){ var x=S.prefs.pg&&S.prefs.pg[v]; return v==="body"?x!=="1":x==="2"; } /* الجسم: تصميم 2 هو الأساسي */
 function d3fz(){ return document.documentElement.hasAttribute("data-d3f"); }
 function pgApply(){ var h=document.documentElement; if(view==="train"){ h.removeAttribute("data-design"); if(pgIs("train")) h.setAttribute("data-d3f",""); else h.removeAttribute("data-d3f"); return; } h.removeAttribute("data-d3f"); if(PGV[view]&&pgIs(view)) h.setAttribute("data-design","3"); else h.removeAttribute("data-design"); }
+function ibOpen(img){
+  var b=document.getElementById("imgbox");
+  if(!b){ b=document.createElement("div"); b.id="imgbox"; b.setAttribute("role","dialog"); b.setAttribute("aria-modal","true"); b.setAttribute("aria-label","عرض الصورة"); b.hidden=true; b.innerHTML='<button type="button" class="x" aria-label="إغلاق">×</button><img alt=""><div class="cap"></div>'; document.body.appendChild(b);
+    b.addEventListener("click",function(e){ if(e.target.tagName!=="IMG") b.hidden=true; });
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") b.hidden=true; }); }
+  var fg=img.closest("figure"), cp=fg?fg.querySelector("figcaption"):null, sp=img.parentNode.querySelector("span");
+  b.querySelector("img").src=img.currentSrc||img.src; b.querySelector("img").alt=img.alt||"";
+  b.querySelector(".cap").textContent=cp?cp.textContent:(sp&&!sp.closest("button")?sp.textContent:(img.alt||""));
+  b.hidden=false;
+}
+document.addEventListener("click",function(ev){ var im=ev.target.closest&&ev.target.closest(".cmp img,.bd-p img"); if(im){ ev.preventDefault(); ibOpen(im); } });
+function pgNoAnim(){ var a=document.getElementById("app"); if(a) a.classList.remove("ks-vin","d3-vin"); }
 function pgBtn(v){ var on=pgIs(v); return '<button type="button" class="pgsw" data-pgsw="'+v+'" aria-pressed="'+on+'" aria-label="غيّر شكل الصفحة"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>'+(on?"تصميم 1":"تصميم 2")+'</span></button>'; }
 function pgInject(){
   var a=$("app"); if(!a||!PGV[view]||a.querySelector(".pgsw")) return;
@@ -7035,12 +7053,12 @@ function pgInject(){
 document.addEventListener("click",function(ev){
   var m=ev.target.closest&&ev.target.closest("[data-trm]"); if(!m) return;
   S.prefs.pg=S.prefs.pg||{}; S.prefs.d3m="focus"; S.prefs.pg.train=m.getAttribute("data-trm")==="focus"?"2":"1";
-  persist(); renderAll(); window.scrollTo(0,0);
+  pgNoAnim(); persist(); renderAll(); window.scrollTo(0,0);
 });
 document.addEventListener("click",function(ev){
   var b=ev.target.closest&&ev.target.closest("[data-pgsw]"); if(!b) return;
   var v=b.getAttribute("data-pgsw"); S.prefs.pg=S.prefs.pg||{}; S.prefs.pg[v]=pgIs(v)?"1":"2";
-  persist(); renderAll(); window.scrollTo(0,0);
+  pgNoAnim(); persist(); renderAll(); window.scrollTo(0,0);
 });
 function d3on(){ return document.documentElement.getAttribute("data-design")==="3"; }
 var D3={ix:{},ed:null,hold:0,tk:0,swipe:null};
