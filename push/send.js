@@ -57,7 +57,7 @@ if(require.main===module){
       const d=doc.data(), list=decide(d,Date.now());
       for(const m of list){
         try{
-          await admin.messaging().send({token:d.tok,data:{title:m.title,body:m.body,url:"./app.html",tag:m.k},webpush:{headers:{Urgency:"high",TTL:String(m.ttl||7200)}}});
+          await admin.messaging().send({token:d.tok,data:{title:m.title,body:m.body,url:"./app.html",tag:m.k,sent:String(Date.now())},webpush:{headers:{Urgency:"high",TTL:String(m.ttl||7200)}}});
           await doc.ref.set({sent:{[m.k]:m.date}},{merge:true}); sentN++;
         }catch(e){
           console.log("fail",doc.id,m.k,e.code||e.message);

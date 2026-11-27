@@ -6223,6 +6223,9 @@ function pushSync(){
   KS.fs.collection("push").doc(u.uid).set(o,{merge:true}).catch(function(){});
 }
 var PUSHERR="";
+var PDIAG=null;
+function pdiagFmt(ts){ if(!ts) return "؟"; var d=new Date(ts),z=function(x){ return (x<10?"0":"")+x; }; return z(d.getHours())+":"+z(d.getMinutes()); }
+function pdiagTxt(){ if(!PDIAG){ try{ if(window.caches) caches.open("ks-diag").then(function(c){ return c.match("d"); }).then(function(r){ return r&&r.json(); }).then(function(j){ if(j&&j.recv){ PDIAG=j; var e=document.getElementById("pdiag"); if(e) e.textContent=pdiagTxt(); } }).catch(function(){}); }catch(x){} return "آخر إشعار: لسه مجاش حاجة"; } return "آخر إشعار: اتبعت "+pdiagFmt(PDIAG.sent)+" · وصل "+pdiagFmt(PDIAG.recv); }
 function pushFail(st,e){ PUSHERR="مرحلة: "+st+" | "+((e&&(e.code||e.name))||"")+" "+String((e&&e.message)||e||"").slice(0,90); toast("معرفتش أفعّل الإشعارات، شوف السبب في الكارت"); renderAll(); }
 function pushEnable(){
   PUSHERR="";
@@ -6250,7 +6253,7 @@ function pushCard(){
    '<p><b>لو فيه سبب برتقالي فوق:</b> اتأكد إن النت شغّال وما فيش حاجب إعلانات أو DNS خاص بيمنع جوجل، وبعدين جرّب تاني.</p></details>';
   if(!p.on) return css+'<section class="fx-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">تذكير بالأذكار والتمرين، وتشجيع، وتنبيه بالرقم القياسي واشتراك الجيم. تقدر تقفل أي نوع.</p><button type="button" class="btn" data-act="pushon">فعّل الإشعارات</button>'+sol+'</section>';
   var n=PUSHK.filter(function(k){ return k[0]==="h"?p.h===true:p[k[0]]!==false; }).length;
-  return css+'<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">شغّالة ✓ ('+n+' من '+PUSHK.length+') · دوس على النوع علشان تقفله أو تفتحه</p><div class="pch">'+PUSHK.map(function(k){ var on=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); return '<button type="button" data-act="pushk" data-k="'+k[0]+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+k[1]+'</button>'; }).join("")+'</div>'+sol+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
+  return css+'<section class="fx-card" id="push-card">'+stHead(SETI.palette,"الإشعارات")+'<p class="sub">شغّالة ✓ ('+n+' من '+PUSHK.length+') · دوس على النوع علشان تقفله أو تفتحه</p>'+'<p class="sub" id="pdiag" style="font-size:12px;opacity:.8">'+pdiagTxt()+'</p><div class="pch">'+PUSHK.map(function(k){ var on=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); return '<button type="button" data-act="pushk" data-k="'+k[0]+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+k[1]+'</button>'; }).join("")+'</div>'+sol+'<button type="button" class="sm-gh wide dng" data-act="pushoff">إيقاف كل الإشعارات</button></section>';
 }
 /* ===== الأذان داخل التطبيق (لما التطبيق يكون مفتوح) ===== */
 var ADH_URL="adhan.mp3", ADH_OK=null, ADH=null, ADH_PL={};
