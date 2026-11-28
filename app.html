@@ -1960,6 +1960,7 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 @media (prefers-reduced-motion:reduce){.hb-card.pop,.hb-card.pop::after{animation:none}}
 .hb-home .r{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0}
 .hb-home .r+.r{border-top:1px solid var(--line)}
+.hb-go{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;background:none;border:0;color:inherit;font:inherit;text-align:start;min-height:44px;padding:0}
 .hb-home .n{font-weight:700;min-width:0;overflow-wrap:anywhere}.hb-home .d{color:var(--accent);font-weight:800;white-space:nowrap}
 html[data-widget] header,html[data-widget] #v3nav,html[data-widget] #v3sheet,html[data-widget] .foot,html[data-widget] .pgrow,html[data-widget] #d3more,html[data-widget] .hb-add,html[data-widget] .hb-tools,html[data-widget] .hb-head,html[data-widget] .hb>p.sub{display:none!important}
 html[data-widget] body{padding:max(8px,env(safe-area-inset-top,0px)) 8px 8px}
@@ -3574,11 +3575,10 @@ function renderHab(){
 function hbHome(){
   var L=hbList();
   if(!L.length) return '<button type="button" class="lb-strip" data-act="view" data-v="hab"><span>🔥 تتبّع عاداتك (إقلاع، سكر، دايت…)</span><span class="lb-sg">جديد</span></button>';
-  var top=L.slice().sort(function(a,b){ return hbDays(b)-hbDays(a); }).slice(0,3);
-  return '<section class="card hb-home"><h2>🔥 عاداتك</h2>'+top.map(function(h){ var d=hbDone(h);
-    return '<div class="r"><span class="n">'+esc(h.e||"🔥")+' '+esc(h.n)+'</span><span class="d">'+hbDays(h)+' يوم</span>'+
-     '<button type="button" class="hb-btn'+(d?' done':' ok')+'" style="flex:0 0 auto;min-height:36px" data-hb="ck" data-id="'+h.id+'">'+(d?'✓':'تأكيد ✅')+'</button></div>'; }).join("")+
-    '<button type="button" class="hx-go small" data-act="view" data-v="hab">كل العادات</button></section>';
+  var h=L.slice().sort(function(a,b){ return hbDays(b)-hbDays(a); })[0], d=hbDone(h);
+  return '<section class="card hb-home"><h2>🔥 عاداتك</h2><div class="r"><button type="button" class="hb-go" data-act="view" data-v="hab"><span class="n">'+esc(h.e||"🔥")+' '+esc(h.n)+'</span><span class="d">'+hbDays(h)+' يوم ›</span></button>'+
+    '<button type="button" class="hb-btn'+(d?' done':' ok')+'" style="flex:0 0 auto;min-height:44px;min-width:64px" data-hb="ck" data-id="'+h.id+'" aria-label="تأكيد التزام اليوم">'+(d?'✓':'تأكيد ✅')+'</button></div>'+
+    (L.length>1?'<button type="button" class="hx-go small" data-act="view" data-v="hab">+ '+(L.length-1)+' عادات تانية · كل العادات</button>':'')+'</section>';
 }
 function hbFind(id){ var L=hbList(); for(var i=0;i<L.length;i++) if(L[i].id===id) return i; return -1; }
 function hbStory(h){
@@ -4843,7 +4843,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+lbGymStrip()+hbHome()+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+lbGymStrip()+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hbHome()+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
