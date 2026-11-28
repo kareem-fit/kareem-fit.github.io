@@ -2967,19 +2967,20 @@ function gpOne(list,ops,did){
 }
 function gpApply(){
   try{
-    if(!GP0){ GP0={tpl:{},base:BASE_DAYS.map(function(d){ return d.ex; }),progs:null}; Object.keys(TPL).forEach(function(k){ GP0.tpl[k]=TPL[k][1]; }); }
-    if(!GP0.progs && typeof PROGS!=="undefined" && PROGS){ GP0.progs=PROGS.map(function(p){ return p.days.map(function(d){ return d[1]; }); }); }
+    if(!GP0){ GP0={tpl:{},tplN:{},base:BASE_DAYS.map(function(d){ return d.ex; }),baseN:BASE_DAYS.map(function(d){ return d.name; }),progs:null,progsN:null}; Object.keys(TPL).forEach(function(k){ GP0.tpl[k]=TPL[k][1]; GP0.tplN[k]=TPL[k][0]; }); }
+    if(!GP0.progs && typeof PROGS!=="undefined" && PROGS){ GP0.progs=PROGS.map(function(p){ return p.days.map(function(d){ return d[1]; }); }); GP0.progsN=PROGS.map(function(p){ return p.days.map(function(d){ return d[0]; }); }); }
     var ops=(GP && Array.isArray(GP.ops))?GP.ops.slice(0,500):[];
-    Object.keys(TPL).forEach(function(k){ TPL[k][1]=gpOne(GP0.tpl[k],ops,"p"+k); });
+    var rn={}; ops.forEach(function(op){ if(op && op.t==="rn" && typeof op.d==="string" && typeof op.x==="string" && op.x.trim()) rn[op.d]=esc(op.x.trim().slice(0,40)); });
+    Object.keys(TPL).forEach(function(k){ TPL[k][1]=gpOne(GP0.tpl[k],ops,"p"+k); TPL[k][0]=rn["p"+k]||GP0.tplN[k]; });
     BASE_DAYS.forEach(function(d,i){
-      if(d.rest) return; var orig=GP0.base[i];
+      if(d.rest) return; var orig=GP0.base[i]; d.name=rn[d.id]||GP0.baseN[i];
       d.ex=gpOne(orig.map(function(e){ return [e.id,e.s]; }),ops,d.id).map(function(x){
         var o=null; orig.forEach(function(e){ if(e.id===x[0]) o=e; });
         if(o) return Object.assign({},o,{s:x[1]});
         var ne=Object.assign({},LIB[x[0]],{s:x[1]}); delete ne.tag; return ne;
       });
     });
-    if(GP0.progs){ PROGS.forEach(function(p,pi){ p.days.forEach(function(d,di){ d[1]=gpOne(GP0.progs[pi][di],ops,"pg_"+p.id+"_"+di); }); }); }
+    if(GP0.progs){ PROGS.forEach(function(p,pi){ p.days.forEach(function(d,di){ d[1]=gpOne(GP0.progs[pi][di],ops,"pg_"+p.id+"_"+di); d[0]=rn["pg_"+p.id+"_"+di]||GP0.progsN[pi][di]; }); }); }
   }catch(e){}
 }
 function gpLoad(){ try{ fetch("programs.json",{cache:"no-cache"}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
