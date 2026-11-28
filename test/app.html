@@ -1400,9 +1400,6 @@ html[data-v3="light"] .bd-k.warn b,html[data-v3="light"] .bd-m em.up{color:#C257
 .lg-del{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:12px;border:1.5px solid var(--t-line);background:transparent;color:var(--t-muted);font:inherit;font-weight:700;cursor:pointer}
 .lg-del svg{width:18px;height:18px}
 .lg-del.conf{background:#D93A2B;border-color:#D93A2B;color:#fff}
-.lg-dt-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.lg-dt-row small{color:var(--t-muted);font-size:.85rem}
-.lg-dt{min-height:44px;min-width:0;flex:1 1 auto;max-width:210px;border-radius:12px;border:1.5px solid var(--t-line);background:transparent;color:inherit;font:inherit;padding:0 10px;text-align:center}
 .lg-empty{align-items:center;text-align:center}
 .lg-empty .fx-ti{width:64px;height:64px}
 .lg-empty .fx-ti svg{width:34px;height:34px}
@@ -2898,6 +2895,47 @@ function buildDays00(n){
   if(n===4) return BASE_DAYS.map(function(d,i){ return Object.assign({},d,{wd:WDS[i][0],dow:WDS[i][1]}); });
   return ((WS===5&&SCHF[n])?SCHF[n]:SCH[n]).map(function(k,i){ if(k==="d1" || k==="d2"){ var bd=BASE_DAYS[k==="d1"?0:1]; return Object.assign({},bd,{wd:WDS[i][0],dow:WDS[i][1]}); } return TPL[k] ? mkDay("p"+k,TPL[k][0],i,TPL[k][1]) : mkRest(k,i,n); });
 }
+/* KFIT-GP: تعديلات البرامج الأساسية من لوحة المدرب (ملف programs.json) */
+var GP=null, GP0=null;
+try{ GP=JSON.parse(localStorage.getItem("ks-gp")||"null"); }catch(e){}
+function gpOne(list,ops,did){
+  var ex=list.map(function(x){ return {id:x[0],s:x[1]}; });
+  ops.forEach(function(op){
+    if(!op || op.d!==did) return;
+    try{ coachX(op); }catch(e){}
+    var i=-1; ex.forEach(function(e,k){ if(e.id===op.a) i=k; });
+    var sv=(op.s>=1 && op.s<=6 && op.s%1===0)?op.s:0;
+    if(op.t==="sw" && i>=0 && LIB[op.b]) ex[i]={id:op.b,s:sv||ex[i].s};
+    else if(op.t==="rm" && i>=0) ex.splice(i,1);
+    else if(op.t==="st" && i>=0 && sv) ex[i].s=sv;
+    else if(op.t==="ad" && LIB[op.b] && !ex.some(function(e){ return e.id===op.b; })) ex.push({id:op.b,s:sv||2});
+    else if(op.t==="mv" && i>=0){ var it=ex.splice(i,1)[0]; ex.splice(Math.max(0,Math.min(ex.length,op.p|0)),0,it); }
+  });
+  return ex.map(function(e){ return [e.id,e.s]; });
+}
+function gpApply(){
+  try{
+    if(!GP0){ GP0={tpl:{},base:BASE_DAYS.map(function(d){ return d.ex; }),progs:null}; Object.keys(TPL).forEach(function(k){ GP0.tpl[k]=TPL[k][1]; }); }
+    if(!GP0.progs && typeof PROGS!=="undefined" && PROGS){ GP0.progs=PROGS.map(function(p){ return p.days.map(function(d){ return d[1]; }); }); }
+    var ops=(GP && Array.isArray(GP.ops))?GP.ops.slice(0,500):[];
+    Object.keys(TPL).forEach(function(k){ TPL[k][1]=gpOne(GP0.tpl[k],ops,"p"+k); });
+    BASE_DAYS.forEach(function(d,i){
+      if(d.rest) return; var orig=GP0.base[i];
+      d.ex=gpOne(orig.map(function(e){ return [e.id,e.s]; }),ops,d.id).map(function(x){
+        var o=null; orig.forEach(function(e){ if(e.id===x[0]) o=e; });
+        if(o) return Object.assign({},o,{s:x[1]});
+        var ne=Object.assign({},LIB[x[0]],{s:x[1]}); delete ne.tag; return ne;
+      });
+    });
+    if(GP0.progs){ PROGS.forEach(function(p,pi){ p.days.forEach(function(d,di){ d[1]=gpOne(GP0.progs[pi][di],ops,"pg_"+p.id+"_"+di); }); }); }
+  }catch(e){}
+}
+function gpLoad(){ try{ fetch("programs.json",{cache:"no-cache"}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
+  if(!j || !Array.isArray(j.ops)) return; var t=JSON.stringify(j); var old=""; try{ old=localStorage.getItem("ks-gp")||""; }catch(e){}
+  if(t===old) return; try{ localStorage.setItem("ks-gp",t); }catch(e){}
+  GP=j; gpApply(); try{ initDay(); rebuildMap(); renderAll(); }catch(e){}
+}).catch(function(){}); }catch(e){} }
+gpApply();
 [2,3,4,5].forEach(function(n){ buildDays(n).forEach(function(d){ DAYMAP[d.id]=d; }); });
 function rebuildMap(){ [2,3,4,5].forEach(function(n){ applyOverride(buildDays0(n)).forEach(function(d){ DAYMAP[d.id]=d; }); }); if(S && S.mine && S.mine.days) mineDays().forEach(function(d){ DAYMAP[d.id]=d; }); }
 
@@ -5922,18 +5960,6 @@ function lgStats(L){
   L.forEach(function(s){ var d=dayOf(s.day); if(!d||d.rest) return; o.n++; o.sets+=lgSets(s); o.vol+=lgVol(s); o.prs+=(s.pr?s.pr.length:0); });
   return o;
 }
-/* KFIT-CHDATE: نقل تمرين محفوظ ليوم تاني (لو نسيت تحفظه في يومه) */
-function lgMove(id,nk){
-  var s=null; S.sessions.forEach(function(x){ if(x.id===id) s=x; });
-  if(!s||!nk||nk>todayKey()||nk===s.date) return;
-  S.sessions=S.sessions.filter(function(x){ return !(x!==s && x.date===nk && x.day===s.day); });
-  s.date=nk;
-  S.sessions.sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:b.id-a.id; });
-  persist(); toast("اتنقل التمرين ليوم "+fmtDate(nk)); renderAll();
-}
-document.addEventListener("change",function(e){
-  var t=e.target; if(t&&t.classList&&t.classList.contains("lg-dt")) lgMove(+t.getAttribute("data-id"),t.value);
-});
 function lgCard(s){
   var d=dayOf(s.day), rest=!!(d&&d.rest), open=!!lgOpen[s.id], sets=lgSets(s), vol=lgVol(s), lines=[], prs=s.pr||[];
   if(d){
@@ -5947,7 +5973,6 @@ function lgCard(s){
   var meta=rest?'<span>يوم راحة ونشاط خفيف</span>':'<span>'+sets+' مجموعة</span><span>'+r1(vol/1000)+' طن</span>'+(prs.length?'<span class="pr">'+SMI.trophy+prs.length+'</span>':'')+(s.note?'<span class="nt">'+CXI.chat+'</span>':'');
   return '<section class="lg-s'+(prs.length?' pr':'')+(open?' open':'')+'"><button type="button" class="lg-h" data-act="lgopen" data-id="'+s.id+'" aria-expanded="'+open+'"><span class="lg-i">'+(rest?FXI.moon:SMI.dumb)+'</span><div class="lg-t"><b>'+(d?d.name:"")+'</b><small>'+fmtDate(s.date)+'</small><div class="lg-m">'+meta+'</div></div><span class="lg-c">'+FXI.chev+'</span></button>'+
     (open?'<div class="lg-b"><ul>'+lines.join("")+'</ul>'+(s.note?'<div class="lg-note"><small>ملاحظتك</small><p>'+esc(s.note)+'</p></div>':'')+
-      '<div class="lg-dt-row"><small>اتمرنته يوم:</small><input type="date" class="lg-dt" data-id="'+s.id+'" value="'+s.date+'" max="'+todayKey()+'" aria-label="غيّر يوم التمرين"></div>'+
       '<button type="button" class="lg-del'+(pendingDel===s.id?' conf':'')+'" data-act="del" data-id="'+s.id+'">'+FXI.del+(pendingDel===s.id?'تأكيد الحذف':'حذف التمرين')+'</button></div>':'')+'</section>';
 }
 function renderLog(){
@@ -7704,6 +7729,7 @@ var PROGS=[
   ["Pull",[["wgpd",3],["wgsr",3],["salp",2],["sapd",2],["crdf",3],["preacher",2],["hammer",2]]],
   ["Legs",[["legpress",3],["legext",3],["dbrdl",3],["legcurl",2],["hipthrust",2],["calf",3],["abduct",2]]]]}
 ];
+gpApply();
 var LB={open:null,pick:null,sel:[],rm:"",ow:"",or:"",qh:null,qon:false,qmsg:"",rpOpen:false,pm:""};
 var LBTABS=[["prog","البرامج"],["tool","أدوات"],["musc","العضلات"],["rep","تقرير"]];
 function lbTab(){ var t=S.prefs.lb; return LBTABS.some(function(x){ return x[0]===t; })?t:"prog"; }
@@ -8133,6 +8159,7 @@ function lbInsights(){
 function lbMuscTab(){ return lbInsights()+lbMuscTab0(); }
 
 hadLoad();
+gpLoad();
 renderAll();
 initCloud();
 })();

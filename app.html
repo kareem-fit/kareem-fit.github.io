@@ -2893,6 +2893,47 @@ function buildDays00(n){
   if(n===4) return BASE_DAYS.map(function(d,i){ return Object.assign({},d,{wd:WDS[i][0],dow:WDS[i][1]}); });
   return ((WS===5&&SCHF[n])?SCHF[n]:SCH[n]).map(function(k,i){ if(k==="d1" || k==="d2"){ var bd=BASE_DAYS[k==="d1"?0:1]; return Object.assign({},bd,{wd:WDS[i][0],dow:WDS[i][1]}); } return TPL[k] ? mkDay("p"+k,TPL[k][0],i,TPL[k][1]) : mkRest(k,i,n); });
 }
+/* KFIT-GP: تعديلات البرامج الأساسية من لوحة المدرب (ملف programs.json) */
+var GP=null, GP0=null;
+try{ GP=JSON.parse(localStorage.getItem("ks-gp")||"null"); }catch(e){}
+function gpOne(list,ops,did){
+  var ex=list.map(function(x){ return {id:x[0],s:x[1]}; });
+  ops.forEach(function(op){
+    if(!op || op.d!==did) return;
+    try{ coachX(op); }catch(e){}
+    var i=-1; ex.forEach(function(e,k){ if(e.id===op.a) i=k; });
+    var sv=(op.s>=1 && op.s<=6 && op.s%1===0)?op.s:0;
+    if(op.t==="sw" && i>=0 && LIB[op.b]) ex[i]={id:op.b,s:sv||ex[i].s};
+    else if(op.t==="rm" && i>=0) ex.splice(i,1);
+    else if(op.t==="st" && i>=0 && sv) ex[i].s=sv;
+    else if(op.t==="ad" && LIB[op.b] && !ex.some(function(e){ return e.id===op.b; })) ex.push({id:op.b,s:sv||2});
+    else if(op.t==="mv" && i>=0){ var it=ex.splice(i,1)[0]; ex.splice(Math.max(0,Math.min(ex.length,op.p|0)),0,it); }
+  });
+  return ex.map(function(e){ return [e.id,e.s]; });
+}
+function gpApply(){
+  try{
+    if(!GP0){ GP0={tpl:{},base:BASE_DAYS.map(function(d){ return d.ex; }),progs:null}; Object.keys(TPL).forEach(function(k){ GP0.tpl[k]=TPL[k][1]; }); }
+    if(!GP0.progs && typeof PROGS!=="undefined" && PROGS){ GP0.progs=PROGS.map(function(p){ return p.days.map(function(d){ return d[1]; }); }); }
+    var ops=(GP && Array.isArray(GP.ops))?GP.ops.slice(0,500):[];
+    Object.keys(TPL).forEach(function(k){ TPL[k][1]=gpOne(GP0.tpl[k],ops,"p"+k); });
+    BASE_DAYS.forEach(function(d,i){
+      if(d.rest) return; var orig=GP0.base[i];
+      d.ex=gpOne(orig.map(function(e){ return [e.id,e.s]; }),ops,d.id).map(function(x){
+        var o=null; orig.forEach(function(e){ if(e.id===x[0]) o=e; });
+        if(o) return Object.assign({},o,{s:x[1]});
+        var ne=Object.assign({},LIB[x[0]],{s:x[1]}); delete ne.tag; return ne;
+      });
+    });
+    if(GP0.progs){ PROGS.forEach(function(p,pi){ p.days.forEach(function(d,di){ d[1]=gpOne(GP0.progs[pi][di],ops,"pg_"+p.id+"_"+di); }); }); }
+  }catch(e){}
+}
+function gpLoad(){ try{ fetch("programs.json",{cache:"no-cache"}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
+  if(!j || !Array.isArray(j.ops)) return; var t=JSON.stringify(j); var old=""; try{ old=localStorage.getItem("ks-gp")||""; }catch(e){}
+  if(t===old) return; try{ localStorage.setItem("ks-gp",t); }catch(e){}
+  GP=j; gpApply(); try{ initDay(); rebuildMap(); renderAll(); }catch(e){}
+}).catch(function(){}); }catch(e){} }
+gpApply();
 [2,3,4,5].forEach(function(n){ buildDays(n).forEach(function(d){ DAYMAP[d.id]=d; }); });
 function rebuildMap(){ [2,3,4,5].forEach(function(n){ applyOverride(buildDays0(n)).forEach(function(d){ DAYMAP[d.id]=d; }); }); if(S && S.mine && S.mine.days) mineDays().forEach(function(d){ DAYMAP[d.id]=d; }); }
 
@@ -7686,6 +7727,7 @@ var PROGS=[
   ["Pull",[["wgpd",3],["wgsr",3],["salp",2],["sapd",2],["crdf",3],["preacher",2],["hammer",2]]],
   ["Legs",[["legpress",3],["legext",3],["dbrdl",3],["legcurl",2],["hipthrust",2],["calf",3],["abduct",2]]]]}
 ];
+gpApply();
 var LB={open:null,pick:null,sel:[],rm:"",ow:"",or:"",qh:null,qon:false,qmsg:"",rpOpen:false,pm:""};
 var LBTABS=[["prog","البرامج"],["tool","أدوات"],["musc","العضلات"],["rep","تقرير"]];
 function lbTab(){ var t=S.prefs.lb; return LBTABS.some(function(x){ return x[0]===t; })?t:"prog"; }
@@ -8115,6 +8157,7 @@ function lbInsights(){
 function lbMuscTab(){ return lbInsights()+lbMuscTab0(); }
 
 hadLoad();
+gpLoad();
 renderAll();
 initCloud();
 })();
