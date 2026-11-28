@@ -1942,7 +1942,7 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 .hb-row{display:flex;gap:8px;flex-wrap:wrap}
 .hb-btn{flex:1 1 0;min-height:44px;border-radius:11px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:.9rem;padding:6px 8px}
 .hb-btn.ok{background:var(--ok);border-color:var(--ok);color:#06210f;flex:2 1 0}
-.hb-btn.done{background:transparent;color:var(--muted);border-color:var(--line)}
+.hb-btn.done{background:rgba(76,195,138,.16);color:var(--ok);border-color:var(--ok)}
 .hb-btn.warn{border-color:#E5484D;color:#E5484D}
 .hb-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.8rem}
 .hb-tools input[type=time]{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 6px;font:inherit}
@@ -1962,7 +1962,14 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]
 .hb-home .r+.r{border-top:1px solid var(--line)}
 .hb-home .n{font-weight:700;min-width:0;overflow-wrap:anywhere}.hb-home .d{color:var(--accent);font-weight:800;white-space:nowrap}
 html[data-widget] header,html[data-widget] #v3nav,html[data-widget] #v3sheet,html[data-widget] .foot,html[data-widget] .pgrow,html[data-widget] #d3more,html[data-widget] .hb-add,html[data-widget] .hb-tools,html[data-widget] .hb-head,html[data-widget] .hb>p.sub{display:none!important}
-html[data-widget] body{padding-top:max(14px,env(safe-area-inset-top,0px))}
+html[data-widget] body{padding:max(8px,env(safe-area-inset-top,0px)) 8px 8px}
+html[data-widget] #app{padding:0;margin:0}
+html[data-widget] .hb{gap:6px}
+html[data-widget] .hb-card{padding:8px 10px;gap:3px;border-radius:14px;cursor:pointer}
+html[data-widget] .hb-big b{font-size:2.2rem}html[data-widget] .hb-big .f{font-size:1.5rem}
+html[data-widget] .hb-bar{height:6px}html[data-widget] .hb-sub{font-size:.72rem}
+html[data-widget] .hb-btn{min-height:34px;font-size:.8rem;padding:2px 6px}
+html[data-widget] .hb-top{font-size:.9rem}html[data-widget] .hb-nm{font-size:.95rem}
 </style>
 <style id="pgcss">
 html body .foot{border:1px solid var(--t-muscle,#34435A);border-radius:20px;padding:14px 16px;margin-top:18px;background:radial-gradient(70% 160% at 0% 100%,rgba(255,107,53,.30),transparent 70%),linear-gradient(180deg,#1A232E,#111820);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 24px -14px rgba(0,0,0,.65)}
@@ -3514,7 +3521,10 @@ try{ new MutationObserver(function(){ var h=document.documentElement; h.classLis
 /* KFIT-HABITS */
 var HMS=[7,30,90,150,365], HMN={7:"أسبوع",30:"شهر",90:"3 شهور",150:"150 يوم",365:"سنة"};
 var HIC=["🚭","🍬","🥗","💧","😴","📵","🏃","📖","🥤","🧘","🚫","💪"];
-var HB={add:false,ic:"🚭",pop:"",cf:""};
+var HB={add:false,ic:"🚭",pop:"",cf:"",ed:""};
+function hbAr(v){ return String(v==null?"":v).replace(/[٠-٩]/g,function(c){ return String(c.charCodeAt(0)-1632); }).replace(/[۰-۹]/g,function(c){ return String(c.charCodeAt(0)-1776); }).replace(/[٫٬]/g,function(c){ return c==="٫"?".":","; }); }
+function hbDate(v,def){ var t=hbAr(v).trim().replace(/[\/.]/g,"-"); var m=t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/); if(!m) return def; var y=+m[1],mo=+m[2],d=+m[3],o=new Date(y,mo-1,d); if(o.getFullYear()!==y||o.getMonth()!==mo-1||o.getDate()!==d) return def; var k=y+"-"+("0"+mo).slice(-2)+"-"+("0"+d).slice(-2); return k>todayKey()?todayKey():k; }
+function hbTime(v,def){ var m=hbAr(v).trim().match(/^(\d{1,2}):(\d{2})/); if(!m||+m[1]>23||+m[2]>59) return def; return (+m[1])*60+(+m[2]); }
 function hbList(){ if(!Array.isArray(S.hbt)) S.hbt=[]; return S.hbt; }
 function hbDays(h,tk){ var d=diffD(tk||todayKey(),h.s)+1; return d<0?0:d; }
 function hbBest(h){ return Math.max(h.b||0,hbDays(h)); }
@@ -3533,26 +3543,28 @@ function hbCard(h){
    '<div class="hb-big"><span class="f" aria-hidden="true">🔥</span><b>'+days+'</b><span class="u">يوم</span>'+medal+'</div>'+
    '<div class="hb-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div>'+
    '<div class="hb-sub">'+sub+'</div>'+
-   '<div class="hb-row"><button type="button" class="hb-btn '+(done?'done':'ok')+'" data-hb="ck" data-id="'+h.id+'"'+(done?' aria-pressed="true"':'')+'>'+(done?'✓ اتأكد النهارده':'تأكيد التزام اليوم ✅')+'</button>'+
+   '<div class="hb-row"><button type="button" class="hb-btn '+(done?'done':'ok')+'" data-hb="ck" data-id="'+h.id+'"'+(done?' aria-pressed="true"':'')+'>'+(done?'تم الالتزام اليوم ✓':'تأكيد التزام اليوم ✅')+'</button>'+
    '<button type="button" class="hb-btn" data-hb="sh" data-id="'+h.id+'">مشاركة 📤</button>'+
    '<button type="button" class="hb-btn'+(cf==="r"?' warn':'')+'" data-hb="rs" data-id="'+h.id+'">'+(cf==="r"?'أكيد؟ اضغط تاني للتصفير':'↺ تصفير')+'</button></div>'+
    '<div class="hb-tools"><label><input type="checkbox" data-hbrm="'+h.id+'"'+(rm?' checked':'')+'> تذكير يومي</label>'+
    (rm?'<input type="time" data-hbrt="'+h.id+'" value="'+hbTm(h.rm)+'" aria-label="ساعة التذكير">':'')+
-   '<button type="button" class="hb-btn'+(cf==="d"?' warn':'')+'" style="flex:0 0 auto;min-height:32px;font-size:.78rem;margin-inline-start:auto" data-hb="dl" data-id="'+h.id+'">'+(cf==="d"?'أكيد؟ اضغط تاني للحذف':'حذف')+'</button></div>'+
+   '<button type="button" class="hb-btn" style="flex:0 0 auto;min-height:32px;font-size:.78rem;margin-inline-start:auto" data-hb="ed" data-id="'+h.id+'">تعديل ✏️</button>'+
+   '<button type="button" class="hb-btn'+(cf==="d"?' warn':'')+'" style="flex:0 0 auto;min-height:32px;font-size:.78rem" data-hb="dl" data-id="'+h.id+'">'+(cf==="d"?'أكيد؟ اضغط تاني للحذف':'حذف')+'</button></div>'+
   '</section>';
 }
-function hbForm(){
-  return '<section class="hb-form" aria-label="عادة جديدة"><label for="hb-n">اسم العادة</label><input type="text" id="hb-n" maxlength="40" placeholder="مثال: الإقلاع عن التدخين">'+
+function hbForm(h){
+  var ed=!!h, rmOn=ed&&typeof h.rm==="number"&&h.rm>=0;
+  return '<section class="hb-form" aria-label="'+(ed?'تعديل العادة':'عادة جديدة')+'"><label for="hb-n">اسم العادة</label><input type="text" id="hb-n" maxlength="40" placeholder="مثال: الإقلاع عن التدخين" value="'+(ed?esc(h.n):'')+'">'+
    '<label>الأيقونة</label><div class="hb-ic">'+HIC.map(function(x){ return '<button type="button" data-hb="ic" data-v="'+x+'" aria-pressed="'+(HB.ic===x)+'" aria-label="أيقونة '+x+'">'+x+'</button>'; }).join("")+'</div>'+
-   '<label for="hb-d">تاريخ البداية (ممكن تاريخ قديم)</label><input type="date" id="hb-d" value="'+todayKey()+'" max="'+todayKey()+'">'+
-   '<label><input type="checkbox" id="hb-r"> تذكير يومي</label><input type="time" id="hb-t" value="22:00" aria-label="ساعة التذكير">'+
-   '<div class="hb-row"><button type="button" class="hb-btn ok" data-hb="save">حفظ</button><button type="button" class="hb-btn" data-hb="cancel">إلغاء</button></div></section>';
+   '<label for="hb-d">تاريخ البداية (ممكن تاريخ قديم)</label><input type="date" id="hb-d" value="'+(ed?h.s:todayKey())+'" max="'+todayKey()+'">'+
+   '<label><input type="checkbox" id="hb-r"'+(rmOn?' checked':'')+'> تذكير يومي</label><input type="time" id="hb-t" value="'+(rmOn?hbTm(h.rm):'22:00')+'" aria-label="ساعة التذكير">'+
+   '<div class="hb-row"><button type="button" class="hb-btn ok" data-hb="'+(ed?'upd':'save')+'"'+(ed?' data-id="'+h.id+'"':'')+'>'+(ed?'حفظ التعديلات':'حفظ')+'</button><button type="button" class="hb-btn" data-hb="cancel">إلغاء</button></div></section>';
 }
 function renderHab(){
   var L=hbList(), h='<div class="hb"><div class="hb-head"><h2>العادات</h2><span class="sub">'+(L.length?L.length+' نشطة':'')+'</span></div>';
-  if(HB.add) h+=hbForm(); else if(L.length<12) h+='<button type="button" class="hb-add" data-hb="add">+ إضافة عادة جديدة</button>';
+  if(HB.add) h+=hbForm(); else if(L.length<12&&!HB.ed) h+='<button type="button" class="hb-add" data-hb="add">+ إضافة عادة جديدة</button>';
   if(!L.length&&!HB.add) h+='<div class="hb-empty">لسه ما ضفتش عادة. ابدأ بعادة واحدة (إقلاع عن التدخين، منع السكر، الالتزام بالدايت) وسيبها تعدّ الأيام عنك 🔥</div>';
-  L.forEach(function(x){ h+=hbCard(x); });
+  L.forEach(function(x){ h+=(HB.ed===x.id?hbForm(x):hbCard(x)); });
   var p=null; try{ p=pushPrefs(); }catch(e){}
   if(L.some(function(x){ return typeof x.rm==="number"&&x.rm>=0; }) && !(p&&p.on)) h+='<p class="sub">علشان التذكير يوصلك، فعّل الإشعارات من «الإعدادات».</p>';
   $("app").innerHTML=h+'</div>';
@@ -3587,19 +3599,20 @@ function hbStory(h){
 }
 document.addEventListener("click",function(e){
   var b=e.target.closest&&e.target.closest("[data-hb]"); if(!b) return; var a=b.getAttribute("data-hb"), id=b.getAttribute("data-id"), i=id?hbFind(id):-1, L=hbList();
-  if(a==="add"){ HB.add=true; HB.ic="🚭"; renderAll(); return; }
-  if(a==="cancel"){ HB.add=false; renderAll(); return; }
+  if(a==="add"){ HB.add=true; HB.ed=""; HB.ic="🚭"; renderAll(); return; }
+  if(a==="cancel"){ HB.add=false; HB.ed=""; renderAll(); return; }
+  if(a==="ed"&&i>=0){ HB.ed=id; HB.add=false; HB.ic=L[i].e||"🔥"; renderAll(); var fe=document.querySelector(".hb-form"); if(fe&&fe.scrollIntoView) fe.scrollIntoView({block:"center"}); return; }
   if(a==="ic"){ HB.ic=b.getAttribute("data-v"); var n0=($("hb-n")||{}).value, d0=($("hb-d")||{}).value, r0=($("hb-r")||{}).checked, t0=($("hb-t")||{}).value; renderAll(); if($("hb-n")) $("hb-n").value=n0||""; if($("hb-d")&&d0) $("hb-d").value=d0; if($("hb-r")) $("hb-r").checked=!!r0; if($("hb-t")&&t0) $("hb-t").value=t0; return; }
   if(a==="save"){
-    var nm=(($("hb-n")||{}).value||"").trim().slice(0,40), d=($("hb-d")||{}).value||todayKey();
+    var nm=hbAr(($("hb-n")||{}).value||"").trim().slice(0,40), d=hbDate(($("hb-d")||{}).value,todayKey());
     if(!nm){ toast("اكتب اسم العادة"); return; }
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>todayKey()) d=todayKey();
-    var rm=-1; if(($("hb-r")||{}).checked){ var t=(($("hb-t")||{}).value||"22:00").split(":"); rm=(+t[0])*60+(+t[1]); if(isNaN(rm)) rm=1320; }
+    var rm=-1; if(($("hb-r")||{}).checked){ rm=hbTime(($("hb-t")||{}).value,1320); }
     if(L.length>=12){ toast("وصلت للحد الأقصى (12 عادة)"); return; }
     L.push({id:"h"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36),n:nm,e:HB.ic,s:d,b:0,ck:[],rm:rm,c:todayKey()});
     HB.add=false; persist(); renderAll(); toast("اتضافت العادة 🔥"); return;
   }
   if(i<0) return; var h=L[i];
+  if(a==="upd"){ var n2=hbAr(($("hb-n")||{}).value||"").trim().slice(0,40); if(!n2){ toast("اكتب اسم العادة"); return; } h.n=n2; h.e=HB.ic; h.s=hbDate(($("hb-d")||{}).value,h.s); h.rm=($("hb-r")||{}).checked?hbTime(($("hb-t")||{}).value,1320):-1; HB.ed=""; persist(); renderAll(); toast("اتحفظت التعديلات ✓"); return; }
   if(a==="ck"){ if(hbDone(h)){ toast("اتأكد النهارده خلاص ✅"); return; } h.ck=(h.ck||[]).concat([todayKey()]).slice(-90); HB.pop=h.id; HB.cf=""; persist(); renderAll(); toast("برافو! كمّل 🔥 "+hbDays(h)+" يوم"); return; }
   if(a==="rs"){ if(HB.cf!=="r"||HB.cfid!==id){ HB.cf="r"; HB.cfid=id; renderAll(); return; } h.b=Math.max(h.b||0,hbDays(h)); h.s=todayKey(); h.ck=[]; HB.cf=""; persist(); renderAll(); toast("اتصفّرت. ابدأ من النهارده 💪"); return; }
   if(a==="dl"){ if(HB.cf!=="d"||HB.cfid!==id){ HB.cf="d"; HB.cfid=id; renderAll(); return; } L.splice(i,1); HB.cf=""; persist(); renderAll(); toast("اتحذفت العادة"); return; }
@@ -3608,8 +3621,10 @@ document.addEventListener("click",function(e){
 document.addEventListener("change",function(e){
   var t=e.target; if(!t||!t.getAttribute) return; var L=hbList();
   var id=t.getAttribute("data-hbrm"); if(id){ var i=hbFind(id); if(i>=0){ L[i].rm=t.checked?(typeof L[i].rm==="number"&&L[i].rm>=0?L[i].rm:1320):-1; persist(); renderAll(); } return; }
-  id=t.getAttribute("data-hbrt"); if(id){ var j=hbFind(id), p=String(t.value||"").split(":"); if(j>=0&&p.length===2&&!isNaN(+p[0])&&!isNaN(+p[1])){ L[j].rm=(+p[0])*60+(+p[1]); persist(); } }
+  id=t.getAttribute("data-hbrt"); if(id){ var j=hbFind(id), tm=hbTime(t.value,-1); if(j>=0&&tm>=0){ L[j].rm=tm; persist(); } }
 });
+document.addEventListener("input",function(e){ var t=e.target; if(t&&t.closest&&t.closest(".hb-form")&&(t.type==="text"||t.type==="date")){ var v=hbAr(t.value); if(v!==t.value){ var c=t.selectionStart; t.value=v; try{ t.setSelectionRange(c,c); }catch(x){} } } });
+document.addEventListener("click",function(e){ if(!document.documentElement.hasAttribute("data-widget")) return; var c=e.target.closest&&e.target.closest(".hb-card"); if(!c||e.target.closest("button,input,label,a")) return; location.href=location.pathname.replace(/[^\/]*$/,"app.html"); });
 if(/[?&]widget=habits/.test(location.search)){ document.documentElement.setAttribute("data-widget","habits"); view="hab"; }
 function renderAll(){
   if(needWelcome()){ renderWelcome(); return; }
