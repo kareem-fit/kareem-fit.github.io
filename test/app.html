@@ -1920,6 +1920,52 @@ html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan>b{flex:none;width:4
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan u{position:absolute;inset-inline-end:10px;top:-9px;text-decoration:none;font-size:.72rem;font-weight:800;padding:1px 10px;border-radius:99px;background:var(--t-accent,#6D28D9);color:var(--t-onac,#08202F)}
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-plan[aria-pressed="true"]{border-color:var(--t-accent,#6D28D9);background:color-mix(in srgb,var(--t-accent,#6D28D9) 12%,transparent);box-shadow:0 0 0 1px var(--t-accent,#6D28D9)}
 html:where(:not([data-design="3"]))[data-v3="calm"] .wz-day[aria-pressed="true"]{background:var(--t-accent,#6D28D9);border-color:var(--t-accent,#6D28D9);color:var(--t-onac,#08202F)}</style>
+<style id="hbcss">
+.hb{display:flex;flex-direction:column;gap:12px}
+.hb-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.hb-head h2{margin:0}
+.hb-add{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:800}
+.hb-card{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.hb-card.m7{border-color:var(--ok)}
+.hb-card.m30{border-color:#FFC53D;box-shadow:0 0 18px rgba(255,197,61,.25)}
+.hb-card.m90{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,63,.3)}
+.hb-card.m150{border-color:#A78BFA;box-shadow:0 0 20px rgba(167,139,250,.3)}
+.hb-card.m365{border-color:#FFC53D;box-shadow:0 0 26px rgba(255,107,63,.45)}
+.hb-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hb-nm{font-weight:800;font-size:1.05rem;min-width:0;overflow-wrap:anywhere}
+.hb-best{color:var(--muted);font-size:.8rem;white-space:nowrap}
+.hb-big{display:flex;align-items:baseline;gap:8px}
+.hb-big b{font-size:3.4rem;line-height:1;font-weight:900;font-variant-numeric:tabular-nums}
+.hb-big .f{font-size:2rem}.hb-big .u{color:var(--muted);font-size:.95rem}
+.hb-medal{display:inline-block;margin-inline-start:auto;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:99px;border:1px solid currentColor}
+.hb-bar{height:9px;border-radius:6px;background:var(--body,rgba(128,128,128,.25));overflow:hidden}
+.hb-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#FFC53D);transition:width .5s}
+.hb-sub{color:var(--muted);font-size:.82rem}
+.hb-row{display:flex;gap:8px;flex-wrap:wrap}
+.hb-btn{flex:1 1 0;min-height:44px;border-radius:11px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:.9rem;padding:6px 8px}
+.hb-btn.ok{background:var(--ok);border-color:var(--ok);color:#06210f;flex:2 1 0}
+.hb-btn.done{background:transparent;color:var(--muted);border-color:var(--line)}
+.hb-btn.warn{border-color:#E5484D;color:#E5484D}
+.hb-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.8rem}
+.hb-tools input[type=time]{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 6px;font:inherit}
+.hb-form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.hb-form label{font-size:.85rem;color:var(--muted)}
+.hb-form input[type=text],.hb-form input[type=date],.hb-form input[type=time]{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+.hb-ic{display:flex;gap:8px;flex-wrap:wrap}
+.hb-ic button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:1.4rem}
+.hb-ic button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.hb-empty{text-align:center;color:var(--muted);padding:18px 8px}
+.hb-card.pop{animation:hbpop .7s ease}
+.hb-card.pop::after{content:"🔥✨🎉";position:absolute;inset-inline-end:14px;top:8px;font-size:1.6rem;animation:hbfly 1s ease forwards}
+@keyframes hbpop{0%{transform:scale(1)}35%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes hbfly{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-36px)}}
+@media (prefers-reduced-motion:reduce){.hb-card.pop,.hb-card.pop::after{animation:none}}
+.hb-home .r{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0}
+.hb-home .r+.r{border-top:1px solid var(--line)}
+.hb-home .n{font-weight:700;min-width:0;overflow-wrap:anywhere}.hb-home .d{color:var(--accent);font-weight:800;white-space:nowrap}
+html[data-widget] header,html[data-widget] #v3nav,html[data-widget] #v3sheet,html[data-widget] .foot,html[data-widget] .pgrow,html[data-widget] #d3more,html[data-widget] .hb-add,html[data-widget] .hb-tools,html[data-widget] .hb-head,html[data-widget] .hb>p.sub{display:none!important}
+html[data-widget] body{padding-top:max(14px,env(safe-area-inset-top,0px))}
+</style>
 <style id="pgcss">
 html body .foot{border:1px solid var(--t-muscle,#34435A);border-radius:20px;padding:14px 16px;margin-top:18px;background:radial-gradient(70% 160% at 0% 100%,rgba(255,107,53,.30),transparent 70%),linear-gradient(180deg,#1A232E,#111820);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 24px -14px rgba(0,0,0,.65)}
 html[data-v3="light"] body .foot,html[data-v3="calm"] body .foot{background:radial-gradient(70% 160% at 0% 100%,rgba(234,88,12,.20),transparent 70%),linear-gradient(180deg,#FFFFFF,#F7F1E9);box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(120,60,10,.30)}
@@ -2006,6 +2052,7 @@ html[data-design="3"] #d3orb:not([hidden]){bottom:calc(84px + env(safe-area-inse
       <button type="button" data-act="view" data-v="comm" id="vc">المجتمع</button>
       <button type="button" data-act="view" data-v="ibd" id="vi">القرآن والعبادات</button>
       <button type="button" data-act="view" data-v="lab" id="vlb">برامج وأدوات</button>
+      <button type="button" data-act="view" data-v="hab" id="vhb">العادات</button>
       <button type="button" data-act="view" data-v="set" id="vx">الإعدادات</button>
     </nav>
   </header>
@@ -3466,18 +3513,118 @@ function ksMotion(){
   ksLv=view;
 }
 try{ new MutationObserver(function(){ var h=document.documentElement; h.classList.add("ks-tt"); clearTimeout(window.__kstt); window.__kstt=setTimeout(function(){ h.classList.remove("ks-tt"); },500); }).observe(document.documentElement,{attributes:true,attributeFilter:["data-v3"]}); }catch(e){}
+/* KFIT-HABITS */
+var HMS=[7,30,90,150,365], HMN={7:"أسبوع",30:"شهر",90:"3 شهور",150:"150 يوم",365:"سنة"};
+var HIC=["🚭","🍬","🥗","💧","😴","📵","🏃","📖","🥤","🧘","🚫","💪"];
+var HB={add:false,ic:"🚭",pop:"",cf:""};
+function hbList(){ if(!Array.isArray(S.hbt)) S.hbt=[]; return S.hbt; }
+function hbDays(h,tk){ var d=diffD(tk||todayKey(),h.s)+1; return d<0?0:d; }
+function hbBest(h){ return Math.max(h.b||0,hbDays(h)); }
+function hbDone(h){ return Array.isArray(h.ck)&&h.ck.indexOf(todayKey())>=0; }
+function hbMs(days){ var prev=0,next=null; for(var i=0;i<HMS.length;i++){ if(HMS[i]<=days) prev=HMS[i]; else { next=HMS[i]; break; } } return {prev:prev,next:next}; }
+function hbFmt(m){ var h=Math.floor(m/60),mm=m%60,ap=h>=12?"م":"ص",hh=h%12||12; return hh+":"+("0"+mm).slice(-2)+" "+ap; }
+function hbTm(m){ return ("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2); }
+function hbCard(h){
+  var days=hbDays(h), ms=hbMs(days), pct=ms.next?Math.round((days-ms.prev)/(ms.next-ms.prev)*100):100;
+  var left=ms.next?ms.next-days:0, done=hbDone(h), cf=(HB.cfid===h.id)?HB.cf:"";
+  var sub=days===0?'تبدأ بعد '+diffD(h.s,todayKey())+' يوم':(ms.next?'باقي '+left+' يوم على محطة '+(HMN[ms.next]||ms.next+" يوم"):'وصلت لأعلى محطة 🏆');
+  var medal=ms.prev?'<span class="hb-medal">🏅 '+(HMN[ms.prev]||ms.prev)+'</span>':'';
+  var rm=typeof h.rm==="number"&&h.rm>=0;
+  return '<section class="hb-card'+(ms.prev?' m'+ms.prev:'')+(HB.pop===h.id?' pop':'')+'" data-hid="'+h.id+'">'+
+   '<div class="hb-top"><span class="hb-nm">'+esc(h.e||"🔥")+' '+esc(h.n)+'</span><span class="hb-best">أطول سلسلة: '+hbBest(h)+'</span></div>'+
+   '<div class="hb-big"><span class="f" aria-hidden="true">🔥</span><b>'+days+'</b><span class="u">يوم</span>'+medal+'</div>'+
+   '<div class="hb-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div>'+
+   '<div class="hb-sub">'+sub+'</div>'+
+   '<div class="hb-row"><button type="button" class="hb-btn '+(done?'done':'ok')+'" data-hb="ck" data-id="'+h.id+'"'+(done?' aria-pressed="true"':'')+'>'+(done?'✓ اتأكد النهارده':'تأكيد التزام اليوم ✅')+'</button>'+
+   '<button type="button" class="hb-btn" data-hb="sh" data-id="'+h.id+'">مشاركة 📤</button>'+
+   '<button type="button" class="hb-btn'+(cf==="r"?' warn':'')+'" data-hb="rs" data-id="'+h.id+'">'+(cf==="r"?'أكيد؟ اضغط تاني للتصفير':'↺ تصفير')+'</button></div>'+
+   '<div class="hb-tools"><label><input type="checkbox" data-hbrm="'+h.id+'"'+(rm?' checked':'')+'> تذكير يومي</label>'+
+   (rm?'<input type="time" data-hbrt="'+h.id+'" value="'+hbTm(h.rm)+'" aria-label="ساعة التذكير">':'')+
+   '<button type="button" class="hb-btn'+(cf==="d"?' warn':'')+'" style="flex:0 0 auto;min-height:32px;font-size:.78rem;margin-inline-start:auto" data-hb="dl" data-id="'+h.id+'">'+(cf==="d"?'أكيد؟ اضغط تاني للحذف':'حذف')+'</button></div>'+
+  '</section>';
+}
+function hbForm(){
+  return '<section class="hb-form" aria-label="عادة جديدة"><label for="hb-n">اسم العادة</label><input type="text" id="hb-n" maxlength="40" placeholder="مثال: الإقلاع عن التدخين">'+
+   '<label>الأيقونة</label><div class="hb-ic">'+HIC.map(function(x){ return '<button type="button" data-hb="ic" data-v="'+x+'" aria-pressed="'+(HB.ic===x)+'" aria-label="أيقونة '+x+'">'+x+'</button>'; }).join("")+'</div>'+
+   '<label for="hb-d">تاريخ البداية (ممكن تاريخ قديم)</label><input type="date" id="hb-d" value="'+todayKey()+'" max="'+todayKey()+'">'+
+   '<label><input type="checkbox" id="hb-r"> تذكير يومي</label><input type="time" id="hb-t" value="22:00" aria-label="ساعة التذكير">'+
+   '<div class="hb-row"><button type="button" class="hb-btn ok" data-hb="save">حفظ</button><button type="button" class="hb-btn" data-hb="cancel">إلغاء</button></div></section>';
+}
+function renderHab(){
+  var L=hbList(), h='<div class="hb"><div class="hb-head"><h2>العادات</h2><span class="sub">'+(L.length?L.length+' نشطة':'')+'</span></div>';
+  if(HB.add) h+=hbForm(); else if(L.length<12) h+='<button type="button" class="hb-add" data-hb="add">+ إضافة عادة جديدة</button>';
+  if(!L.length&&!HB.add) h+='<div class="hb-empty">لسه ما ضفتش عادة. ابدأ بعادة واحدة (إقلاع عن التدخين، منع السكر، الالتزام بالدايت) وسيبها تعدّ الأيام عنك 🔥</div>';
+  L.forEach(function(x){ h+=hbCard(x); });
+  var p=null; try{ p=pushPrefs(); }catch(e){}
+  if(L.some(function(x){ return typeof x.rm==="number"&&x.rm>=0; }) && !(p&&p.on)) h+='<p class="sub">علشان التذكير يوصلك، فعّل الإشعارات من «الإعدادات».</p>';
+  $("app").innerHTML=h+'</div>';
+  if(HB.pop){ var k=HB.pop; HB.pop=""; setTimeout(function(){ var e=document.querySelector('.hb-card[data-hid="'+k+'"]'); if(e) e.classList.remove("pop"); },1100); }
+}
+function hbHome(){
+  var L=hbList();
+  if(!L.length) return '<button type="button" class="lb-strip" data-act="view" data-v="hab"><span>🔥 تتبّع عاداتك (إقلاع، سكر، دايت…)</span><span class="lb-sg">جديد</span></button>';
+  var top=L.slice().sort(function(a,b){ return hbDays(b)-hbDays(a); }).slice(0,3);
+  return '<section class="card hb-home"><h2>🔥 عاداتك</h2>'+top.map(function(h){ var d=hbDone(h);
+    return '<div class="r"><span class="n">'+esc(h.e||"🔥")+' '+esc(h.n)+'</span><span class="d">'+hbDays(h)+' يوم</span>'+
+     '<button type="button" class="hb-btn'+(d?' done':' ok')+'" style="flex:0 0 auto;min-height:36px" data-hb="ck" data-id="'+h.id+'">'+(d?'✓':'تأكيد ✅')+'</button></div>'; }).join("")+
+    '<button type="button" class="hx-go small" data-act="view" data-v="hab">كل العادات</button></section>';
+}
+function hbFind(id){ var L=hbList(); for(var i=0;i<L.length;i++) if(L[i].id===id) return i; return -1; }
+function hbStory(h){
+  var days=hbDays(h), ms=hbMs(days), W=1080, H=1920, c=document.createElement("canvas"); c.width=W; c.height=H; var x=c.getContext("2d");
+  var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,"#0A2638"); g.addColorStop(1,"#05121B"); x.fillStyle=g; x.fillRect(0,0,W,H);
+  var r=x.createRadialGradient(W/2,760,40,W/2,760,720); r.addColorStop(0,"rgba(255,107,63,.40)"); r.addColorStop(1,"rgba(255,107,63,0)"); x.fillStyle=r; x.fillRect(0,0,W,H);
+  x.textAlign="center"; x.textBaseline="middle"; x.direction="rtl";
+  x.font="280px sans-serif"; x.fillStyle="#fff"; x.fillText("🔥",W/2,500);
+  x.font="900 440px 'Barlow Condensed',Cairo,sans-serif"; x.fillStyle="#FFC53D"; x.fillText(String(days),W/2,850);
+  x.font="800 76px Cairo,sans-serif"; x.fillStyle="#EAF1F7"; x.fillText("يوم التزام",W/2,1080);
+  var nm=(h.e||"🔥")+" "+h.n, fs=84; x.font="800 "+fs+"px Cairo,sans-serif"; while(x.measureText(nm).width>W-140&&fs>40){ fs-=4; x.font="800 "+fs+"px Cairo,sans-serif"; }
+  x.fillStyle="#fff"; x.fillText(nm,W/2,1250);
+  if(ms.prev){ var bt="🏅 عدّيت محطة "+(HMN[ms.prev]||ms.prev+" يوم"); x.font="700 54px Cairo,sans-serif"; var bw=x.measureText(bt).width+90; x.strokeStyle="#FFC53D"; x.lineWidth=4; x.fillStyle="rgba(255,197,61,.14)";
+    var bx=W/2-bw/2, by=1370, bh=100, rr=50; x.beginPath(); x.moveTo(bx+rr,by); x.arcTo(bx+bw,by,bx+bw,by+bh,rr); x.arcTo(bx+bw,by+bh,bx,by+bh,rr); x.arcTo(bx,by+bh,bx,by,rr); x.arcTo(bx,by,bx+bw,by,rr); x.closePath(); x.fill(); x.stroke();
+    x.fillStyle="#FFC53D"; x.fillText(bt,W/2,by+bh/2+2); }
+  x.fillStyle="#fff"; x.font="900 76px 'Barlow Condensed',Cairo,sans-serif"; x.fillText("Kareem-Fit",W/2,1730);
+  x.fillStyle="#9FB6C3"; x.font="500 44px Cairo,sans-serif"; x.fillText("kareem-fit.github.io",W/2,1805);
+  return c;
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest&&e.target.closest("[data-hb]"); if(!b) return; var a=b.getAttribute("data-hb"), id=b.getAttribute("data-id"), i=id?hbFind(id):-1, L=hbList();
+  if(a==="add"){ HB.add=true; HB.ic="🚭"; renderAll(); return; }
+  if(a==="cancel"){ HB.add=false; renderAll(); return; }
+  if(a==="ic"){ HB.ic=b.getAttribute("data-v"); var n0=($("hb-n")||{}).value, d0=($("hb-d")||{}).value, r0=($("hb-r")||{}).checked, t0=($("hb-t")||{}).value; renderAll(); if($("hb-n")) $("hb-n").value=n0||""; if($("hb-d")&&d0) $("hb-d").value=d0; if($("hb-r")) $("hb-r").checked=!!r0; if($("hb-t")&&t0) $("hb-t").value=t0; return; }
+  if(a==="save"){
+    var nm=(($("hb-n")||{}).value||"").trim().slice(0,40), d=($("hb-d")||{}).value||todayKey();
+    if(!nm){ toast("اكتب اسم العادة"); return; }
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>todayKey()) d=todayKey();
+    var rm=-1; if(($("hb-r")||{}).checked){ var t=(($("hb-t")||{}).value||"22:00").split(":"); rm=(+t[0])*60+(+t[1]); if(isNaN(rm)) rm=1320; }
+    if(L.length>=12){ toast("وصلت للحد الأقصى (12 عادة)"); return; }
+    L.push({id:"h"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36),n:nm,e:HB.ic,s:d,b:0,ck:[],rm:rm,c:todayKey()});
+    HB.add=false; persist(); renderAll(); toast("اتضافت العادة 🔥"); return;
+  }
+  if(i<0) return; var h=L[i];
+  if(a==="ck"){ if(hbDone(h)){ toast("اتأكد النهارده خلاص ✅"); return; } h.ck=(h.ck||[]).concat([todayKey()]).slice(-90); HB.pop=h.id; HB.cf=""; persist(); renderAll(); toast("برافو! كمّل 🔥 "+hbDays(h)+" يوم"); return; }
+  if(a==="rs"){ if(HB.cf!=="r"||HB.cfid!==id){ HB.cf="r"; HB.cfid=id; renderAll(); return; } h.b=Math.max(h.b||0,hbDays(h)); h.s=todayKey(); h.ck=[]; HB.cf=""; persist(); renderAll(); toast("اتصفّرت. ابدأ من النهارده 💪"); return; }
+  if(a==="dl"){ if(HB.cf!=="d"||HB.cfid!==id){ HB.cf="d"; HB.cfid=id; renderAll(); return; } L.splice(i,1); HB.cf=""; persist(); renderAll(); toast("اتحذفت العادة"); return; }
+  if(a==="sh"){ withFonts(function(){ try{ shareOut(hbStory(h),"kareem-fit-habit-"+hbDays(h)+".png"); }catch(x){ toast("حصلت مشكلة في الصورة"); } }); return; }
+});
+document.addEventListener("change",function(e){
+  var t=e.target; if(!t||!t.getAttribute) return; var L=hbList();
+  var id=t.getAttribute("data-hbrm"); if(id){ var i=hbFind(id); if(i>=0){ L[i].rm=t.checked?(typeof L[i].rm==="number"&&L[i].rm>=0?L[i].rm:1320):-1; persist(); renderAll(); } return; }
+  id=t.getAttribute("data-hbrt"); if(id){ var j=hbFind(id), p=String(t.value||"").split(":"); if(j>=0&&p.length===2&&!isNaN(+p[0])&&!isNaN(+p[1])){ L[j].rm=(+p[0])*60+(+p[1]); persist(); } }
+});
+if(/[?&]widget=habits/.test(location.search)){ document.documentElement.setAttribute("data-widget","habits"); view="hab"; }
 function renderAll(){
   if(needWelcome()){ renderWelcome(); return; }
   document.body.classList.remove("v-welcome");
   if(view!=="train") justSaved=null;
   if(__lv!==view){ if(__lv==="food"){ fxMO=false; fxFav=false; fxAdd=false; fxB=[]; bmAuto=""; } __lv=view; }
   pgApply(); renderTabs();
-  ["home","today","train","log","body","food","share","comm","set","lab","qib","feat"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
-  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi",feat:"vh"};
+  ["home","today","train","log","body","food","share","comm","set","lab","qib","feat","hab"].forEach(function(v){ document.body.classList.toggle("v-"+v, v===view); });
+  var ids = {home:"vh",today:"vo",train:"vt",log:"vl",body:"vb",food:"vf",share:"vs",comm:"vc",set:"vx",trn:"vx",ibd:"vi",lab:"vlb",qib:"vi",feat:"vh",hab:"vhb"};
   Object.keys(ids).forEach(function(v){ $(ids[v]).setAttribute("aria-pressed", v===view || (v==="ibd" && (view==="adhk"||view==="qlist"||view==="qsura"||view==="qdl"||view==="qpage"))); });
   $("vi").hidden=!faithOn();
   if(view==="home") renderHome(); else if(view==="today") renderToday(); else if(view==="train") renderTrain(); else if(view==="log") renderLog();
-  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else if(view==="feat") renderFeat(); else renderShare();
+  else if(view==="body") renderBody(); else if(view==="food") renderFood(); else if(view==="comm") renderComm(); else if(view==="set") renderSet(); else if(view==="adhk") renderAdhk(); else if(view==="ibd") renderIbd(); else if(view==="qlist") renderQlist(); else if(view==="qsura") renderQsura(); else if(view==="trn") renderTrn(); else if(view==="qdl") renderQdl(); else if(view==="qpage") renderQpage(); else if(view==="lab") renderLab(); else if(view==="qib") renderQib(); else if(view==="feat") renderFeat(); else if(view==="hab") renderHab(); else renderShare();
   updateProgress();
   ksMotion();
   d3after(); pgInject(); /* KFIT-DESIGN-3 + KFIT-PG */
@@ -4682,7 +4829,7 @@ function qBar(){
 }
 function renderHome(){
   var tk=todayKey(), pi=planIdx(tk), info=dayInfo(tk), nm=(S.profile.name||"").trim();
-  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+lbGymStrip()+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
+  $("app").innerHTML='<div class="hx">'+hxTop(tk,pi,nm)+(faithOn()?lbPrayStrip():'')+lbGymStrip()+hbHome()+hxMsg(tk)+hxMood(tk)+hxFaith(tk)+hxRemind(tk)+hxWeek(tk)+(faithOn()?hxHadith():'')+hxTip()+hxPair()+lbHomeCard()+hxSettings()+featLink()+'<p class="disc">برنامج عام للتوعية والتمرين وليس بديلًا عن استشارة الطبيب المختص.</p></div>';
 }
 var ME_KEY="kf_my_photo";
 function myPhoto(){ try{ return localStorage.getItem(ME_KEY)||""; }catch(e){ return ""; } }
@@ -6260,6 +6407,7 @@ function renderTrn(){
 function pushPrefs(){ if(!S.prefs.push) S.prefs.push={on:false,m:true,e:true,w:true,q:true}; return S.prefs.push; }
 function pushLoad(){ return new Promise(function(res,rej){ if(window.firebase&&firebase.messaging) return res(); var sc=document.createElement("script"); sc.src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"; sc.onload=function(){res();}; sc.onerror=function(){rej(new Error("load"));}; document.head.appendChild(sc); }); }
 var PUSHK=[["m","أذكار الصباح"],["e","أذكار المساء"],["w","تمرين بعد العصر"],["r","تذكير تاني بالليل"],["c","تهنئة بعد التمرين"],["q","رسالة اليوم"],["a","لو غبت 3 أيام"],["p","رقم قياسي جديد"],["s","تنبيه الصلاة (قبلها وعند وقتها)"],["f","نصايح وتشجيع"],["g","اشتراك الجيم"]];
+function hbSrv(){ var tk=todayKey(); return hbList().filter(function(h){ return typeof h.rm==="number"&&h.rm>=0; }).slice(0,12).map(function(h){ return {i:h.id,n:String(h.n).slice(0,30),e:h.e||"🔥",s:h.s,h:h.rm,ck:hbDone(h)?tk:""}; }); }
 function pushSync(){
   var p=pushPrefs(), u=cmUser(); if(!p.on||!p.tok||!u||!KS.fs) return;
   var rest=[]; for(var d=0;d<7;d++){ var it=null; for(var i=0;i<DAYS.length;i++){ if(DAYS[i].dow===d) it=DAYS[i]; } rest.push(!it||!!it.rest); }
@@ -6267,7 +6415,7 @@ function pushSync(){
   S.sessions.forEach(function(x){ if(x.date===tk){ tr=true; if(x.pr&&x.pr.length) pr=tk; } if(x.date>last) last=x.date; });
   var st=0; try{ st=lbStreakN(); }catch(e){}
   var pt=null; try{ var L0=lbLoc(), tm0=lbPray(new Date(),L0.lat,L0.lng); pt={}; ["fajr","dhuhr","asr","maghrib","isha"].forEach(function(k){ if(!isNaN(tm0[k])) pt[k]=Math.round(tm0[k]*60); }); }catch(e){}
-  var o={pt:pt,tok:p.tok,off:-new Date().getTimezoneOffset(),rest:rest,trained:tr?tk:null,last:last||null,pr:pr,streak:st,gym:(S.gym&&S.gym.end)||null,name:(S.profile.name||"").slice(0,20),upd:Date.now()};
+  var o={pt:pt,tok:p.tok,off:-new Date().getTimezoneOffset(),rest:rest,trained:tr?tk:null,last:last||null,pr:pr,streak:st,hb:hbSrv(),gym:(S.gym&&S.gym.end)||null,name:(S.profile.name||"").slice(0,20),upd:Date.now()};
   PUSHK.forEach(function(k){ o[k[0]]=(k[0]==="h")?(p.h===true):(p[k[0]]!==false); });
   KS.fs.collection("push").doc(u.uid).set(o,{merge:true}).catch(function(){});
 }
@@ -8327,10 +8475,11 @@ if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").then(
     set:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6"/></svg>',
     ibd:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M12 7v4M10 9h4"/></svg>',
     share:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.3 10.8l7.4-3.6M8.3 13.2l7.4 3.6"/></svg>',
-    lab:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8v8M7 6v12M17 6v12M20 8v8M7 12h10"/></svg>'
+    lab:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8v8M7 6v12M17 6v12M20 8v8M7 12h10"/></svg>',
+    hab:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3-2 4.5-2 7.5a3 3 0 0 0 6 0c0-1.2-.5-2-1-3 2 1 4 3.6 4 6.5a7 7 0 0 1-14 0c0-4.5 4-6.5 7-11z"/></svg>'
   };
   var main=[["home","vh","الرئيسية"],["today","vo","اليوم"],["train","vt","التمرين"],["food","vf","الأكل"]];
-  var more=[["comm","vc","المجتمع"],["ibd","vi","القرآن والعبادات"],["log","vl","السجل"],["body","vb","الجسم"],["lab","vlb","برامج وأدوات"],["share","vs","الملخص"],["set","vx","الإعدادات"]];
+  var more=[["comm","vc","المجتمع"],["ibd","vi","القرآن والعبادات"],["log","vl","السجل"],["body","vb","الجسم"],["lab","vlb","برامج وأدوات"],["hab","vhb","العادات"],["share","vs","الملخص"],["set","vx","الإعدادات"]];
   var themes=[["classic","كلاسيك","#08202F"],["modern","عصري","#0F172A"],["light","فاتح","#F1F5F9"],["black","أسود","#000000"],["calm","هادي","#FAF5FF"],["dusk","هادي ليلي","#1B1736"]];
   var nav=document.getElementById("v3nav"), sh=document.getElementById("v3sheet"), box=sh.firstElementChild;
   nav.innerHTML=main.map(function(m){return '<button type="button" data-v3="'+m[1]+'">'+I[m[0]]+'<span>'+m[2]+'</span></button>';}).join("")+'<button type="button" data-v3="more">'+I.more+'<span>المزيد</span></button>';

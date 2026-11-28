@@ -32,6 +32,16 @@ function decide(d,nowMs){
     if(K.ok&&!K.ok(c)) continue;
     out.push({k:K.k,date:key,ttl:K.ttl,title:typeof K.title==="function"?K.title(c):K.title,body:K.body(c)});
   }
+  // تذكير العادات: لكل عادة مفعّل لها تذكير، ولسه ما اتأكدتش النهارده، من ساعة التذكير وبعدها 90 دقيقة
+  if(Array.isArray(d.hb)){
+    for(const h of d.hb.slice(0,12)){
+      if(!h||typeof h.h!=="number"||typeof h.i!=="string"||!/^[A-Za-z0-9_-]{1,24}$/.test(h.i)||typeof h.s!=="string") continue;
+      if(mins<h.h||mins>=h.h+90||h.ck===date) continue;
+      const k="hb_"+h.i; if(sent[k]===date) continue;
+      const days=diff(date,h.s)+1; if(!(days>=1)) continue;
+      out.push({k,date,ttl:5400,title:"🔥 "+String(h.e||"🔥").slice(0,4)+" "+String(h.n||"عادتك").slice(0,30),body:"لسه ما أكدتش النهارده"+c.nm+". عدّاد عادتك "+days+" يوم، ما تكسرش السلسلة 💪"});
+    }
+  }
   // تنبيه الصلاة (الوقت بييجي من موبايل المستخدم في d.pt بالدقايق من نص الليل). ما بيتبعتش أي حاجة بعد وقت الصلاة.
   const pr=[];
   if(d.s!==false && d.pt){
